@@ -1,0 +1,57 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Common Properties ###
+common/src/main/resources/application-common-local.properties
+common/src/main/resources/application-common-test.properties
+common/src/main/resources/application-common-production.properties
+
+### API-Gateway Properties ###
+api-gateway/src/main/resources/application-gateway-local.properties
+api-gateway/src/main/resources/application-gateway-test.properties
+api-gateway/src/main/resources/application-gateway-production.properties
+
+### API Properties ###
+api/src/main/resources/application-api-local.properties
+api/src/main/resources/application-api-test.properties
+api/src/main/resources/application-api-production.properties
+
+### Open Chat API Properties ###
+open-chat-api/src/main/resources/application-open-chat-api-local.properties
+open-chat-api/src/main/resources/application-open-chat-api-test.properties
+open-chat-api/src/main/resources/application-open-chat-api-production.properties

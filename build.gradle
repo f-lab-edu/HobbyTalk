@@ -1,0 +1,81 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.5'
+	id 'io.spring.dependency-management' version '1.1.3'
+}
+
+group = 'com.jongho'
+version = '0.0.1-SNAPSHOT'
+
+subprojects {
+	group = 'com.jongho'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '17'
+
+	apply plugin: 'java'
+	apply plugin: 'java-library'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+	}
+
+	repositories {
+		mavenCentral()
+	}
+
+	// 관리하는 모듈의 공통 dependencies
+	dependencies {
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}
+
+java {
+	sourceCompatibility = '17'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+project(':api') { // 컴파일 시 api 로딩
+	dependencies {
+	}
+}
+
+project(':common') { // 컴파일 시 common 로딩
+	dependencies {
+	}
+}
+
+project(':batch') { // 컴파일 시 batch 로딩
+	dependencies {
+	}
+}
+
+project(':open-chat-api') { // 컴파일 시 open-chat-api 로딩
+	dependencies {
+	}
+}
+
+project(':api-gateway') { // 컴파일 시 api-gateway 로딩
+	dependencies {
+	}
+}
