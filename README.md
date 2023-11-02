@@ -9,7 +9,7 @@
 - [API doc](#api-doc)
 - [ERD](#erd)
 - [어플리케이션 아키텍처](#어플리케이션-아키텍처)
-- [Git 브랜치 전략](#Git-브랜치-전략-(Github-Flow))
+- [Git 브랜치 전략](#git-브랜치-전략-github-flow)
 - [PR 리뷰 규칙](#PR-리뷰-규칙)
 
 </br>
