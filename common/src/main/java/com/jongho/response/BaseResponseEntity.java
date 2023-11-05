@@ -1,4 +1,4 @@
-package com.jongho.common.response;
+package com.jongho.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

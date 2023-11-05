@@ -1,6 +1,6 @@
 package com.jongho.user.presentation.controller;
 
-import com.jongho.common.response.BaseResponseEntity;
+import com.jongho.response.BaseResponseEntity;
 import com.jongho.user.application.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
