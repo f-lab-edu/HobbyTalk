@@ -5,6 +5,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+/*
+*
+* BaseResponseEntity는 API의 응답을 위한 커스텀클래스 입니다.
+* @JsonInclude(JsonInclude.Include.NON_NULL)을 이용하여 null값인 필드는 제외하고 JSON으로 변환합니다.
+*
+*/
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @RequiredArgsConstructor
