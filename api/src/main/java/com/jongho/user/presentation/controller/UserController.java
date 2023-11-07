@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.http.ResponseEntity;
 
 @HttpRequestLogging
 @RestController
@@ -21,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/sign-up")
-    public BaseResponseEntity<?> signUp(@Validated @RequestBody UserSignUpDto userSignUpDto){
+    public ResponseEntity<BaseResponseEntity<?>> signUp(@Validated @RequestBody UserSignUpDto userSignUpDto){
         userService.signUp(userSignUpDto);
 
         return BaseResponseEntity.ok("user create");

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 /*
 *
@@ -15,32 +16,54 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public class BaseResponseEntity<T> {
-    private int status;
+    private int code;
+
+    private HttpStatus status;
     private String message;
     private T data;
 
     public BaseResponseEntity(T data, String message, HttpStatus status) {
         this.data = data;
         this.message = message;
-        this.status = status.value();
+        this.code = status.value();
+        this.status = status;
     }
 
     public BaseResponseEntity(String message, HttpStatus status) {
         this.message = message;
-        this.status = status.value();
+        this.status = status;
+        this.code = status.value();
     }
 
-    public static<T> BaseResponseEntity<T> ok(T data, String message) {
+    public static<T> ResponseEntity<BaseResponseEntity<T>> ok(T data, String message) {
 
-        return new BaseResponseEntity<>(data, message, HttpStatus.OK);
+        BaseResponseEntity<T> baseResponseEntity = new BaseResponseEntity<>(data, message, HttpStatus.OK);
+
+        return ResponseEntity.status(baseResponseEntity.getStatus()).body(baseResponseEntity);
     }
 
-    public static BaseResponseEntity<?> ok(String message) {
-        return new BaseResponseEntity<>(message, HttpStatus.OK);
+    public static ResponseEntity<BaseResponseEntity<?>> ok(String message) {
+        BaseResponseEntity<?> baseResponseEntity = new BaseResponseEntity<>(message, HttpStatus.OK);
+
+        return ResponseEntity.status(baseResponseEntity.getStatus()).body(baseResponseEntity);
 
     }
 
-    public static BaseResponseEntity<?> create(String message) {
-        return new BaseResponseEntity<>(message, HttpStatus.CREATED);
+    public static<T> ResponseEntity<BaseResponseEntity<T>> create(T data, String message) {
+        BaseResponseEntity<T> baseResponseEntity = new BaseResponseEntity<>(data, message, HttpStatus.CREATED);
+
+        return ResponseEntity.status(baseResponseEntity.getStatus()).body(baseResponseEntity);
+    }
+
+    public static ResponseEntity<BaseResponseEntity<?>> create(String message) {
+        BaseResponseEntity<?> baseResponseEntity = new BaseResponseEntity<>(message, HttpStatus.CREATED);
+
+        return ResponseEntity.status(baseResponseEntity.getStatus()).body(baseResponseEntity);
+    }
+
+    public static ResponseEntity<BaseResponseEntity<?>> fail(HttpStatus httpStatus, String message) {
+        BaseResponseEntity<?> baseResponseEntity = new BaseResponseEntity<>(message, httpStatus);
+
+        return ResponseEntity.status(baseResponseEntity.getStatus()).body(baseResponseEntity);
     }
 }
