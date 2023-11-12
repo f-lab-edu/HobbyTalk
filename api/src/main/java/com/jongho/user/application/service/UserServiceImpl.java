@@ -23,8 +23,6 @@ public class UserServiceImpl implements UserService {
             throw new UserDuplicatedException("이미 가입된 전화번호입니다.");
         }
 
-        user.setPassword(userSignUpDto.getPassword());
-
         userRepository.create(user);
     }
 }
