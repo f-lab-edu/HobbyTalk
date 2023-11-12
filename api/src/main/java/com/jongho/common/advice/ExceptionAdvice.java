@@ -1,6 +1,6 @@
 package com.jongho.common.advice;
 
-import com.jongho.common.exception.UserDuplicatedException;
+import com.jongho.common.exception.CustomBusinessException;
 import com.jongho.response.BaseResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ExceptionAdvice {
-    @ExceptionHandler(UserDuplicatedException.class)
-    public ResponseEntity<BaseResponseEntity<?>> handleUserDuplicatedException(UserDuplicatedException e) {
-        return getExceptionResponse(e.getMessage(), HttpStatus.CONFLICT);
+    @ExceptionHandler(CustomBusinessException.class)
+    public ResponseEntity<BaseResponseEntity<?>> CustomBusinessException(CustomBusinessException e) {
+        return getExceptionResponse(e.getMessage(), e.getHttpStatus());
+
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<BaseResponseEntity<?>> handleException(String message) {

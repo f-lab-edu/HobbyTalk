@@ -4,9 +4,8 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class UserDuplicatedException extends RuntimeException{
-        private final HttpStatus httpStatus = HttpStatus.CONFLICT;
+public class UserDuplicatedException extends CustomBusinessException{
         public UserDuplicatedException(String message) {
-            super(message);
+            super(message, HttpStatus.CONFLICT);
         }
 }
