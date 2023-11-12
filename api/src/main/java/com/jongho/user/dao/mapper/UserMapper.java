@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface UserMapper {
     public int create(User user);
 
-    public User findOneByEmail(String username);
+    public User findOneByUsername(String username);
 
     public User findOneByPhoneNumber(String phoneNumber);
 }

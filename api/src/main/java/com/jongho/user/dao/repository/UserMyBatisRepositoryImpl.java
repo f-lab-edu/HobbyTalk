@@ -19,8 +19,8 @@ public class UserMyBatisRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findOneByEmail(String email) {
-        return Optional.ofNullable(userMapper.findOneByEmail(email));
+    public Optional<User> findOneByUsername(String username) {
+        return Optional.ofNullable(userMapper.findOneByUsername(username));
     }
 
     @Override

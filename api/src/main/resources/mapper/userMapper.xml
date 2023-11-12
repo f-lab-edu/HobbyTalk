@@ -5,7 +5,7 @@
         INSERT INTO users (nickname, password, username, profile_image, phone_number)
         VALUES (#{nickname}, #{password}, #{username}, #{profileImage}, #{phoneNumber})
     </insert>
-    <select id="findOneByEmail" parameterType="String" resultType="com.jongho.user.domain.model.User">
+    <select id="findOneByUsername" parameterType="String" resultType="com.jongho.user.domain.model.User">
         SELECT
         users.id, users.nickname, users.password, users.username, users.profile_image, users.phone_number
         FROM users
