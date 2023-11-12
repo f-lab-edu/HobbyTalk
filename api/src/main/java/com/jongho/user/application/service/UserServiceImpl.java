@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void signUp(UserSignUpDto userSignUpDto) {
         User user = userSignUpDto.toUser();
-        if(userRepository.findOneByEmail(user.getEmail()).isPresent() ){
+        if(userRepository.findOneByEmail(user.getUsername()).isPresent() ){
             throw new UserDuplicatedException("이미 존재하는 이메일입니다.");
         }
 

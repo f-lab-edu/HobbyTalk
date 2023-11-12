@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jongho.user.domain.model.User;
 import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -23,8 +22,7 @@ public class UserSignUpDto {
 
     @NotNull
     @NotEmpty
-    @Email(message = "이메일 형식이 아닙니다.")
-    private final String email;
+    private final String username;
     @NotNull
     @NotEmpty
     private final String phoneNumber;
@@ -34,19 +32,19 @@ public class UserSignUpDto {
     @JsonCreator
     public UserSignUpDto(@JsonProperty("nickname") String nickname,
                          @JsonProperty("password") String password,
-                         @JsonProperty("email") String email,
+                         @JsonProperty("username") String username,
                          @JsonProperty("phone_number") String phoneNumber,
                          @JsonProperty("profile_image") String profileImage) {
         this.nickname = nickname;
         this.password = password;
-        this.email = email;
+        this.username = username;
         this.phoneNumber = phoneNumber;
         this.profileImage = profileImage;
     }
 
     public User toUser() {
 
-        return new User(this.nickname, this.password, this.email, this.phoneNumber, this.profileImage);
+        return new User(this.nickname, this.password, this.username, this.phoneNumber, this.profileImage);
     }
 
 }

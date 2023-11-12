@@ -2,21 +2,21 @@
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jongho.user.dao.mapper.UserMapper">
     <insert id="create" parameterType="com.jongho.user.domain.model.User">
-        INSERT INTO users (nickname, password, email, profile_image, phone_number)
-        VALUES (#{nickname}, #{password}, #{email}, #{profileImage}, #{phoneNumber})
+        INSERT INTO users (nickname, password, username, profile_image, phone_number)
+        VALUES (#{nickname}, #{password}, #{username}, #{profileImage}, #{phoneNumber})
     </insert>
     <select id="findOneByEmail" parameterType="String" resultType="com.jongho.user.domain.model.User">
         SELECT
-        users.id, users.nickname, users.password, users.email, users.profile_image, users.phone_number
+        users.id, users.nickname, users.password, users.username, users.profile_image, users.phone_number
         FROM users
-        WHERE users.email = #{email}
+        WHERE users.username = #{username}
             AND users.deleted_time is null
         LIMIT 1
     </select>
 
     <select id="findOneByPhoneNumber" parameterType="String" resultType="com.jongho.user.domain.model.User">
         SELECT
-        users.id, users.nickname, users.password, users.email, users.profile_image, users.phone_number
+        users.id, users.nickname, users.password, users.username, users.profile_image, users.phone_number
         FROM users
         WHERE users.phone_number = #{phoneNumber}
         AND users.deleted_time is null
