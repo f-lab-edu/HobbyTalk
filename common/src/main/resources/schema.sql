@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS users (
   id int PRIMARY KEY AUTO_INCREMENT,
   nickname varchar(255) NOT NULL COMMENT '닉네임',
-  phone_number varchar(255) NOT NULL COMMENT '핸드폰 번호',
+  phone_number varchar(255) NOT NULL COMMENT '핸드폰 번호' UNIQUE,
   password varchar(255) NOT NULL COMMENT '비밀번호',
-  email varchar(255) NOT NULL COMMENT '이메일',
+  username varchar(255) NOT NULL COMMENT '유저 아이디' UNIQUE,
   profile_image varchar(255) COMMENT '프로필 이미지',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
   deleted_time timestamp COMMENT '삭제 날짜',
@@ -33,24 +33,24 @@ CREATE TABLE IF NOT EXISTS friendship_requests (
 
 CREATE TABLE IF NOT EXISTS user_notification_settings (
   user_id int PRIMARY KEY NOT NULL COMMENT '유저 id',
-  chat integer NOT NULL DEFAULT 1 COMMENT '채팅 알림 설정 여부',
-  friendship integer NOT NULL DEFAULT 1 COMMENT '친구신청 알림 설정 여부',
+  chat int NOT NULL DEFAULT 1 COMMENT '채팅 알림 설정 여부',
+  friendship int NOT NULL DEFAULT 1 COMMENT '친구신청 알림 설정 여부',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
   deleted_time timestamp COMMENT '삭제 날짜',
-  chatroom_membership_request integer NOT NULL DEFAULT 1 COMMENT '채팅방 입장 신청 알림 설정 여부'
+  chatroom_membership_request int NOT NULL DEFAULT 1 COMMENT '채팅방 입장 신청 알림 설정 여부'
 );
 
 CREATE TABLE IF NOT EXISTS hobby_categories (
-  id integer PRIMARY KEY AUTO_INCREMENT,
-  name varchar(255) NOT NULL COMMENT '카테고리 명',
-  parent_id integer COMMENT '부모 카테고리 id',
+  id int PRIMARY KEY AUTO_INCREMENT,
+  name varchar(255) NOT NULL COMMENT '카테고리 명' UNIQUE,
+  parent_id int COMMENT '부모 카테고리 id',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
   deleted_time timestamp COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'
 );
 
 CREATE TABLE IF NOT EXISTS open_chat_rooms (
-  id integer PRIMARY KEY AUTO_INCREMENT,
+  id int PRIMARY KEY AUTO_INCREMENT,
   title varchar(255) NOT NULL COMMENT '오픈채팅방 제목',
   notice varchar(255) COMMENT '오픈채팅방 공지',
   manager_id int NOT NULL COMMENT '방장 id',
@@ -73,18 +73,18 @@ CREATE TABLE IF NOT EXISTS open_chat_room_users (
 );
 
 CREATE TABLE IF NOT EXISTS open_chats (
-  id integer PRIMARY KEY AUTO_INCREMENT,
+  id int PRIMARY KEY AUTO_INCREMENT,
   sender_id int NOT NULL COMMENT '전송자 id',
   open_chat_room_id int NOT NULL COMMENT '오픈채팅방 id',
   message varchar(255) NOT NULL COMMENT '메세지 본문',
-  type integer NOT NULL COMMENT '채팅 타입',
+  type int NOT NULL COMMENT '채팅 타입',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
   deleted_time timestamp COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'
 );
 
 CREATE TABLE IF NOT EXISTS open_chat_room_membership_requests (
-  id integer PRIMARY KEY AUTO_INCREMENT,
+  id int PRIMARY KEY AUTO_INCREMENT,
   requester_id int NOT NULL COMMENT '신청자 id',
   open_chat_room_id int NOT NULL COMMENT '오픈채팅방 id',
   message varchar(255) NOT NULL COMMENT '참가 신청 본문',

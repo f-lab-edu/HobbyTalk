@@ -6,8 +6,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 * sourceDataSource라는 Bean 이름을 가진 DataSource를 생성하는 설정 클래스
 */
 @Configuration
+@PropertySource("classpath:application-common-${spring.profiles.active:default}.properties")
 public class DataSourceConfig {
     @Bean(name = "sourceDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.hikari.source")
