@@ -6,6 +6,7 @@ dependencies {
     implementation 'org.mindrot:jbcrypt:0.4'
     implementation project(':common')
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2'
+    implementation 'com.google.code.gson:gson:2.8.6'
     runtimeOnly 'mysql:mysql-connector-java:8.0.28'
 }
 

@@ -25,6 +25,6 @@ public class UserController {
     public ResponseEntity<BaseResponseEntity<?>> signUp(@Validated @RequestBody UserSignUpDto userSignUpDto) {
         userService.signUp(userSignUpDto);
 
-        return BaseResponseEntity.ok("user create");
+        return BaseResponseEntity.create("user create");
     }
 }

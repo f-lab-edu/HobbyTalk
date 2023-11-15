@@ -12,6 +12,7 @@ import lombok.*;
 
 @Getter
 @ToString
+@EqualsAndHashCode
 public class UserSignUpDto {
     @NotNull
     @NotEmpty
