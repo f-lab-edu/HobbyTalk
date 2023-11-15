@@ -8,3 +8,7 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2'
     runtimeOnly 'mysql:mysql-connector-java:8.0.28'
 }
+
+test{
+    useJUnitPlatform()
+}
