@@ -33,13 +33,13 @@ public class UserNotificationSettingServiceImplTest {
         void 유저_알림_설정을_생성한다() {
             // given
             int userId = 1;
-            doNothing().when(userNotificationSettingRepository).createUserNotificationSetting(userNotificationSetting);
+            when(userNotificationSettingRepository.createUserNotificationSetting(userNotificationSetting)).thenReturn(1);
 
             // when
             userNotificationSettingService.createUserNotificationSetting(userId);
 
             // then
-            verify(userNotificationSettingRepository, times(userId)).createUserNotificationSetting(userNotificationSetting);
+            verify(userNotificationSettingRepository, times(1)).createUserNotificationSetting(userNotificationSetting);
         }
     }
 }
