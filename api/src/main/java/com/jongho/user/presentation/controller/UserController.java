@@ -4,7 +4,6 @@ import com.jongho.annotaition.HttpRequestLogging;
 import com.jongho.response.BaseResponseEntity;
 import com.jongho.user.application.dto.request.UserSignUpDto;
 import com.jongho.user.application.facade.UserFacade;
-import com.jongho.user.application.service.UserNotificationSettingService;
 import com.jongho.user.application.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @HttpRequestLogging
 @RestController
