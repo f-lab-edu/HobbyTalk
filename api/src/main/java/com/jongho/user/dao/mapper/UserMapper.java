@@ -7,7 +7,7 @@ import java.util.Optional;
 
 @Mapper
 public interface UserMapper {
-    public int create(User user);
+    public int createUser(User user);
 
     public User findOneByUsername(String username);
 

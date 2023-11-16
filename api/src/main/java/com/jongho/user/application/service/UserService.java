@@ -1,7 +1,8 @@
 package com.jongho.user.application.service;
 
 import com.jongho.user.application.dto.request.UserSignUpDto;
+import com.jongho.user.domain.model.User;
 
 public interface UserService {
-    public void signUp(UserSignUpDto userSignUpDto);
+    public int signUp(UserSignUpDto userSignUpDto);
 }
