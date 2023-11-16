@@ -13,5 +13,6 @@ public class UserNotificationSetting {
     private Long id;
     private final Long userId;
     private final boolean chat;
-    private final boolean friendShip;
+    private final boolean friendship;
+    private final boolean chatRoomMembershipRequest;
 }

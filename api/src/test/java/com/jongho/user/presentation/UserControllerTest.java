@@ -2,6 +2,7 @@ package com.jongho.user.presentation;
 
 import com.google.gson.Gson;
 import com.jongho.user.application.dto.request.UserSignUpDto;
+import com.jongho.user.application.facade.UserFacade;
 import com.jongho.user.application.service.UserService;
 import com.jongho.user.presentation.controller.UserController;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
     @MockBean
     private UserService userService;
+    @MockBean
+    private UserFacade userFacade;
     @Autowired
     private MockMvc mockMvc;
 
@@ -39,10 +42,10 @@ public class UserControllerTest {
         }
 
         @Test
-        @DisplayName("올바른 데이터를 받으면 UserServiceImpl.signUp()을 호출하고 status 201과 user create라는 메세지를 반환한다.")
-        void 올바른_데이터를_받으면_UserServiceImpl_signUp를_호출하고_status_201_및_user_create_메세지를_반환한다() throws Exception {
+        @DisplayName("올바른 데이터를 받으면 UserFacade.userSignUpAndNotificationSettingCreate 을 호출하고 status 201과 user create라는 메세지를 반환한다.")
+        void 올바른_데이터를_받으면_userFacade_userSignUpAndNotificationSettingCreate를_호출하고_status_201_및_user_create_메세지를_반환한다() throws Exception {
             // given
-            doNothing().when(userService).signUp(userSignUpDto);
+            doNothing().when(userFacade).userSignUpAndNotificationSettingCreate(userSignUpDto);
             Gson gson = new Gson();
             String userSignUpDtoJson = gson.toJson(userSignUpDto);
 
@@ -55,7 +58,7 @@ public class UserControllerTest {
                     .andDo(print());
 
             // then
-            verify(userService, times(1)).signUp(userSignUpDto);
+            verify(userFacade, times(1)).userSignUpAndNotificationSettingCreate(userSignUpDto);
         }
     }
 }
