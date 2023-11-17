@@ -1,6 +1,7 @@
 package com.jongho.user.application.service;
 
 import com.jongho.common.exception.UserDuplicatedException;
+import com.jongho.common.util.BcryptUtil;
 import com.jongho.user.application.dto.request.UserSignUpDto;
 import com.jongho.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,15 @@ public class UserServiceImpl implements UserService {
                 });
         try {
 
-            return userRepository.createUser(userSignUpDto.toUser());
+            return userRepository.createUser(
+                new UserSignUpDto(
+                    userSignUpDto.getNickname(),
+                    BcryptUtil.hashPassword(userSignUpDto.getPassword()),
+                    userSignUpDto.getUsername(),
+                    userSignUpDto.getPhoneNumber(),
+                    userSignUpDto.getProfileImage()
+                ).toUser()
+            );
         } catch (DataIntegrityViolationException e) {
 
             throw new UserDuplicatedException("이미 가입된 아이디거나 전화번호입니다.");

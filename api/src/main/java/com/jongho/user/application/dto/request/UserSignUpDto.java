@@ -2,7 +2,6 @@ package com.jongho.user.application.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.jongho.common.util.BcryptUtil;
 import com.jongho.user.domain.model.User;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotEmpty;
@@ -46,7 +45,7 @@ public class UserSignUpDto {
 
     public User toUser() {
 
-        return new User(this.nickname, BcryptUtil.hashPassword(this.password), this.username, this.phoneNumber, this.profileImage);
+        return new User(this.nickname, this.password, this.username, this.phoneNumber, this.profileImage);
     }
 
 }
