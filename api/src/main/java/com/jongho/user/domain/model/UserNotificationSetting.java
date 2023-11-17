@@ -13,4 +13,11 @@ public class UserNotificationSetting {
     private final boolean chat;
     private final boolean friendship;
     private final boolean chatRoomMembershipRequest;
+
+    public UserNotificationSetting(Long userId) {
+        this.userId = userId;
+        this.chat = true;
+        this.friendship = true;
+        this.chatRoomMembershipRequest = true;
+    }
 }

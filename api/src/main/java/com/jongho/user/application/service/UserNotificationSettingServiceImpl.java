@@ -11,7 +11,7 @@ public class UserNotificationSettingServiceImpl implements UserNotificationSetti
     private final UserNotificationSettingRepository userNotificationSettingRepository;
     @Override
     public int createUserNotificationSetting(int userId) {
-        UserNotificationSetting userNotificationSetting = new UserNotificationSetting((long) userId, true, true, true);
+        UserNotificationSetting userNotificationSetting = new UserNotificationSetting((long) userId);
 
         return userNotificationSettingRepository.createUserNotificationSetting(userNotificationSetting);
     }
