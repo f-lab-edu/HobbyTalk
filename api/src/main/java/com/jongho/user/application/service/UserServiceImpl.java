@@ -14,20 +14,22 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     @Override
     public int signUp(UserSignUpDto userSignUpDto) {
-        try {
-            userRepository.findOneByUsername(userSignUpDto.getUsername())
-                    .ifPresent((user)-> {
-                        throw new UserDuplicatedException("이미 존재하는 아이디입니다.");
-                    });
+        userRepository.findOneByUsername(userSignUpDto.getUsername())
+                .ifPresent((user)-> {
+                    throw new UserDuplicatedException("이미 존재하는 아이디입니다.");
+                });
 
-            userRepository.findOneByPhoneNumber(userSignUpDto.getPhoneNumber())
-                    .ifPresent((user)-> {
-                        throw new UserDuplicatedException("이미 가입된 전화번호입니다.");
-                    });
+        userRepository.findOneByPhoneNumber(userSignUpDto.getPhoneNumber())
+                .ifPresent((user)-> {
+                    throw new UserDuplicatedException("이미 가입된 전화번호입니다.");
+                });
+        try {
+
+            return userRepository.createUser(userSignUpDto.toUser());
         } catch (DataIntegrityViolationException e) {
+
             throw new UserDuplicatedException("이미 가입된 아이디거나 전화번호입니다.");
         }
 
-        return userRepository.createUser(userSignUpDto.toUser());
     }
 }
