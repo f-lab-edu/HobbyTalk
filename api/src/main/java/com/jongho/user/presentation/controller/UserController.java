@@ -24,7 +24,7 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<BaseResponseEntity<?>> signUp(@Validated @RequestBody UserSignUpDto userSignUpDto) {
-        userFacade.userSignUpAndNotificationSettingCreate(userSignUpDto);
+        userFacade.signUpUserAndCreateNotificationSetting(userSignUpDto);
 
         return BaseResponseEntity.create("user create");
     }

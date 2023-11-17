@@ -45,7 +45,7 @@ public class UserControllerTest {
         @DisplayName("올바른 데이터를 받으면 UserFacade.userSignUpAndNotificationSettingCreate 을 호출하고 status 201과 user create라는 메세지를 반환한다.")
         void 올바른_데이터를_받으면_userFacade_userSignUpAndNotificationSettingCreate를_호출하고_status_201_및_user_create_메세지를_반환한다() throws Exception {
             // given
-            doNothing().when(userFacade).userSignUpAndNotificationSettingCreate(userSignUpDto);
+            doNothing().when(userFacade).signUpUserAndCreateNotificationSetting(userSignUpDto);
             Gson gson = new Gson();
             String userSignUpDtoJson = gson.toJson(userSignUpDto);
 
@@ -58,7 +58,7 @@ public class UserControllerTest {
                     .andDo(print());
 
             // then
-            verify(userFacade, times(1)).userSignUpAndNotificationSettingCreate(userSignUpDto);
+            verify(userFacade, times(1)).signUpUserAndCreateNotificationSetting(userSignUpDto);
         }
     }
 }
