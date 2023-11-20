@@ -19,14 +19,14 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("/main")
-    public ResponseEntity<BaseResponseEntity<List<Category>>> getAllMainCategory(){
+    public ResponseEntity<?> getMainCategory(){
 
-        return BaseResponseEntity.ok(categoryService.getAllMainCategory(), "success");
+        return BaseResponseEntity.ok(categoryService.getMainCategory(), "success");
     }
 
     @GetMapping("/{parentId}/sub")
-    public ResponseEntity<BaseResponseEntity<List<Category>>> getSubCategory(){
+    public ResponseEntity<?> getSubCategory(@PathVariable Long parentId){
 
-        return BaseResponseEntity.ok(categoryService.getSubCategory(), "success");
+        return BaseResponseEntity.ok(categoryService.getSubCategory(parentId), "success");
     }
 }

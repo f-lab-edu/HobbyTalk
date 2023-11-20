@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface CategoryRepository {
     public List<Category> selectMainCategory();
-    public List<Category> selectSubCategory();
+    public List<Category> selectSubCategory(Long parentId);
 }

@@ -8,5 +8,5 @@ import java.util.List;
 @Mapper
 public interface CategoryMapper {
     public List<Category> selectMainCategory();
-    public List<Category> selectSubCategory();
+    public List<Category> selectSubCategory(Long parentId);
 }

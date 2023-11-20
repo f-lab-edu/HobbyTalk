@@ -5,6 +5,6 @@ import com.jongho.category.domain.model.Category;
 import java.util.List;
 
 public interface CategoryService {
-    public List<Category> getAllMainCategory();
-    public List<Category> getSubCategory();
+    public List<Category> getMainCategory();
+    public List<Category> getSubCategory(Long parentId);
 }

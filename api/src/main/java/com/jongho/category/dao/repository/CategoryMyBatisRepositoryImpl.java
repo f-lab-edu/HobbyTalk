@@ -18,7 +18,8 @@ public class CategoryMyBatisRepositoryImpl implements CategoryRepository {
         return categoryMapper.selectMainCategory();
     }
 
-    public List<Category> selectSubCategory() {
-        return categoryMapper.selectSubCategory();
+    public List<Category> selectSubCategory(Long parentId) {
+
+        return categoryMapper.selectSubCategory(parentId);
     }
 }
