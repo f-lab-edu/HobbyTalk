@@ -1,10 +1,31 @@
 package com.jongho.user.dao.repository;
 
 import com.jongho.user.dao.mapper.UserMapper;
+import com.jongho.user.domain.model.User;
 import com.jongho.user.domain.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
+@RequiredArgsConstructor
 public class UserMyBatisRepositoryImpl implements UserRepository {
-    UserMapper userMapper;
+    private final UserMapper userMapper;
+
+    @Override
+    public int createUser(User user) {
+        return userMapper.createUser(user);
+    }
+
+    @Override
+    public Optional<User> findOneByUsername(String username) {
+        return Optional.ofNullable(userMapper.findOneByUsername(username));
+    }
+
+    @Override
+    public Optional<User> findOneByPhoneNumber(String phoneNumber) {
+        return Optional.ofNullable(userMapper.findOneByPhoneNumber(phoneNumber));
+    }
+
 }
