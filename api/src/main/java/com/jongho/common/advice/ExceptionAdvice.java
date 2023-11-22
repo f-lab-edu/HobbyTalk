@@ -15,8 +15,8 @@ public class ExceptionAdvice {
 
     }
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<BaseResponseEntity<?>> handleException(String message) {
-        return getExceptionResponse(message, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<BaseResponseEntity<?>> handleException(Exception e) {
+        return getExceptionResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     private ResponseEntity<BaseResponseEntity<?>> getExceptionResponse(String message, HttpStatus status) {
         return BaseResponseEntity.fail(status, message);

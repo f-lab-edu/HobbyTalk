@@ -12,7 +12,6 @@ import java.util.Arrays;
 @Component
 @Aspect
 public class HttpRequestLoggingAdvice {
-
     private static final Logger logger = LoggerFactory.getLogger(HttpRequestLoggingAdvice.class);
 
     @Around("@within(com.jongho.annotaition.HttpRequestLogging)")
