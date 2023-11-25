@@ -1,4 +1,4 @@
-package com.jongho.dao;
+package com.jongho.common.dao;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;

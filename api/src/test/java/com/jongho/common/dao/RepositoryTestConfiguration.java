@@ -1,4 +1,4 @@
-package com.jongho.dao;
+package com.jongho.common.dao;
 
 import com.jongho.common.config.MyBatisConfig;
 import com.jongho.config.DataSourceConfig;
