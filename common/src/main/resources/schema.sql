@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS user_notification_settings (
   friendship int NOT NULL DEFAULT 1 COMMENT '친구신청 알림 설정 여부',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
   deleted_time timestamp COMMENT '삭제 날짜',
-  chatroom_membership_request int NOT NULL DEFAULT 1 COMMENT '채팅방 입장 신청 알림 설정 여부'
+  chat_room_membership_request int NOT NULL DEFAULT 1 COMMENT '채팅방 입장 신청 알림 설정 여부'
 );
 
 CREATE TABLE IF NOT EXISTS hobby_categories (
