@@ -1,4 +1,4 @@
-package com.jongho.user.presentation;
+package com.jongho.category.presentation;
 
 import com.google.gson.Gson;
 import com.jongho.category.application.service.CategoryService;

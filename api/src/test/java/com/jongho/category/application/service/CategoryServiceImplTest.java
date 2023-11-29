@@ -1,4 +1,4 @@
-package com.jongho.user.application.service;
+package com.jongho.category.application.service;
 
 import com.jongho.category.application.service.CategoryServiceImpl;
 import com.jongho.category.domain.model.Category;
