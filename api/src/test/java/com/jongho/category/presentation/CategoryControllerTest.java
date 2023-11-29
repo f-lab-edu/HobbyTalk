@@ -36,7 +36,7 @@ public class CategoryControllerTest {
     class Describe_getMainCategory {
         @Test
         @DisplayName("호출이 되면 status 200과 success라는 메세지를 반환한다.")
-        void it_returns_status_200_and_success_message() throws Exception{
+        void 호출이_되면_status_200과_success라는_메세지를_반환한다() throws Exception{
             // given
             when(categoryService.getMainCategory()).thenReturn(List.of(new Category(1L, "main", 2L)));
 
@@ -61,7 +61,7 @@ public class CategoryControllerTest {
     class Describe_getSubCategory {
         @Test
         @DisplayName("호출이 되면 status 200과 success라는 메세지를 반환한다.")
-        void it_returns_status_200_and_success_message() throws Exception{
+        void 호출이_되면_status_200과_success라는_메세지를_반환한다() throws Exception{
             // given
             List<Category> expectedCategories = List.of(new Category(1L, "main", 2L));
             when(categoryService.getSubCategory(2L)).thenReturn(expectedCategories);

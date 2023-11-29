@@ -51,7 +51,7 @@ public class CategoryServiceImplTest {
     class Describe_getSubCategory {
         @Test
         @DisplayName("CategoryRepository.selectOneCategoryById()을 한번 호출하고 값이 없다면 CategoryNotFoundException을 반환한다.")
-        void it_calls_CategoryRepository_selectOneCategoryById_and_return_CategoryNotFoundException() {
+        void CategoryRepository_selectOneCategoryById를_한번_호출하고_해당하는_데이터가_없으면_CategoryNotFoundException을_반환한다() {
             // given
             Long parentId = 1L;
             when(categoryRepository.selectOneCategoryById(parentId)).thenReturn(Optional.empty());
@@ -63,7 +63,7 @@ public class CategoryServiceImplTest {
 
         @Test
         @DisplayName("CategoryRepository.selectSubCategory()을 한번 호출하고 반환받은 값을 반환한다.")
-        void it_calls_CategoryRepository_selectSubCategory() {
+        void CategoryRepository_selectSubCategory를_한번_호출하고_반환받은_값을_반환한다() {
             // given
             Long parentId = 1L;
             List<Category> expectCategories = List.of(new Category(1L, "main", 2L));
