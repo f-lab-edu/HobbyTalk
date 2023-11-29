@@ -10,7 +10,7 @@
             hobby_categories
         WHERE
             parent_id IS NULL
-            AND is_deleted IS NULL
+            AND deleted_time IS NULL
     </select>
     <select id="selectSubCategory" parameterType="Long" resultType="com.jongho.category.domain.model.Category">
         SELECT
@@ -21,7 +21,7 @@
             hobby_categories
         WHERE
             parent_id = #{parentId}
-            AND is_deleted IS NULL
+            AND deleted_time IS NULL
     </select>
     <select id="selectOneCategoryById" parameterType="Long" resultType="com.jongho.category.domain.model.Category">
         SELECT
@@ -33,7 +33,7 @@
         WHERE
             id = #{parentId}
             AND parent_id IS NULL
-            AND is_deleted IS NULL
+            AND deleted_time IS NULL
         LIMIT 1
     </select>
 </mapper>
