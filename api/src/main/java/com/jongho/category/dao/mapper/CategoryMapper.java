@@ -9,4 +9,5 @@ import java.util.List;
 public interface CategoryMapper {
     public List<Category> selectMainCategory();
     public List<Category> selectSubCategory(Long parentId);
+    public Category selectOneCategoryById(Long categoryId);
 }
