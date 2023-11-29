@@ -24,7 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> mainCategory = categoryRepository.selectOneCategoryById(parentId);
 
         if(mainCategory.isEmpty()){
-            throw new CategoryNotFoundException("존재하지 않는 카테고리 입니다.");
+            throw new CategoryNotFoundException("존재하지 않는 카테고리입니다.");
         }
 
         return categoryRepository.selectSubCategory(parentId);
