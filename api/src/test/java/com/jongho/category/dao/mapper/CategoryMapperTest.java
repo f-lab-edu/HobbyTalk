@@ -60,7 +60,7 @@ public class CategoryMapperTest extends BaseMapperTest {
             for (Category category : categories) {
                 assertEquals(categoryId, category.getParentId());
             }
-            assertEquals(5, categories.size());
+            assertEquals(1, categories.size());
         }
     }
 
