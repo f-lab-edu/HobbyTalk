@@ -7,6 +7,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -18,6 +21,17 @@ import java.sql.SQLException;
 public class BaseMapperTest {
     @Autowired
     private DataSource dataSource;
+
+    private void setUpTable(String dummyDataSql){
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(dummyDataSql);
+        ){
+            preparedStatement.execute();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 
     private void excuteTruncateTable(String tableName){
         String sql = "TRUNCATE TABLE " + tableName;
@@ -48,5 +62,20 @@ public class BaseMapperTest {
     protected void cleanUpUserNotificationSettingTable(){
         excuteTruncateTable("user_notification_settings");
         initializeAutoIncrement("user_notification_settings");
+    }
+    protected void cleanUpCategoryTable(){
+        excuteTruncateTable("hobby_categories");
+        initializeAutoIncrement("hobby_categories");
+    }
+
+    protected void setUpCategoryTable(){
+        try {
+            String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/setupDummyData/categoryDummyData.sql")));
+            setUpTable(sql);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
     }
 }
