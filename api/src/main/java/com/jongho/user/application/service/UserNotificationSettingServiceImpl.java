@@ -10,9 +10,8 @@ import org.springframework.stereotype.Service;
 public class UserNotificationSettingServiceImpl implements UserNotificationSettingService{
     private final UserNotificationSettingRepository userNotificationSettingRepository;
     @Override
-    public int createUserNotificationSetting(int userId) {
-        UserNotificationSetting userNotificationSetting = new UserNotificationSetting((long) userId);
-
-        return userNotificationSettingRepository.createUserNotificationSetting(userNotificationSetting);
+    public void createUserNotificationSetting(Long userId) {
+        UserNotificationSetting userNotificationSetting = new UserNotificationSetting(userId);
+        userNotificationSettingRepository.createUserNotificationSetting(userNotificationSetting);
     }
 }

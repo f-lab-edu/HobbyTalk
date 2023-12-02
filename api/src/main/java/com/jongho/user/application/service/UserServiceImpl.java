@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     @Override
-    public int signUp(UserSignUpDto userSignUpDto) {
+    public void signUp(UserSignUpDto userSignUpDto) {
         userRepository.findOneByUsername(userSignUpDto.getUsername())
                 .ifPresent((user)-> {
                     throw new UserDuplicatedException("이미 존재하는 아이디입니다.");
@@ -27,8 +27,7 @@ public class UserServiceImpl implements UserService {
                     throw new UserDuplicatedException("이미 가입된 전화번호입니다.");
                 });
         try {
-
-            return userRepository.createUser(
+            userRepository.createUser(
                 new UserSignUpDto(
                     userSignUpDto.getNickname(),
                     BcryptUtil.hashPassword(userSignUpDto.getPassword()),
