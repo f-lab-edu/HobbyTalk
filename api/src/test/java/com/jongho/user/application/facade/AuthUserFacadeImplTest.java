@@ -6,14 +6,13 @@ import com.jongho.domain.auth.AuthUser;
 import com.jongho.user.application.dto.request.UserSignInDto;
 import com.jongho.user.application.service.UserService;
 import com.jongho.user.domain.model.User;
-import com.jongho.util.JwtUtil;
+import com.jongho.util.jwt.JwtUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Nested;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
