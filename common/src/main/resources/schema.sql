@@ -10,6 +10,16 @@ CREATE TABLE IF NOT EXISTS users (
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'
 );
 
+CREATE TABLE IF NOT EXISTS auth_users (
+  id int PRIMARY KEY AUTO_INCREMENT,
+  user_id int NOT NULL COMMENT '자기자신의 id',
+  user_agent varchar(255) NOT NULL COMMENT '유저접속정보',
+  refresh_token varchar(255) NOT NULL COMMENT '유저접속정보',
+  is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
+  deleted_time timestamp COMMENT '삭제 날짜',
+  created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'
+);
+
 CREATE TABLE IF NOT EXISTS friends (
   user_id int NOT NULL COMMENT '자기자신의 id',
   friend_id int NOT NULL COMMENT '친구유저 id',

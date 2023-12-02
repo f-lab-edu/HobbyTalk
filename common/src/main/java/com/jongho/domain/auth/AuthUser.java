@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 public class AuthUser {
-    private final Long id;
-    private final String username;
+    private final Long userId;
+    private final String refreshToken;
+    private final String userAgent;
 }
