@@ -18,6 +18,8 @@ public class AuthUserMybatisRepositoryImpl implements AuthUserRepository {
     }
 
     public void updateRefreshToken(AuthUser authUser) {
+
+        System.out.println("authUserMapper.updateRefreshToken(authUser) : " + authUser.getRefreshToken());
         authUserMapper.updateRefreshToken(authUser);
     }
 

@@ -37,7 +37,7 @@ public class AuthUserFacadeImpl implements AuthUserFacade {
         Optional<AuthUser> authUser = authUserService.getAuthUser(user.getId(), userAgent);
         if(authUser.isPresent()) {
 
-            authUserService.updateRefreshToken(new AuthUser(user.getId(), userAgent, refreshToken));
+            authUserService.updateRefreshToken(new AuthUser(user.getId(), refreshToken, userAgent));
         } else {
 
             authUserService.createAuthUser(new AuthUser(user.getId(), refreshToken, userAgent));

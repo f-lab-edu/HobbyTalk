@@ -113,7 +113,7 @@ public class AuthUserFacadeImplTest {
             authUserFacadeImpl.signIn(userSignInDto.getUsername(), userSignInDto.getPassword(), userAgent);
 
             // then
-            verify(authUserService, times(1)).updateRefreshToken(any());
+            verify(authUserService, times(1)).updateRefreshToken(authUser);
         }
 
         @Test
