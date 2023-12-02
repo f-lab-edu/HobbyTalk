@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jongho.user.dao.mapper.AuthUserMapper">
     <insert id="createAuthUser" parameterType="com.jongho.domain.auth.AuthUser">
-        INSERT INTO auth_users (user_id, refresh_token, user_agent)
-        VALUES (#{userId}, #{refreshToken}, #{userAgent})
+        INSERT INTO auth_users (user_id, user_agent, refresh_token
+        VALUES (#{userId}, #{userAgent}, #{refreshToken})
     </insert>
     <select id="selectOneAuthUser" resultType="com.jongho.domain.auth.AuthUser">
         SELECT

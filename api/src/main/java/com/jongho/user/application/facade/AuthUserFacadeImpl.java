@@ -35,13 +35,15 @@ public class AuthUserFacadeImpl implements AuthUserFacade {
 
         String refreshToken = jwtUtil.createRefreshToken(refreshPayload);
         Optional<AuthUser> authUser = authUserService.getAuthUser(user.getId(), userAgent);
-
+        System.out.println("authUser = " + authUser.isPresent());
+        System.out.println("authUser = " + authUser.isPresent());
+        System.out.println("getUser = " + user.getUsername() + user.getId());
         if(authUser.isPresent()) {
 
             authUserService.updateRefreshToken(new AuthUser(user.getId(), userAgent, refreshToken));
         } else {
 
-            authUserService.createAuthUser(new AuthUser(user.getId(), userAgent, refreshToken));
+            authUserService.createAuthUser(new AuthUser(user.getId(), refreshToken, userAgent));
         }
 
         Map<String, String> result = new HashMap<>();
