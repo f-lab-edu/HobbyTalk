@@ -35,7 +35,7 @@ public class UserFacadeImplTest {
             doNothing().when(userNotificationSettingService).createUserNotificationSetting(1L);
 
             // when
-            userFacadeImpl.signUpUserAndCreateNotificationSetting(userSignUpDto, );
+            userFacadeImpl.signUpUserAndCreateNotificationSetting(userSignUpDto);
 
             // then
              verify(userService, times(1)).signUp(userSignUpDto);
