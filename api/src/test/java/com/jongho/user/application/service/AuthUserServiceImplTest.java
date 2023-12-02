@@ -10,6 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,6 +56,27 @@ public class AuthUserServiceImplTest {
 
                 // then
                 verify(authUserRepository, times(1)).updateRefreshToken(authUser);
+            }
+    }
+
+    @Nested
+    @DisplayName("selectOneAuthUser 메소드는")
+    class Describe_selectOneAuthUser {
+            @Test
+            @DisplayName("AuthUserRepository의 selectOneAuthUser 메소드를 호출한다")
+            void AuthUserRepository의_selectOneAuthUser_메소드를_한번_호출한다() {
+                // given
+                Long userId = 1L;
+                String userAgent = "userAgent";
+                AuthUser authUser = new AuthUser(1L, "refreshToken", "userAgent");
+                when(authUserRepository.selectOneAuthUser(userId, userAgent)).thenReturn(Optional.of(authUser));
+
+                // when
+                Optional<AuthUser> result = authUserServiceImpl.getAuthUser(userId, userAgent);
+
+                // then
+                verify(authUserRepository, times(1)).selectOneAuthUser(userId, userAgent);
+                assertEquals(Optional.of(authUser), result);
             }
     }
 }
