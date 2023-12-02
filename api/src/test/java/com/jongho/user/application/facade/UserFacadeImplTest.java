@@ -31,11 +31,11 @@ public class UserFacadeImplTest {
         void 유저_회원가입과_알림_설정을_생성한다() {
             // given
             UserSignUpDto userSignUpDto = new UserSignUpDto("jonghao", "a123b123", "whdgh9595", "01012341234", null);
-            when(userService.signUp(userSignUpDto)).thenReturn(1);
-            when(userNotificationSettingService.createUserNotificationSetting(1)).thenReturn(1);
+            doNothing().when(userService).signUp(userSignUpDto);
+            doNothing().when(userNotificationSettingService).createUserNotificationSetting(1L);
 
             // when
-            userFacadeImpl.signUpUserAndCreateNotificationSetting(userSignUpDto);
+            userFacadeImpl.signUpUserAndCreateNotificationSetting(userSignUpDto, );
 
             // then
              verify(userService, times(1)).signUp(userSignUpDto);

@@ -26,8 +26,8 @@ public class UserController {
     private final AuthUserFacade authUserFacade;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<BaseResponseEntity<?>> signUp(@Validated @RequestBody UserSignUpDto userSignUpDto, @RequestHeader("User-Agent") String userAgent) {
-        userFacade.signUpUserAndCreateNotificationSetting(userSignUpDto, userAgent);
+    public ResponseEntity<BaseResponseEntity<?>> signUp(@Validated @RequestBody UserSignUpDto userSignUpDto) {
+        userFacade.signUpUserAndCreateNotificationSetting(userSignUpDto);
 
         return BaseResponseEntity.create("user create");
     }
