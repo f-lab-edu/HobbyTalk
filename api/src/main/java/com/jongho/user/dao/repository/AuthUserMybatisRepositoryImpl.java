@@ -13,8 +13,8 @@ import java.util.Optional;
 public class AuthUserMybatisRepositoryImpl implements AuthUserRepository {
     private final AuthUserMapper authUserMapper;
 
-    public int createAuthUser(AuthUser authUser) {
-        return authUserMapper.createAuthUser(authUser);
+    public void createAuthUser(AuthUser authUser) {
+        authUserMapper.createAuthUser(authUser);
     }
 
     public void updateRefreshToken(AuthUser authUser) {
