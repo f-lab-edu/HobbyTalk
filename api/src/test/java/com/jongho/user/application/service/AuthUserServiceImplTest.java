@@ -60,8 +60,8 @@ public class AuthUserServiceImplTest {
     }
 
     @Nested
-    @DisplayName("selectOneAuthUser 메소드는")
-    class Describe_selectOneAuthUser {
+    @DisplayName("getAuthUser 메소드는")
+    class Describe_getAuthUser {
             @Test
             @DisplayName("AuthUserRepository의 selectOneAuthUser 메소드를 호출한다")
             void AuthUserRepository의_selectOneAuthUser_메소드를_한번_호출한다() {
