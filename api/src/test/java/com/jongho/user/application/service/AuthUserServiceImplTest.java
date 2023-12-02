@@ -37,4 +37,22 @@ public class AuthUserServiceImplTest {
                 verify(authUserRepository, times(1)).createAuthUser(authUser);
             }
     }
+
+    @Nested
+    @DisplayName("updateRefreshToken 메소드는")
+    class Describe_updateRefreshToken {
+            @Test
+            @DisplayName("AuthUserRepository의 updateRefreshToken 메소드를 호출한다")
+            void AuthUserRepository의_updateRefreshToken_메소드를_한번_호출한다() {
+                // given
+                AuthUser authUser = new AuthUser(1L, "refreshToken", "userAgent");
+                doNothing().when(authUserRepository).updateRefreshToken(authUser);
+
+                // when
+                authUserServiceImpl.updateRefreshToken(authUser);
+
+                // then
+                verify(authUserRepository, times(1)).updateRefreshToken(authUser);
+            }
+    }
 }
