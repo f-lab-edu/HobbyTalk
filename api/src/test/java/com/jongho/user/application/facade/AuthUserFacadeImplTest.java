@@ -66,7 +66,7 @@ public class AuthUserFacadeImplTest {
         void setUp() {
             userSignInDto = new UserSignInDto("jonghao1@", "whdgh9595");
             user = new User(1L, "whdgh9595", BcryptUtil.hashPassword("jonghao1@"), "whdgh9595", "01012341234", null);
-            authUser = new AuthUser(1L, "userAgent", refreshToken);
+            authUser = new AuthUser(user.getId(), refreshToken, userAgent);
             accessPayload = new AccessPayload(user.getId(), user.getUsername());
             refreshPayload = new RefreshPayload(user.getId());
             mockJwtUtilCreateAccessToken = when(jwtUtil.createAccessToken(accessPayload)).thenReturn(accessToekn);
@@ -74,7 +74,6 @@ public class AuthUserFacadeImplTest {
             mockUserServiceGetUser = when(userService.getUser(userSignInDto.getUsername())).thenReturn(user);
             mockAuthUserServiceGetAuthUser = when(authUserService.getAuthUser(user.getId(), userAgent)).thenReturn(Optional.empty());
             doNothing().when(authUserService).createAuthUser(authUser);
-            doNothing().when(authUserService).updateRefreshToken(authUser);
         }
         @Test
         @DisplayName("정상적인 데이터를 받으면 UserService.getUser를 호출하고 가져온 데이터의 패스워드와 요청받은 패스워드가 같으면 JwtUtil.createToken을 호출하고 토큰을 반환한다.")
@@ -114,12 +113,12 @@ public class AuthUserFacadeImplTest {
             authUserFacadeImpl.signIn(userSignInDto.getUsername(), userSignInDto.getPassword(), userAgent);
 
             // then
-            verify(authUserService, times(1)).updateRefreshToken(authUser);
+            verify(authUserService, times(1)).updateRefreshToken(any());
         }
 
         @Test
         @DisplayName("한번도 로그인을 안해서 AuthUser가 존재하지 않으면 createAuthUser를 호출한다.")
-        void 한번_이상_로그인을_해서_AuthUser가_존재하면_AuthUserService_create을_호출한다(){
+        void 한번도_로그인을_안해서_AuthUser가_존재하지_않으면_AuthUserService_create을_호출한다(){
             // when
             authUserFacadeImpl.signIn(userSignInDto.getUsername(), userSignInDto.getPassword(), userAgent);
 
