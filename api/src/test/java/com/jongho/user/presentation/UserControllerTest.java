@@ -17,6 +17,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -80,21 +83,27 @@ public class UserControllerTest {
         @DisplayName("올바른 데이터를 받으면 AuthUserFacade.signIn 을 호출하고 status 200과 token을 반환한다.")
         void 올바른_데이터를_받으면_AuthUserFacade_signIn을_호출하고_status200과_token을_반환한다() throws Exception {
             // given
-            when(authUserFacade.signIn(userSignInDto.getUsername(), userSignInDto.getPassword())).thenReturn("token");
+            Map<String, String> result = new HashMap<>();
+            result.put("accessToken", "token");
+            result.put("refreshToken", "refreshToken");
+            String userAgent = "userAgent";
+            when(authUserFacade.signIn(userSignInDto.getUsername(), userSignInDto.getPassword(), userAgent)).thenReturn(result);
             Gson gson = new Gson();
             String userSignUpDtoJson = gson.toJson(userSignInDto);
 
             // when
             mockMvc.perform(post("/api/v1/users/sign-in")
                     .contentType(MediaType.APPLICATION_JSON)
+                    .header("User-Agent", userAgent)
                     .content(userSignUpDtoJson))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.message").value("success"))
-                    .andExpect(jsonPath("$.data.token").exists())
+                    .andExpect(jsonPath("$.data.accessToken").exists())
+                    .andExpect(jsonPath("$.data.refreshToken").exists())
                     .andDo(print());
 
             // then
-            verify(authUserFacade, times(1)).signIn(userSignInDto.getUsername(), userSignInDto.getPassword());
+            verify(authUserFacade, times(1)).signIn(userSignInDto.getUsername(), userSignInDto.getPassword(), userAgent);
         }
     }
 }

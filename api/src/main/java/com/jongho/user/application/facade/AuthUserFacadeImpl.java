@@ -41,7 +41,7 @@ public class AuthUserFacadeImpl implements AuthUserFacade {
             authUserService.updateRefreshToken(new AuthUser(user.getId(), userAgent, refreshToken));
         } else {
 
-            authUserService.authUserCreate(new AuthUser(user.getId(), userAgent, refreshToken));
+            authUserService.createAuthUser(new AuthUser(user.getId(), userAgent, refreshToken));
         }
 
         Map<String, String> result = new HashMap<>();

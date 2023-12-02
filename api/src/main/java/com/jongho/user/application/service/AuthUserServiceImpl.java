@@ -12,7 +12,7 @@ import java.util.Optional;
 public class AuthUserServiceImpl implements AuthUserService{
     private final AuthUserRepository authUserRepository;
     @Override
-    public void authUserCreate(AuthUser authUser) {
+    public void createAuthUser(AuthUser authUser) {
         authUserRepository.createAuthUser(authUser);
     }
 

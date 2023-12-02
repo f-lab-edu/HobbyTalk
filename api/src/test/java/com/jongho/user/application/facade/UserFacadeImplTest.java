@@ -3,6 +3,7 @@ package com.jongho.user.application.facade;
 import com.jongho.user.application.dto.request.UserSignUpDto;
 import com.jongho.user.application.service.UserNotificationSettingService;
 import com.jongho.user.application.service.UserService;
+import com.jongho.user.domain.model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,7 @@ public class UserFacadeImplTest {
         void 유저_회원가입과_알림_설정을_생성한다() {
             // given
             UserSignUpDto userSignUpDto = new UserSignUpDto("jonghao", "a123b123", "whdgh9595", "01012341234", null);
+            when(userService.getUser(userSignUpDto.getUsername())).thenReturn(new User(1L, userSignUpDto.getNickname(), userSignUpDto.getPassword(), userSignUpDto.getUsername(), userSignUpDto.getPhoneNumber(), userSignUpDto.getProfileImage()));
             doNothing().when(userService).signUp(userSignUpDto);
             doNothing().when(userNotificationSettingService).createUserNotificationSetting(1L);
 
@@ -39,7 +41,8 @@ public class UserFacadeImplTest {
 
             // then
              verify(userService, times(1)).signUp(userSignUpDto);
-             verify(userNotificationSettingService, times(1)).createUserNotificationSetting(1);
+             verify(userService, times(1)).getUser(userSignUpDto.getUsername());
+             verify(userNotificationSettingService, times(1)).createUserNotificationSetting(1L);
         }
     }
 }

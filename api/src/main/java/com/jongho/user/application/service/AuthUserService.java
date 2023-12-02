@@ -5,7 +5,7 @@ import com.jongho.domain.auth.AuthUser;
 import java.util.Optional;
 
 public interface AuthUserService {
-    public void authUserCreate(AuthUser authUser);
+    public void createAuthUser(AuthUser authUser);
     public Optional<AuthUser> getAuthUser(Long userId, String userAgent);
     public void updateRefreshToken(AuthUser authUser);
 }
