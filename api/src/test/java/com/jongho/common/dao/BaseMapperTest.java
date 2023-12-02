@@ -67,6 +67,10 @@ public class BaseMapperTest {
         excuteTruncateTable("hobby_categories");
         initializeAutoIncrement("hobby_categories");
     }
+    protected void cleanUpAuthUserTable(){
+        excuteTruncateTable("auth_users");
+        initializeAutoIncrement("auth_users");
+    }
 
     protected void setUpCategoryTable(){
         try {
