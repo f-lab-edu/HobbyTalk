@@ -10,10 +10,7 @@ import com.jongho.user.application.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
@@ -29,16 +26,15 @@ public class UserController {
     private final AuthUserFacade authUserFacade;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<BaseResponseEntity<?>> signUp(@Validated @RequestBody UserSignUpDto userSignUpDto) {
-        userFacade.signUpUserAndCreateNotificationSetting(userSignUpDto);
+    public ResponseEntity<BaseResponseEntity<?>> signUp(@Validated @RequestBody UserSignUpDto userSignUpDto, @RequestHeader("User-Agent") String userAgent) {
+        userFacade.signUpUserAndCreateNotificationSetting(userSignUpDto, userAgent);
 
         return BaseResponseEntity.create("user create");
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<BaseResponseEntity<Map<String, String>>> signIn(@Validated @RequestBody UserSignInDto userSignUpDto) {
-        Map<String, String> result = new HashMap<String, String>();
-        result.put("token", authUserFacade.signIn(userSignUpDto.getUsername(), userSignUpDto.getPassword()));
+    public ResponseEntity<BaseResponseEntity<Map<String, String>>> signIn(@Validated @RequestBody UserSignInDto userSignUpDto, @RequestHeader("User-Agent") String userAgent) {
+        Map<String, String> result = authUserFacade.signIn(userSignUpDto.getUsername(), userSignUpDto.getPassword(), userAgent);
 
         return BaseResponseEntity.ok(result, "success");
     }
