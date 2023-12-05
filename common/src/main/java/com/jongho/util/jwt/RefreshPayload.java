@@ -9,5 +9,5 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode
 public class RefreshPayload {
     private final Long userId;
-    private final int isAccessToken = 0;
+    private final TokenType tokenType = TokenType.REFRESH_TOKEN;
 }

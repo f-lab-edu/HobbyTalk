@@ -10,5 +10,5 @@ import lombok.RequiredArgsConstructor;
 public class AccessPayload {
     private final Long userId;
     private final String username;
-    private final int isAccessToken = 1;
+    private final TokenType tokenType = TokenType.ACCESS_TOKEN;
 }

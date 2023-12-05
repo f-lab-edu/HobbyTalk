@@ -37,10 +37,10 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<String, Object>();
         claims.put("userId", accessPayload.getUserId());
         claims.put("username", accessPayload.getUsername());
-        claims.put("isAccessToken", accessPayload.getIsAccessToken());
+        claims.put("tokenType", accessPayload.getTokenType().getValue());
 
         Date expireTime = new Date();
-        expireTime.setTime(expireTime.getTime() + 1000 * 60 * 60); // 1시간
+        expireTime.setTime(expireTime.getTime() + 1000 * 60 * 10); // 10분
 
         return Jwts.builder()
                 .setHeader(headerMap)
@@ -57,7 +57,7 @@ public class JwtUtil {
 
         Map<String, Object> claims = new HashMap<String, Object>();
         claims.put("userId", refreshPayload.getUserId());
-        claims.put("isAccessToken", refreshPayload.getIsAccessToken());
+        claims.put("tokenType", refreshPayload.getTokenType().getValue());
 
         Date expireTime = new Date();
         expireTime.setTime(expireTime.getTime() + 1000 * 60 * 60 * 24 * 14); // 2주
@@ -78,7 +78,13 @@ public class JwtUtil {
                     .parseClaimsJws(token)
                     .getBody();
 
-            return new AccessPayload(claims.get("userId", Long.class), claims.get("username", String.class));
+            if (claims.get("tokenType", Integer.class) != TokenType.ACCESS_TOKEN.getValue()) {
+                throw new JwtException("올바른 토큰타입이 아닙니다.");
+            }
+
+            return new AccessPayload(
+                    claims.get("userId", Long.class),
+                    claims.get("username", String.class));
         } catch (ExpiredJwtException e) {
             throw new ExpiredJwtException(null, null, "토큰이 만료되었습니다.");
         } catch (JwtException e) {
@@ -93,6 +99,10 @@ public class JwtUtil {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+
+            if (claims.get("tokenType", Integer.class) != TokenType.REFRESH_TOKEN.getValue()) {
+                throw new JwtException("올바른 토큰타입이 아닙니다.");
+            }
 
             return new RefreshPayload(claims.get("userId", Long.class));
         } catch (ExpiredJwtException e) {
