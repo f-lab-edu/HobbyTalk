@@ -22,7 +22,7 @@ public class AuthUserServiceImpl implements AuthUserService{
     }
 
     @Override
-    public Optional<AuthUser> getAuthUser(Long userId, String userAgent) {
-        return authUserRepository.selectOneAuthUser(userId, userAgent);
+    public Optional<AuthUser> getAuthUser(Long userId) {
+        return authUserRepository.selectOneAuthUser(userId);
     }
 }

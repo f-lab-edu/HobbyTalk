@@ -10,5 +10,4 @@ import lombok.RequiredArgsConstructor;
 public class AuthUser {
     private final Long userId;
     private final String refreshToken;
-    private final String userAgent;
 }

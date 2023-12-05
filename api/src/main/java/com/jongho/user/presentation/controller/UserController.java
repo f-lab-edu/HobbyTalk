@@ -33,8 +33,8 @@ public class UserController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<BaseResponseEntity<Map<String, String>>> signIn(@Validated @RequestBody UserSignInDto userSignUpDto, @RequestHeader("User-Agent") String userAgent) {
-        Map<String, String> result = authUserFacade.signIn(userSignUpDto.getUsername(), userSignUpDto.getPassword(), userAgent);
+    public ResponseEntity<BaseResponseEntity<Map<String, String>>> signIn(@Validated @RequestBody UserSignInDto userSignUpDto) {
+        Map<String, String> result = authUserFacade.signIn(userSignUpDto.getUsername(), userSignUpDto.getPassword());
 
         return BaseResponseEntity.ok(result, "success");
     }

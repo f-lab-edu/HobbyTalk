@@ -23,8 +23,8 @@ public class AuthUserMybatisRepositoryImpl implements AuthUserRepository {
         authUserMapper.updateRefreshToken(authUser);
     }
 
-    public Optional<AuthUser> selectOneAuthUser(Long userId, String userAgent) {
+    public Optional<AuthUser> selectOneAuthUser(Long userId) {
 
-        return Optional.ofNullable(authUserMapper.selectOneAuthUser(userId, userAgent));
+        return Optional.ofNullable(authUserMapper.selectOneAuthUser(userId));
     }
 }

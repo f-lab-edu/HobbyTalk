@@ -25,7 +25,7 @@ public class AuthUserFacadeImpl implements AuthUserFacade {
     private final JwtUtil jwtUtil;
     @Override
     @Transactional
-    public Map<String, String> signIn(String username, String password, String userAgent) {
+    public Map<String, String> signIn(String username, String password) {
         User user = userService.getUser(username);
         if(!BcryptUtil.checkPassword(password, user.getPassword())) {
             throw new UnAuthorizedException("비밀번호가 일치하지 않습니다.");
@@ -34,13 +34,13 @@ public class AuthUserFacadeImpl implements AuthUserFacade {
         RefreshPayload refreshPayload = new RefreshPayload(user.getId());
 
         String refreshToken = jwtUtil.createRefreshToken(refreshPayload);
-        Optional<AuthUser> authUser = authUserService.getAuthUser(user.getId(), userAgent);
+        Optional<AuthUser> authUser = authUserService.getAuthUser(user.getId());
         if(authUser.isPresent()) {
 
-            authUserService.updateRefreshToken(new AuthUser(user.getId(), refreshToken, userAgent));
+            authUserService.updateRefreshToken(new AuthUser(user.getId(), refreshToken));
         } else {
 
-            authUserService.createAuthUser(new AuthUser(user.getId(), refreshToken, userAgent));
+            authUserService.createAuthUser(new AuthUser(user.getId(), refreshToken));
         }
 
         Map<String, String> result = new HashMap<>();

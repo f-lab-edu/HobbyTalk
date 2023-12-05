@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Param;
 public interface AuthUserMapper {
     public void createAuthUser(AuthUser authUser);
     public void updateRefreshToken(AuthUser authUser);
-    public AuthUser selectOneAuthUser(@Param("userId") Long userId, @Param("userAgent") String userAgent);
+    public AuthUser selectOneAuthUser(@Param("userId") Long userId);
 }

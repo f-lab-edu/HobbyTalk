@@ -30,7 +30,7 @@ public class AuthUserServiceImplTest {
             @DisplayName("AuthUserRepository의 createAuthUser 메소드를 호출한다")
             void AuthUserRepository의_createAuthUser_메소드를_한번_호출한다() {
                 // given
-                AuthUser authUser = new AuthUser(1L, "refreshToken", "userAgent");
+                AuthUser authUser = new AuthUser(1L, "refreshToken", "");
                 doNothing().when(authUserRepository).createAuthUser(authUser);
 
                 // when
@@ -48,7 +48,7 @@ public class AuthUserServiceImplTest {
             @DisplayName("AuthUserRepository의 updateRefreshToken 메소드를 호출한다")
             void AuthUserRepository의_updateRefreshToken_메소드를_한번_호출한다() {
                 // given
-                AuthUser authUser = new AuthUser(1L, "refreshToken", "userAgent");
+                AuthUser authUser = new AuthUser(1L, "refreshToken", "");
                 doNothing().when(authUserRepository).updateRefreshToken(authUser);
 
                 // when
@@ -67,15 +67,15 @@ public class AuthUserServiceImplTest {
             void AuthUserRepository의_selectOneAuthUser_메소드를_한번_호출한다() {
                 // given
                 Long userId = 1L;
-                String userAgent = "userAgent";
-                AuthUser authUser = new AuthUser(1L, "refreshToken", "userAgent");
-                when(authUserRepository.selectOneAuthUser(userId, userAgent)).thenReturn(Optional.of(authUser));
+                String  = "";
+                AuthUser authUser = new AuthUser(1L, "refreshToken", "");
+                when(authUserRepository.selectOneAuthUser(userId, )).thenReturn(Optional.of(authUser));
 
                 // when
-                Optional<AuthUser> result = authUserServiceImpl.getAuthUser(userId, userAgent);
+                Optional<AuthUser> result = authUserServiceImpl.getAuthUser(userId, );
 
                 // then
-                verify(authUserRepository, times(1)).selectOneAuthUser(userId, userAgent);
+                verify(authUserRepository, times(1)).selectOneAuthUser(userId, );
                 assertEquals(Optional.of(authUser), result);
             }
     }
