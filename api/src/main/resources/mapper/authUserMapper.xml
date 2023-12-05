@@ -7,7 +7,7 @@
     </insert>
     <select id="selectOneAuthUser" resultType="com.jongho.domain.auth.AuthUser">
         SELECT
-        auth_users.user_id, auth_users.refresh_token, auth_users.user_agent
+        auth_users.user_id, auth_users.refresh_token
         FROM auth_users
         WHERE auth_users.user_id = #{userId}
         AND auth_users.deleted_time is null

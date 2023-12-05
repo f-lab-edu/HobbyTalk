@@ -86,15 +86,13 @@ public class UserControllerTest {
             Map<String, String> result = new HashMap<>();
             result.put("accessToken", "token");
             result.put("refreshToken", "refreshToken");
-            String  = "";
-            when(authUserFacade.signIn(userSignInDto.getUsername(), userSignInDto.getPassword(), )).thenReturn(result);
+            when(authUserFacade.signIn(userSignInDto.getUsername(), userSignInDto.getPassword())).thenReturn(result);
             Gson gson = new Gson();
             String userSignUpDtoJson = gson.toJson(userSignInDto);
 
             // when
             mockMvc.perform(post("/api/v1/users/sign-in")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .header("User-Agent", )
                     .content(userSignUpDtoJson))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.message").value("success"))
@@ -103,7 +101,7 @@ public class UserControllerTest {
                     .andDo(print());
 
             // then
-            verify(authUserFacade, times(1)).signIn(userSignInDto.getUsername(), userSignInDto.getPassword(), );
+            verify(authUserFacade, times(1)).signIn(userSignInDto.getUsername(), userSignInDto.getPassword());
         }
     }
 }

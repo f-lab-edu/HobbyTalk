@@ -27,15 +27,14 @@ public class AuthUserMapperTest extends BaseMapperTest {
         @DisplayName("인자로 받은 유저의 인증정보를 조회한다.")
         void 인자로_받은_인증유저_조회한다() {
             // given
-            AuthUser authUser = new AuthUser(1L, "refreshToken", "");
+            AuthUser authUser = new AuthUser(1L, "refreshToken");
             authUserMapper.createAuthUser(authUser);
 
             // when
-            AuthUser actualAuthUser = authUserMapper.selectOneAuthUser(authUser.getUserId(), authUser.get());
+            AuthUser actualAuthUser = authUserMapper.selectOneAuthUser(authUser.getUserId());
 
             // then
             assertEquals(authUser.getUserId(), actualAuthUser.getUserId());
-            assertEquals(authUser.get(), actualAuthUser.get());
             assertEquals(authUser.getRefreshToken(), actualAuthUser.getRefreshToken());
         }
     }
@@ -47,13 +46,13 @@ public class AuthUserMapperTest extends BaseMapperTest {
         @DisplayName("인자로 받은 유저를 저장한다.")
         void 인자로_받은_인증유저_생성한다() {
             // given
-            AuthUser authUser = new AuthUser(1L, "refreshToken", "");
+            AuthUser authUser = new AuthUser(1L, "refreshToken");
 
             // when
             authUserMapper.createAuthUser(authUser);
 
             // then
-            assertEquals(authUser.getUserId(), authUserMapper.selectOneAuthUser(authUser.getUserId(), authUser.get()).getUserId());
+            assertEquals(authUser.getUserId(), authUserMapper.selectOneAuthUser(authUser.getUserId()).getUserId());
         }
     }
 
@@ -64,12 +63,12 @@ public class AuthUserMapperTest extends BaseMapperTest {
         @DisplayName("인자로 받은 유저의 refreshToken을 업데이트한다,.")
         void 인자로_받은_인증유저의_refresh_token을_업데이트한다() {
             // given
-            authUserMapper.createAuthUser(new AuthUser(1L, "token", ""));
-            AuthUser authUser = new AuthUser(1L, "refreshToken", "");
+            authUserMapper.createAuthUser(new AuthUser(1L, "token"));
+            AuthUser authUser = new AuthUser(1L, "refreshToken");
 
             // when
             authUserMapper.updateRefreshToken(authUser);
-            String actualRefreshToken = authUserMapper.selectOneAuthUser(authUser.getUserId(), authUser.get()).getRefreshToken();
+            String actualRefreshToken = authUserMapper.selectOneAuthUser(authUser.getUserId()).getRefreshToken();
 
             // then
             assertEquals(authUser.getRefreshToken(), actualRefreshToken);
