@@ -32,7 +32,7 @@ public class UserNotificationSettingServiceImplTest {
         @DisplayName("UserNotificationSettingRepository.createUserNotificationSetting()을 호출한다.")
         void 유저_알림_설정을_생성한다() {
             // given
-            int userId = 1;
+            Long userId = 1L;
             when(userNotificationSettingRepository.createUserNotificationSetting(userNotificationSetting)).thenReturn(1);
 
             // when

@@ -14,8 +14,8 @@ public class UserMyBatisRepositoryImpl implements UserRepository {
     private final UserMapper userMapper;
 
     @Override
-    public int createUser(User user) {
-        return userMapper.createUser(user);
+    public void createUser(User user) {
+        userMapper.createUser(user);
     }
 
     @Override

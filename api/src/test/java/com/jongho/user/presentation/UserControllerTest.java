@@ -1,7 +1,9 @@
 package com.jongho.user.presentation;
 
 import com.google.gson.Gson;
+import com.jongho.user.application.dto.request.UserSignInDto;
 import com.jongho.user.application.dto.request.UserSignUpDto;
+import com.jongho.user.application.facade.AuthUserFacade;
 import com.jongho.user.application.facade.UserFacade;
 import com.jongho.user.application.service.UserService;
 import com.jongho.user.presentation.controller.UserController;
@@ -14,6 +16,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,6 +33,8 @@ public class UserControllerTest {
     private UserService userService;
     @MockBean
     private UserFacade userFacade;
+    @MockBean
+    private AuthUserFacade authUserFacade;
     @Autowired
     private MockMvc mockMvc;
 
@@ -59,6 +66,42 @@ public class UserControllerTest {
 
             // then
             verify(userFacade, times(1)).signUpUserAndCreateNotificationSetting(userSignUpDto);
+        }
+    }
+
+    @Nested
+    @DisplayName("signIn 메소드는")
+    class Describe_signIn {
+        private UserSignInDto userSignInDto;
+
+        @BeforeEach
+        public void setUp() {
+            userSignInDto = new UserSignInDto("a123b123!@", "jonghao");
+        }
+
+        @Test
+        @DisplayName("올바른 데이터를 받으면 AuthUserFacade.signIn 을 호출하고 status 200과 token을 반환한다.")
+        void 올바른_데이터를_받으면_AuthUserFacade_signIn을_호출하고_status200과_token을_반환한다() throws Exception {
+            // given
+            Map<String, String> result = new HashMap<>();
+            result.put("accessToken", "token");
+            result.put("refreshToken", "refreshToken");
+            when(authUserFacade.signIn(userSignInDto.getUsername(), userSignInDto.getPassword())).thenReturn(result);
+            Gson gson = new Gson();
+            String userSignUpDtoJson = gson.toJson(userSignInDto);
+
+            // when
+            mockMvc.perform(post("/api/v1/users/sign-in")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(userSignUpDtoJson))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.message").value("success"))
+                    .andExpect(jsonPath("$.data.accessToken").exists())
+                    .andExpect(jsonPath("$.data.refreshToken").exists())
+                    .andDo(print());
+
+            // then
+            verify(authUserFacade, times(1)).signIn(userSignInDto.getUsername(), userSignInDto.getPassword());
         }
     }
 }

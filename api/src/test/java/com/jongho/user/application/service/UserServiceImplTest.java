@@ -1,6 +1,7 @@
 package com.jongho.user.application.service;
 
 import com.jongho.common.exception.UserDuplicatedException;
+import com.jongho.common.exception.UserNotFoundException;
 import com.jongho.user.application.dto.request.UserSignUpDto;
 import com.jongho.user.domain.model.User;
 import com.jongho.user.domain.repository.UserRepository;
@@ -70,6 +71,35 @@ public class UserServiceImplTest {
 
             // then
             verify(userRepository, times(1)).createUser(any());
+        }
+    }
+
+    @Nested
+    @DisplayName("getUser 메소드는")
+    class Describe_getUser {
+        @Test
+        @DisplayName("UserRepository.findByUsername()을 호출하고 결과가 없으면 UserNotFoundException을 발생시킨다.")
+        void 유저_아이디로_유저를_가져와서_결과가_없으면_UserNotFoundException을_발생시킨다() {
+            // given
+            User user = new User(1L, "whdgh9595", "a123b123", "whdgh9595", "01012341234", null);
+            when(userRepository.findOneByUsername(user.getUsername())).thenReturn(Optional.empty());
+
+            // when then
+            assertThrows(UserNotFoundException.class, () -> userService.getUser("whdgh9595"));
+        }
+
+        @Test
+        @DisplayName("UserRepository.findByUsername()을 호출하고 결과가 있으면 유저를 반환한다.")
+        void 유저_아이디로_유저를_가져와서_결과가_있으면_유저를_반환한다() {
+            // given
+            User user = new User(1L, "whdgh9595", "a123b123", "whdgh9595", "01012341234", null);
+            when(userRepository.findOneByUsername(user.getUsername())).thenReturn(Optional.of(user));
+
+            // when
+            User result = userService.getUser("whdgh9595");
+
+            // then
+            assertEquals(user, result);
         }
     }
 }

@@ -1,8 +1,10 @@
 package com.jongho.user.application.service;
 
 import com.jongho.common.exception.UserDuplicatedException;
+import com.jongho.common.exception.UserNotFoundException;
 import com.jongho.common.util.BcryptUtil;
 import com.jongho.user.application.dto.request.UserSignUpDto;
+import com.jongho.user.domain.model.User;
 import com.jongho.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     @Override
-    public int signUp(UserSignUpDto userSignUpDto) {
+    public void signUp(UserSignUpDto userSignUpDto) {
         userRepository.findOneByUsername(userSignUpDto.getUsername())
                 .ifPresent((user)-> {
                     throw new UserDuplicatedException("이미 존재하는 아이디입니다.");
@@ -25,8 +27,7 @@ public class UserServiceImpl implements UserService {
                     throw new UserDuplicatedException("이미 가입된 전화번호입니다.");
                 });
         try {
-
-            return userRepository.createUser(
+            userRepository.createUser(
                 new UserSignUpDto(
                     userSignUpDto.getNickname(),
                     BcryptUtil.hashPassword(userSignUpDto.getPassword()),
@@ -39,6 +40,11 @@ public class UserServiceImpl implements UserService {
 
             throw new UserDuplicatedException("이미 가입된 아이디거나 전화번호입니다.");
         }
+    }
 
+    @Override
+    public User getUser(String username) {
+        return userRepository.findOneByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 아이디입니다."));
     }
 }

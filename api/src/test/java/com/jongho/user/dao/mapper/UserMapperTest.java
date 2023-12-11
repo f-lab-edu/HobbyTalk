@@ -29,10 +29,10 @@ public class UserMapperTest extends BaseMapperTest {
             User user = new User("jonghao", "a123b123", "whdgh9595", "01012341234", null);
 
             // when
-            int userId = userMapper.createUser(user);
+            userMapper.createUser(user);
 
             // then
-            assertEquals(1, userId);
+            assertEquals(1, userMapper.findOneByUsername(user.getUsername()).getId());
         }
 
         @Test
