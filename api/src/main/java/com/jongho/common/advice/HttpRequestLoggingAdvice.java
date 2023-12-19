@@ -1,4 +1,4 @@
-package com.jongho.advice;
+package com.jongho.common.advice;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class HttpRequestLoggingAdvice {
     private static final Logger logger = LoggerFactory.getLogger(HttpRequestLoggingAdvice.class);
 
-    @Around("@within(com.jongho.annotaition.HttpRequestLogging)")
+    @Around("@within(com.jongho.common.annotaition.HttpRequestLogging)")
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
         String methodName = joinPoint.getSignature().toShortString();
         Object[] args = joinPoint.getArgs();

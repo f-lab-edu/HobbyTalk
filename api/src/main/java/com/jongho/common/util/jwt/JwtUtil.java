@@ -1,12 +1,10 @@
-package com.jongho.util.jwt;
+package com.jongho.common.util.jwt;
 
-import com.jongho.domain.auth.AuthUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 

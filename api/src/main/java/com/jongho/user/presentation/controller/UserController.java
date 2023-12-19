@@ -1,7 +1,7 @@
 package com.jongho.user.presentation.controller;
 
-import com.jongho.annotaition.HttpRequestLogging;
-import com.jongho.response.BaseResponseEntity;
+import com.jongho.common.annotaition.HttpRequestLogging;
+import com.jongho.common.response.BaseResponseEntity;
 import com.jongho.user.application.dto.request.UserSignInDto;
 import com.jongho.user.application.dto.request.UserSignUpDto;
 import com.jongho.user.application.facade.AuthUserFacade;
@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @HttpRequestLogging

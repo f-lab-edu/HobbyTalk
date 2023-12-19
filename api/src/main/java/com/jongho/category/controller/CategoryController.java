@@ -1,15 +1,12 @@
 package com.jongho.category.controller;
 
-import com.jongho.annotaition.HttpRequestLogging;
 import com.jongho.category.application.service.CategoryService;
 
-import com.jongho.category.domain.model.Category;
-import com.jongho.response.BaseResponseEntity;
+import com.jongho.common.annotaition.HttpRequestLogging;
+import com.jongho.common.response.BaseResponseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @HttpRequestLogging
 @RestController

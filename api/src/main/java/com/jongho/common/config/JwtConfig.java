@@ -1,4 +1,4 @@
-package com.jongho.config;
+package com.jongho.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("classpath:application-common-${spring.profiles.active:default}.properties")
+@PropertySource("classpath:application-api-${spring.profiles.active:default}.properties")
 public class JwtConfig {
     @Value("${jwt.secret}")
     private String secretKey;

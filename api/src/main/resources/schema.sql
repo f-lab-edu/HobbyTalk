@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS auth_users (
   id int PRIMARY KEY AUTO_INCREMENT,
   user_id int NOT NULL COMMENT '자기자신의 id',
-  refresh_token varchar(255) NOT NULL COMMENT '유저접속정보',
+  refresh_token varchar(255) NOT NULL COMMENT '리프레시 토큰',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
   deleted_time timestamp COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'

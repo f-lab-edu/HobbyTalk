@@ -2,7 +2,7 @@ package com.jongho.user.application.service;
 
 import com.jongho.common.exception.UserDuplicatedException;
 import com.jongho.common.exception.UserNotFoundException;
-import com.jongho.common.util.BcryptUtil;
+import com.jongho.common.util.bcrypt.BcryptUtil;
 import com.jongho.user.application.dto.request.UserSignUpDto;
 import com.jongho.user.domain.model.User;
 import com.jongho.user.domain.repository.UserRepository;

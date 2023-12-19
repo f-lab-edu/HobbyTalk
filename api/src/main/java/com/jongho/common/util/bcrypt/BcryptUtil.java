@@ -1,4 +1,4 @@
-package com.jongho.common.util;
+package com.jongho.common.util.bcrypt;
 
 import org.mindrot.jbcrypt.BCrypt;
 

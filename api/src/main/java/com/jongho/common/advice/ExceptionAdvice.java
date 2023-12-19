@@ -1,7 +1,7 @@
 package com.jongho.common.advice;
 
 import com.jongho.common.exception.CustomBusinessException;
-import com.jongho.response.BaseResponseEntity;
+import com.jongho.common.response.BaseResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

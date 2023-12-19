@@ -1,4 +1,4 @@
-package com.jongho.annotaition;
+package com.jongho.common.annotaition;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

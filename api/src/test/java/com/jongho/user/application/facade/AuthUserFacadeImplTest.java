@@ -1,15 +1,15 @@
 package com.jongho.user.application.facade;
 
 import com.jongho.common.exception.UnAuthorizedException;
-import com.jongho.common.util.BcryptUtil;
-import com.jongho.domain.auth.AuthUser;
+import com.jongho.common.util.bcrypt.BcryptUtil;
+import com.jongho.common.auth.AuthUser;
 import com.jongho.user.application.dto.request.UserSignInDto;
 import com.jongho.user.application.service.AuthUserService;
 import com.jongho.user.application.service.UserService;
 import com.jongho.user.domain.model.User;
-import com.jongho.util.jwt.AccessPayload;
-import com.jongho.util.jwt.JwtUtil;
-import com.jongho.util.jwt.RefreshPayload;
+import com.jongho.common.util.jwt.AccessPayload;
+import com.jongho.common.util.jwt.JwtUtil;
+import com.jongho.common.util.jwt.RefreshPayload;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

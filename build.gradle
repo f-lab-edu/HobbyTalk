@@ -60,22 +60,7 @@ project(':api') { // 컴파일 시 api 로딩
 	}
 }
 
-project(':common') { // 컴파일 시 common 로딩
-	dependencies {
-	}
-}
-
 project(':batch') { // 컴파일 시 batch 로딩
-	dependencies {
-	}
-}
-
-project(':open-chat-api') { // 컴파일 시 open-chat-api 로딩
-	dependencies {
-	}
-}
-
-project(':api-gateway') { // 컴파일 시 api-gateway 로딩
 	dependencies {
 	}
 }

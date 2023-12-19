@@ -1,6 +1,6 @@
 package com.jongho.user.dao.mapper;
 
-import com.jongho.domain.auth.AuthUser;
+import com.jongho.common.auth.AuthUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

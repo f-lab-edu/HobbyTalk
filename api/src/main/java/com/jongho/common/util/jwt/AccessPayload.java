@@ -1,4 +1,4 @@
-package com.jongho.util.jwt;
+package com.jongho.common.util.jwt;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
