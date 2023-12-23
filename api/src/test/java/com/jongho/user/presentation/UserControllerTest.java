@@ -104,4 +104,33 @@ public class UserControllerTest {
             verify(authUserFacade, times(1)).signIn(userSignInDto.getUsername(), userSignInDto.getPassword());
         }
     }
+
+    @Nested
+    @DisplayName("tokenRefresh 메소드는")
+    class Describe_tokenRefresh {
+        @Test
+        @DisplayName("올바른 데이터를 받으면 AuthUserFacade.tokenRefresh 을 호출하고 status 200과 token을 반환한다.")
+        void 올바른_데이터를_받으면_AuthUserFacade_tokenRefresh을_호출하고_status200과_token을_반환한다() throws Exception {
+            // given
+            Map<String, String> result = new HashMap<>();
+            result.put("accessToken", "token");
+            result.put("refreshToken", "refreshToken");
+            when(authUserFacade.tokenRefresh("refreshToken")).thenReturn(result);
+            Gson gson = new Gson();
+            String userSignUpDtoJson = gson.toJson(result);
+
+            // when
+            mockMvc.perform(post("/api/v1/users/token-refresh")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(userSignUpDtoJson))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.message").value("success"))
+                    .andExpect(jsonPath("$.data.accessToken").exists())
+                    .andExpect(jsonPath("$.data.refreshToken").exists())
+                    .andDo(print());
+
+            // then
+            verify(authUserFacade, times(1)).tokenRefresh("refreshToken");
+        }
+    }
 }
