@@ -49,4 +49,24 @@ public class AuthUserFacadeImpl implements AuthUserFacade {
 
         return result;
     }
+
+    @Override
+    public Map<String, String> tokenRefresh(String refreshToken) {
+        RefreshPayload refreshPayload = jwtUtil.validateRefreshToken(refreshToken);
+        Optional<AuthUser> authUser = authUserService.getAuthUser(refreshPayload.getUserId());
+        if(authUser.isPresent()) {
+            if(refreshToken.equals(authUser.get().getRefreshToken())) {
+                User user = userService.getUserById(refreshPayload.getUserId());
+                String newRefreshToken = jwtUtil.createRefreshToken(refreshPayload);
+                authUserService.updateRefreshToken(new AuthUser(user.getId(), newRefreshToken));
+
+                Map<String, String> result = new HashMap<>();
+                result.put("accessToken", jwtUtil.createAccessToken(new AccessPayload(user.getId(), user.getUsername())));
+                result.put("refreshToken", newRefreshToken);
+
+                return result;
+            }
+        }
+        throw new UnAuthorizedException("refresh token이 유효하지 않습니다.");
+    }
 }

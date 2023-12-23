@@ -37,4 +37,11 @@ public class UserController {
 
         return BaseResponseEntity.ok(result, "success");
     }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<BaseResponseEntity<Map<String, String>>> refreshToken(@RequestHeader("Authorization") String refreshToken) {
+        Map<String, String> result = authUserFacade.refreshToken(refreshToken);
+
+        return BaseResponseEntity.ok(result, "success");
+    }
 }

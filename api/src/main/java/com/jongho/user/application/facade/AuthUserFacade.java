@@ -4,4 +4,5 @@ import java.util.Map;
 
 public interface AuthUserFacade {
     public Map<String, String> signIn(String username, String password);
+    public Map<String, String> tokenRefresh(String refreshToken);
 }
