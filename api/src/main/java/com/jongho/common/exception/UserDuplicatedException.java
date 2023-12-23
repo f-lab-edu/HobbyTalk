@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class UserDuplicatedException extends CustomBusinessException{
-        public UserDuplicatedException(String message) {
+    public UserDuplicatedException(String message) {
             super(message, HttpStatus.CONFLICT);
         }
 }

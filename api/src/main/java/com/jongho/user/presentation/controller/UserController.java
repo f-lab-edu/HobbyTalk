@@ -2,6 +2,7 @@ package com.jongho.user.presentation.controller;
 
 import com.jongho.common.annotaition.HttpRequestLogging;
 import com.jongho.common.response.BaseResponseEntity;
+import com.jongho.user.application.dto.request.TokenRefreshDto;
 import com.jongho.user.application.dto.request.UserSignInDto;
 import com.jongho.user.application.dto.request.UserSignUpDto;
 import com.jongho.user.application.facade.AuthUserFacade;
@@ -38,9 +39,9 @@ public class UserController {
         return BaseResponseEntity.ok(result, "success");
     }
 
-    @PostMapping("/refresh-token")
-    public ResponseEntity<BaseResponseEntity<Map<String, String>>> refreshToken(@RequestHeader("Authorization") String refreshToken) {
-        Map<String, String> result = authUserFacade.refreshToken(refreshToken);
+    @PostMapping("/token-refresh")
+    public ResponseEntity<BaseResponseEntity<Map<String, String>>> tokenRefresh(@RequestBody TokenRefreshDto tokenRefreshDto) {
+        Map<String, String> result = authUserFacade.tokenRefresh(tokenRefreshDto.getRefreshToken());
 
         return BaseResponseEntity.ok(result, "success");
     }

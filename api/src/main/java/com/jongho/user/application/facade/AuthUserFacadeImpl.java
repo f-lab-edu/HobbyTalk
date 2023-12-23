@@ -51,12 +51,16 @@ public class AuthUserFacadeImpl implements AuthUserFacade {
     }
 
     @Override
+    @Transactional
     public Map<String, String> tokenRefresh(String refreshToken) {
         RefreshPayload refreshPayload = jwtUtil.validateRefreshToken(refreshToken);
         Optional<AuthUser> authUser = authUserService.getAuthUser(refreshPayload.getUserId());
         if(authUser.isPresent()) {
             if(refreshToken.equals(authUser.get().getRefreshToken())) {
-                User user = userService.getUserById(refreshPayload.getUserId());
+                User user = userService.getUserById(refreshPayload.getUserId()).orElseThrow(()->{
+                    throw new UnAuthorizedException("존재하지 않는 유저입니다.");
+                });
+
                 String newRefreshToken = jwtUtil.createRefreshToken(refreshPayload);
                 authUserService.updateRefreshToken(new AuthUser(user.getId(), newRefreshToken));
 
@@ -67,6 +71,6 @@ public class AuthUserFacadeImpl implements AuthUserFacade {
                 return result;
             }
         }
-        throw new UnAuthorizedException("refresh token이 유효하지 않습니다.");
+        throw new UnAuthorizedException("리프레시 토큰이 유효하지 않습니다.");
     }
 }

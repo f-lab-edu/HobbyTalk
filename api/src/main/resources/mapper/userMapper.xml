@@ -22,4 +22,13 @@
         AND users.deleted_time is null
         LIMIT 1
     </select>
+
+    <select id="findOneById" parameterType="Long" resultType="com.jongho.user.domain.model.User">
+        SELECT
+        users.id, users.nickname, users.password, users.username, users.profile_image, users.phone_number
+        FROM users
+        WHERE users.id = #{id}
+        AND users.deleted_time is null
+        LIMIT 1
+    </select>
 </mapper>
