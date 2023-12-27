@@ -4,6 +4,7 @@ import com.jongho.common.exception.UnAuthorizedException;
 import com.jongho.common.util.bcrypt.BcryptUtil;
 import com.jongho.user.domain.model.AuthUser;
 import com.jongho.user.application.dto.request.UserSignInDto;
+import com.jongho.user.application.dto.response.TokenResponseDto;
 import com.jongho.user.application.service.AuthUserService;
 import com.jongho.user.application.service.UserService;
 import com.jongho.user.domain.model.User;
@@ -77,7 +78,7 @@ public class AuthUserFacadeImplTest {
         @DisplayName("정상적인 데이터를 받으면 UserService.getUser를 호출하고 가져온 데이터의 패스워드와 요청받은 패스워드가 같으면 JwtUtil.createToken을 호출하고 토큰을 반환한다.")
         void 성공적인_요청의경우_아이디와_일치하는_데이터를_가져와_비밀번호를_비교하고_맞으면_토큰을_발급하고_반환한다(){
             // when
-            Map<String, String> result = authUserFacadeImpl.signIn(userSignInDto.getUsername(), userSignInDto.getPassword());
+            TokenResponseDto result = authUserFacadeImpl.signIn(userSignInDto.getUsername(), userSignInDto.getPassword());
 
             // then
              verify(userService, times(1)).getUser(userSignInDto.getUsername());
@@ -85,8 +86,8 @@ public class AuthUserFacadeImplTest {
              verify(authUserService, times(1)).createAuthUser(authUser);
              verify(jwtUtil, times(1)).createAccessToken(accessPayload);
              verify(jwtUtil, times(1)).createRefreshToken(refreshPayload);
-             assertEquals("token", result.get("accessToken"));
-             assertEquals("refreshToken", result.get("refreshToken"));
+             assertEquals("token", result.getAccessToken());
+             assertEquals("refreshToken", result.getRefreshToken());
 
         }
 
@@ -126,5 +127,71 @@ public class AuthUserFacadeImplTest {
 
     }
 
+    @Nested
+    @MockitoSettings(strictness = Strictness.LENIENT)
+    @DisplayName("tokenRefresh 메소드는")
+    class Describe_tokenRefresh {
+        private RefreshPayload refreshPayload;
+        private AuthUser authUser;
+        private User user;
+        private OngoingStubbing<RefreshPayload> mockJwtUtilValidateRefreshToken;
+        private OngoingStubbing<Optional<AuthUser>> mockAuthUserServiceGetAuthUser;
+        private OngoingStubbing<Optional<User>> mockUserServiceGetUser;
+        private OngoingStubbing<String> mockJwtUtilCreateAccessToken;
+        private OngoingStubbing<String> mockJwtUtilCreateRefreshToken;
+        private final String accessToekn = "token";
+        private final String refreshToken = "refreshToken";
 
+        @BeforeEach
+        void setUp() {
+            refreshPayload = new RefreshPayload(1L);
+            authUser = new AuthUser(1L, refreshToken);
+            user = new User(1L, "whdgh9595", BcryptUtil.hashPassword("jonghao1@"), "whdgh9595", "01012341234", null);
+            mockJwtUtilValidateRefreshToken = when(jwtUtil.validateRefreshToken(refreshToken)).thenReturn(refreshPayload);
+            mockAuthUserServiceGetAuthUser = when(authUserService.getAuthUser(refreshPayload.getUserId())).thenReturn(Optional.of(authUser));
+            mockUserServiceGetUser = when(userService.getUserById(refreshPayload.getUserId())).thenReturn(Optional.of(user));
+            mockJwtUtilCreateAccessToken = when(jwtUtil.createAccessToken(new AccessPayload(user.getId()))).thenReturn(accessToekn);
+            mockJwtUtilCreateRefreshToken = when(jwtUtil.createRefreshToken(refreshPayload)).thenReturn(refreshToken);
+            doNothing().when(authUserService).updateRefreshToken(new AuthUser(user.getId(), refreshToken));
+        }
+
+        @Test
+        @DisplayName("정상적인 데이터를 받으면 토큰을 검증하고 새로운 RefreshToken과 AccessToken을 발급하고 토큰을 반환한다.")
+        void 성공적인_요청의경우_토큰을_검증하고_새로운_RefreshToken과_AccessToken을_발급하고_토큰을_반환한다() {
+            // when
+            TokenResponseDto result = authUserFacadeImpl.tokenRefresh(refreshToken);
+
+            // then
+            verify(jwtUtil, times(1)).validateRefreshToken(refreshToken);
+            verify(authUserService, times(1)).getAuthUser(refreshPayload.getUserId());
+            verify(userService, times(1)).getUserById(refreshPayload.getUserId());
+            verify(authUserService, times(1)).updateRefreshToken(new AuthUser(user.getId(), refreshToken));
+            verify(jwtUtil, times(1)).createAccessToken(new AccessPayload(user.getId()));
+            verify(jwtUtil, times(1)).createRefreshToken(refreshPayload);
+            assertEquals("token", result.getAccessToken());
+            assertEquals("refreshToken", result.getRefreshToken());
+        }
+
+        @Test
+        @DisplayName("토큰의 유저 아이디로 AuthUser가 존재하지 않으면 UnAuthorizedException을 발생시킨다.")
+        void 토큰의_유저아이디로_AuthUser가_존재하지_않으면_UnAuthorizedException을_반환한다() {
+            // when
+            mockAuthUserServiceGetAuthUser = when(authUserService.getAuthUser(refreshPayload.getUserId())).thenReturn(Optional.empty());
+
+            // when then
+            Exception e = assertThrows(UnAuthorizedException.class, () -> authUserFacadeImpl.tokenRefresh(refreshToken));
+            assertEquals("리프레시 토큰이 유효하지 않습니다.", e.getMessage());
+        }
+
+        @Test
+        @DisplayName("토큰의 유저 아이디로 AuthUser가 존재하지만 토큰이 일치하지 않으면 UnAuthorizedException을 발생시킨다.")
+        void 토큰의_유저아이디로_AuthUser가_존재하지만_토큰이_일치하지_않으면_UnAuthorizedException을_반환한다() {
+            // when
+            mockAuthUserServiceGetAuthUser = when(authUserService.getAuthUser(refreshPayload.getUserId())).thenReturn(Optional.of(new AuthUser(1L, "token")));
+
+            // when then
+            Exception e = assertThrows(UnAuthorizedException.class, () -> authUserFacadeImpl.tokenRefresh(refreshToken));
+            assertEquals("리프레시 토큰이 유효하지 않습니다.", e.getMessage());
+        }
+    }
 }

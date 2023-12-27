@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
@@ -46,5 +48,9 @@ public class UserServiceImpl implements UserService {
     public User getUser(String username) {
         return userRepository.findOneByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 아이디입니다."));
+    }
+    @Override
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findOneById(id);
     }
 }

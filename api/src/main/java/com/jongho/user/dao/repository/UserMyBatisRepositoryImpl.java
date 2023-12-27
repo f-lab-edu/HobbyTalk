@@ -28,4 +28,8 @@ public class UserMyBatisRepositoryImpl implements UserRepository {
         return Optional.ofNullable(userMapper.findOneByPhoneNumber(phoneNumber));
     }
 
+    @Override
+    public Optional<User> findOneById(Long id) {
+        return Optional.ofNullable(userMapper.findOneById(id));
+    }
 }

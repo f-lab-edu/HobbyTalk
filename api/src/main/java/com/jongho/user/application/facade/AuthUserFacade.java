@@ -1,7 +1,9 @@
 package com.jongho.user.application.facade;
 
-import java.util.Map;
+import com.jongho.user.application.dto.response.TokenResponseDto;
+
 
 public interface AuthUserFacade {
-    public Map<String, String> signIn(String username, String password);
+    public TokenResponseDto signIn(String username, String password);
+    public TokenResponseDto tokenRefresh(String refreshToken);
 }

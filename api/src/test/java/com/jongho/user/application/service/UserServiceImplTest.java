@@ -102,4 +102,22 @@ public class UserServiceImplTest {
             assertEquals(user, result);
         }
     }
+
+    @Nested
+    @DisplayName("getUserById 메소드는")
+    class Describe_getUserById {
+        @Test
+        @DisplayName("UserRepository.findById()을 호출하고 결과가 있으면 유저를 반환한다.")
+        void 유저_아이디로_유저를_가져와서_결과가_있으면_유저를_반환한다() {
+            // given
+            User user = new User(1L, "whdgh9595", "a123b123", "whdgh9595", "01012341234", null);
+            when(userRepository.findOneById(user.getId())).thenReturn(Optional.of(user));
+
+            // when
+            User result = userService.getUserById(1L).orElseThrow();
+
+            // then
+            assertEquals(user, result);
+        }
+    }
 }

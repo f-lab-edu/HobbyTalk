@@ -10,4 +10,6 @@ public interface UserMapper {
     public User findOneByUsername(String username);
 
     public User findOneByPhoneNumber(String phoneNumber);
+
+    public User findOneById(Long id);
 }
