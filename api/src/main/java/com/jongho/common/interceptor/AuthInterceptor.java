@@ -1,7 +1,7 @@
 package com.jongho.common.interceptor;
 
 import com.google.gson.Gson;
-import com.jongho.common.auth.AuthUser;
+import com.jongho.user.domain.model.AuthUser;
 import com.jongho.common.exception.UnAuthorizedException;
 import com.jongho.common.response.BaseResponseEntity;
 import com.jongho.common.util.jwt.AccessPayload;
@@ -24,16 +24,21 @@ public class AuthInterceptor implements HandlerInterceptor {
     private final JwtUtil jwtUtil;
     private final AuthUserService authUserService;
     private final UserService userService;
+    private final ThreadLocal<Long> userIdThreadLocal = new ThreadLocal<>();
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String accessToken = request.getHeader("Authorization");
-        System.out.println("accessToken = " + accessToken);
         if (accessToken != null) {
             return handleValidAccessToken(accessToken, request, response);
         } else {
             return handleInvalidAccessToken(response, "토큰이 존재하지 않습니다.");
         }
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        userIdThreadLocal.remove();
     }
 
     private boolean handleValidAccessToken(String accessToken, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -43,7 +48,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
             // token-refresh PR merge 후 주석 해제
             // User user = userService.findOneById(authUser.getUserId()).orElseThrow(() -> new UnAuthorizedException("존재하지 않는 유저입니다."));
-             request.setAttribute("userId", accessPayload.getUserId());
+            userIdThreadLocal.set(authUser.getUserId());
 
             return true;
         } catch (UnAuthorizedException e) {

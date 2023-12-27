@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jongho.user.dao.mapper.AuthUserMapper">
-    <insert id="createAuthUser" parameterType="com.jongho.common.auth.AuthUser">
+    <insert id="createAuthUser" parameterType="com.jongho.user.domain.model.AuthUser">
         INSERT INTO auth_users (user_id, refresh_token)
         VALUES (#{userId}, #{refreshToken})
     </insert>
-    <select id="selectOneAuthUser" resultType="com.jongho.common.auth.AuthUser">
+    <select id="selectOneAuthUser" resultType="com.jongho.user.domain.model.AuthUser">
         SELECT
         auth_users.user_id, auth_users.refresh_token
         FROM auth_users
@@ -13,7 +13,7 @@
         AND auth_users.deleted_time is null
         LIMIT 1
     </select>
-    <update id="updateRefreshToken" parameterType="com.jongho.common.auth.AuthUser">
+    <update id="updateRefreshToken" parameterType="com.jongho.user.domain.model.AuthUser">
         UPDATE auth_users
         SET refresh_token = #{refreshToken}
         WHERE user_id = #{userId}

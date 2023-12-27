@@ -1,6 +1,6 @@
 package com.jongho.user.application.service;
 
-import com.jongho.common.auth.AuthUser;
+import com.jongho.user.domain.model.AuthUser;
 
 import java.util.Optional;
 
