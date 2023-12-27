@@ -65,7 +65,7 @@ public class AuthUserFacadeImplTest {
             userSignInDto = new UserSignInDto("jonghao1@", "whdgh9595");
             user = new User(1L, "whdgh9595", BcryptUtil.hashPassword("jonghao1@"), "whdgh9595", "01012341234", null);
             authUser = new AuthUser(user.getId(), refreshToken);
-            accessPayload = new AccessPayload(user.getId(), user.getUsername());
+            accessPayload = new AccessPayload(user.getId());
             refreshPayload = new RefreshPayload(user.getId());
             mockJwtUtilCreateAccessToken = when(jwtUtil.createAccessToken(accessPayload)).thenReturn(accessToekn);
             mockJwtUtilCreateRefreshToken = when(jwtUtil.createRefreshToken(refreshPayload)).thenReturn(refreshToken);
