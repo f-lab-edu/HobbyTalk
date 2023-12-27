@@ -10,4 +10,6 @@ public interface UserRepository {
     public Optional<User> findOneByUsername(String username);
 
     public Optional<User> findOneByPhoneNumber(String phoneNumber);
+
+    public Optional<User> findOneById(Long id);
 }

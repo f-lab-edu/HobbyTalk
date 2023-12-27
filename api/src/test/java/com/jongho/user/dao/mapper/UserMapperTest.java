@@ -49,4 +49,27 @@ public class UserMapperTest extends BaseMapperTest {
             assertEquals(user.getUsername(), selectUser.getUsername());
         }
     }
+
+    @Nested
+    @DisplayName("findOneById 메소드는")
+    class Describe_findOneById {
+        @AfterEach
+        void setUp() {
+            cleanUpUserTable();
+        }
+        @Test
+        @DisplayName("인자로 받은 id로 유저를 조회한다.")
+        void 유저를_조회한다() {
+            // given
+            User user = new User("jonghao", "a123b123", "whdgh9595", "01012341234", null);
+
+            // when
+            System.out.println(user.getId());
+            userMapper.createUser(user);
+            User selectUser = userMapper.findOneById(user.getId());
+
+            // then
+            assertEquals(user.getUsername(), selectUser.getUsername());
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.jongho.common.util.jwt;
 
+import com.jongho.common.exception.UnAuthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -76,13 +77,13 @@ public class JwtUtil {
                     .getBody();
 
             if (claims.get("tokenType", Integer.class) != TokenType.ACCESS_TOKEN.getValue()) {
-                throw new JwtException("올바른 토큰타입이 아닙니다.");
+                throw new UnAuthorizedException("올바른 토큰타입이 아닙니다.");
             }
 
             return new AccessPayload(
                     claims.get("userId", Long.class));
         } catch (ExpiredJwtException e) {
-            throw new ExpiredJwtException(null, null, "토큰이 만료되었습니다.");
+            throw new UnAuthorizedException("토큰이 만료되었습니다.");
         } catch (JwtException e) {
             throw new JwtException("토큰이 유효하지 않습니다.");
         }
@@ -97,14 +98,14 @@ public class JwtUtil {
                     .getBody();
 
             if (claims.get("tokenType", Integer.class) != TokenType.REFRESH_TOKEN.getValue()) {
-                throw new JwtException("올바른 토큰타입이 아닙니다.");
+                throw new UnAuthorizedException(("올바른 토큰타입이 아닙니다."));
             }
 
             return new RefreshPayload(claims.get("userId", Long.class));
         } catch (ExpiredJwtException e) {
-            throw new ExpiredJwtException(null, null, "리프레시 토큰이 만료되었습니다.");
+            throw new UnAuthorizedException("리프레시 토큰이 만료되었습니다.");
         } catch (JwtException e) {
-            throw new JwtException("리프레시 토큰이 유효하지 않습니다.");
+            throw new UnAuthorizedException(e.getMessage());
         }
     }
 }
