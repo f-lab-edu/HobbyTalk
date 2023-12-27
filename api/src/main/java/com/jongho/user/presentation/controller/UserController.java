@@ -5,6 +5,7 @@ import com.jongho.common.response.BaseResponseEntity;
 import com.jongho.user.application.dto.request.TokenRefreshDto;
 import com.jongho.user.application.dto.request.UserSignInDto;
 import com.jongho.user.application.dto.request.UserSignUpDto;
+import com.jongho.user.application.dto.response.TokenReponseDto;
 import com.jongho.user.application.facade.AuthUserFacade;
 import com.jongho.user.application.facade.UserFacade;
 import com.jongho.user.application.service.UserService;
@@ -33,15 +34,15 @@ public class UserController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<BaseResponseEntity<Map<String, String>>> signIn(@Validated @RequestBody UserSignInDto userSignUpDto) {
-        Map<String, String> result = authUserFacade.signIn(userSignUpDto.getUsername(), userSignUpDto.getPassword());
+    public ResponseEntity<BaseResponseEntity<TokenReponseDto>> signIn(@Validated @RequestBody UserSignInDto userSignUpDto) {
+        TokenReponseDto result = authUserFacade.signIn(userSignUpDto.getUsername(), userSignUpDto.getPassword());
 
         return BaseResponseEntity.ok(result, "success");
     }
 
     @PostMapping("/token-refresh")
-    public ResponseEntity<BaseResponseEntity<Map<String, String>>> tokenRefresh(@RequestBody TokenRefreshDto tokenRefreshDto) {
-        Map<String, String> result = authUserFacade.tokenRefresh(tokenRefreshDto.getRefreshToken());
+    public ResponseEntity<BaseResponseEntity<TokenReponseDto>> tokenRefresh(@RequestBody TokenRefreshDto tokenRefreshDto) {
+        TokenReponseDto result = authUserFacade.tokenRefresh(tokenRefreshDto.getRefreshToken());
 
         return BaseResponseEntity.ok(result, "success");
     }
