@@ -30,7 +30,7 @@ public class AuthUserFacadeImpl implements AuthUserFacade {
         if(!BcryptUtil.checkPassword(password, user.getPassword())) {
             throw new UnAuthorizedException("비밀번호가 일치하지 않습니다.");
         }
-        AccessPayload accessPayload = new AccessPayload(user.getId(), user.getUsername());
+        AccessPayload accessPayload = new AccessPayload(user.getId());
         RefreshPayload refreshPayload = new RefreshPayload(user.getId());
 
         String refreshToken = jwtUtil.createRefreshToken(refreshPayload);

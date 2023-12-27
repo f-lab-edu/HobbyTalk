@@ -35,7 +35,6 @@ public class JwtUtil {
 
         Map<String, Object> claims = new HashMap<String, Object>();
         claims.put("userId", accessPayload.getUserId());
-        claims.put("username", accessPayload.getUsername());
         claims.put("tokenType", accessPayload.getTokenType().getValue());
 
         Date expireTime = new Date();
@@ -82,8 +81,7 @@ public class JwtUtil {
             }
 
             return new AccessPayload(
-                    claims.get("userId", Long.class),
-                    claims.get("username", String.class));
+                    claims.get("userId", Long.class));
         } catch (ExpiredJwtException e) {
             throw new UnAuthorizedException("토큰이 만료되었습니다.");
         } catch (JwtException e) {
