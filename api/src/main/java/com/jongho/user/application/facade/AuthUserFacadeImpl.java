@@ -3,7 +3,7 @@ package com.jongho.user.application.facade;
 import com.jongho.common.exception.UnAuthorizedException;
 import com.jongho.common.util.bcrypt.BcryptUtil;
 import com.jongho.common.auth.AuthUser;
-import com.jongho.user.application.dto.response.TokenReponseDto;
+import com.jongho.user.application.dto.response.TokenResponseDto;
 import com.jongho.user.application.service.AuthUserService;
 import com.jongho.user.application.service.UserService;
 import com.jongho.user.domain.model.User;
@@ -14,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -26,7 +24,7 @@ public class AuthUserFacadeImpl implements AuthUserFacade {
     private final JwtUtil jwtUtil;
     @Override
     @Transactional
-    public TokenReponseDto signIn(String username, String password) {
+    public TokenResponseDto signIn(String username, String password) {
         User user = userService.getUser(username);
         if(!BcryptUtil.checkPassword(password, user.getPassword())) {
             throw new UnAuthorizedException("비밀번호가 일치하지 않습니다.");
@@ -44,12 +42,12 @@ public class AuthUserFacadeImpl implements AuthUserFacade {
             authUserService.createAuthUser(new AuthUser(user.getId(), refreshToken));
         }
 
-        return new TokenReponseDto(jwtUtil.createAccessToken(accessPayload), refreshToken);
+        return new TokenResponseDto(jwtUtil.createAccessToken(accessPayload), refreshToken);
     }
 
     @Override
     @Transactional
-    public TokenReponseDto tokenRefresh(String refreshToken) {
+    public TokenResponseDto tokenRefresh(String refreshToken) {
         RefreshPayload refreshPayload = jwtUtil.validateRefreshToken(refreshToken);
         Optional<AuthUser> authUser = authUserService.getAuthUser(refreshPayload.getUserId());
         if(authUser.isPresent()) {
@@ -61,7 +59,7 @@ public class AuthUserFacadeImpl implements AuthUserFacade {
                 String newRefreshToken = jwtUtil.createRefreshToken(refreshPayload);
                 authUserService.updateRefreshToken(new AuthUser(user.getId(), newRefreshToken));
 
-                return new TokenReponseDto(jwtUtil.createAccessToken(new AccessPayload(user.getId())), newRefreshToken);
+                return new TokenResponseDto(jwtUtil.createAccessToken(new AccessPayload(user.getId())), newRefreshToken);
             }
         }
         throw new UnAuthorizedException("리프레시 토큰이 유효하지 않습니다.");

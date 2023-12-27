@@ -3,6 +3,7 @@ package com.jongho.user.presentation;
 import com.google.gson.Gson;
 import com.jongho.user.application.dto.request.UserSignInDto;
 import com.jongho.user.application.dto.request.UserSignUpDto;
+import com.jongho.user.application.dto.response.TokenResponseDto;
 import com.jongho.user.application.facade.AuthUserFacade;
 import com.jongho.user.application.facade.UserFacade;
 import com.jongho.user.application.service.UserService;
@@ -16,9 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -83,9 +81,8 @@ public class UserControllerTest {
         @DisplayName("올바른 데이터를 받으면 AuthUserFacade.signIn 을 호출하고 status 200과 token을 반환한다.")
         void 올바른_데이터를_받으면_AuthUserFacade_signIn을_호출하고_status200과_token을_반환한다() throws Exception {
             // given
-            Map<String, String> result = new HashMap<>();
-            result.put("accessToken", "token");
-            result.put("refreshToken", "refreshToken");
+            TokenResponseDto result = new TokenResponseDto("token", "refreshToken");
+
             when(authUserFacade.signIn(userSignInDto.getUsername(), userSignInDto.getPassword())).thenReturn(result);
             Gson gson = new Gson();
             String userSignUpDtoJson = gson.toJson(userSignInDto);
@@ -112,9 +109,8 @@ public class UserControllerTest {
         @DisplayName("올바른 데이터를 받으면 AuthUserFacade.tokenRefresh 을 호출하고 status 200과 token을 반환한다.")
         void 올바른_데이터를_받으면_AuthUserFacade_tokenRefresh을_호출하고_status200과_token을_반환한다() throws Exception {
             // given
-            Map<String, String> result = new HashMap<>();
-            result.put("accessToken", "token");
-            result.put("refreshToken", "refreshToken");
+            TokenResponseDto result = new TokenResponseDto("token", "refreshToken");
+
             when(authUserFacade.tokenRefresh("refreshToken")).thenReturn(result);
             Gson gson = new Gson();
             String userSignUpDtoJson = gson.toJson(result);
