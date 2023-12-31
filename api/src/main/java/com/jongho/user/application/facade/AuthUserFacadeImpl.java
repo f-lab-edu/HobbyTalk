@@ -2,7 +2,7 @@ package com.jongho.user.application.facade;
 
 import com.jongho.common.exception.UnAuthorizedException;
 import com.jongho.common.util.bcrypt.BcryptUtil;
-import com.jongho.common.auth.AuthUser;
+import com.jongho.user.domain.model.AuthUser;
 import com.jongho.user.application.dto.response.TokenResponseDto;
 import com.jongho.user.application.service.AuthUserService;
 import com.jongho.user.application.service.UserService;

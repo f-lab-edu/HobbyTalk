@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-
     @GetMapping("/main")
     public ResponseEntity<?> getMainCategory(){
 

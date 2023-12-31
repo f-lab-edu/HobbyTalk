@@ -1,4 +1,4 @@
-package com.jongho.common.auth;
+package com.jongho.user.domain.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

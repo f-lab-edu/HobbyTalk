@@ -1,6 +1,6 @@
 package com.jongho.user.dao.repository;
 
-import com.jongho.common.auth.AuthUser;
+import com.jongho.user.domain.model.AuthUser;
 import com.jongho.user.dao.mapper.AuthUserMapper;
 import com.jongho.user.domain.repository.AuthUserRepository;
 import lombok.RequiredArgsConstructor;

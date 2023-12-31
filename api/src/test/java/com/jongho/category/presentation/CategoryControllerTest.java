@@ -4,12 +4,17 @@ import com.google.gson.Gson;
 import com.jongho.category.application.service.CategoryService;
 import com.jongho.category.controller.CategoryController;
 import com.jongho.category.domain.model.Category;
+import com.jongho.common.config.WebMvcConfig;
+import com.jongho.common.interceptor.AuthInterceptor;
+import com.jongho.user.presentation.controller.UserController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -23,7 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(CategoryController.class)
+@WebMvcTest(
+        value = CategoryController.class,
+        excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {AuthInterceptor.class, WebMvcConfig.class})
+)
 @DisplayName("CategoryController 클래스")
 public class CategoryControllerTest {
     @MockBean
