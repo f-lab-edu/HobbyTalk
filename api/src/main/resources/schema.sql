@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS open_chat_rooms (
   category_id int NOT NULL COMMENT '카테고리 id',
   maximum_capacity int NOT NULL COMMENT '오픈채팅방 최대 참여 가능 인원',
   current_attendance int NOT NULL DEFAULT 1 COMMENT '오픈채팅방 현재 참여한 인원',
-  password varchar(255) COMMENT '오픈채팅방 비밀번호',
+  password varchar(255) NULL COMMENT '오픈채팅방 비밀번호',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
   deleted_time timestamp COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'
