@@ -17,10 +17,8 @@ public class OpenChatRoomCreateDto {
     @Nullable
     private final String notice;
     @NotNull
-    @NotEmpty
     private final Long categoryId;
     @NotNull
-    @NotEmpty
     private final int maximumCapacity;
     @Nullable
     private final String password;

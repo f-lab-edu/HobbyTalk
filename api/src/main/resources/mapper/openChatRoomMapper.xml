@@ -10,12 +10,12 @@
         LIMIT 1
     </select>
     <insert id="createOpenChatRoom" parameterType="com.jongho.openChatRoom.domain.model.OpenChatRoom" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO open_chat_rooms (manager_id, title, notice, category_id, maximumCapacity, password)
+        INSERT INTO open_chat_rooms (manager_id, title, notice, category_id, maximum_capacity, password)
         VALUES (#{managerId}, #{title}, #{notice}, #{categoryId}, #{maximumCapacity}, #{password})
     </insert>
     <update id="updateIncrementCurrentCapacity" parameterType="Long">
         UPDATE open_chat_rooms
-        SET current_capacity = current_capacity + 1
+        SET current_attendance = current_attendance + 1
         WHERE id = #{id}
         AND deleted_time is null
     </update>

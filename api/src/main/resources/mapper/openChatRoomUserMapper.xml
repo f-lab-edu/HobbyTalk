@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.jongho.openChatRoom.dao.mapper.r">
-    <insert id="createOpenChatRoomUser" parameterType="com.jongho.openChatRoomUser.domain.model.OpenChatRoomUser" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO open_chat_room_user (open_chat_room_id, user_id )
+<mapper namespace="com.jongho.openChatRoomUser.dao.mapper.OpenChatRoomUserMapper">
+    <insert id="createOpenChatRoomUser" parameterType="com.jongho.openChatRoomUser.domain.model.OpenChatRoomUser">
+        INSERT INTO open_chat_room_users (open_chat_room_id, user_id )
         VALUES (#{openChatRoomId}, #{userId})
     </insert>
 </mapper>

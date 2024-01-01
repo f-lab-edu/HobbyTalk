@@ -17,7 +17,7 @@ public class OpenChatRoomFacadeImpl implements OpenChatRoomFacade {
     @Override
     @Transactional
     public void createOpenChatRoomAndOpenChatRoomUser(Long authUserId, OpenChatRoomCreateDto openChatRoomCreateDto) {
-        if(openChatRoomService.getCountByManagerId(authUserId) > 5){
+        if(openChatRoomService.getCountByManagerId(authUserId) >= 5){
             throw new RuntimeException("최대 개설 가능한 채팅방 개수를 초과하였습니다.");
         }
         OpenChatRoom openChatRoom = new OpenChatRoom(
@@ -30,6 +30,5 @@ public class OpenChatRoomFacadeImpl implements OpenChatRoomFacade {
         );
         openChatRoomService.createOpenChatRoom(openChatRoom);
         openChatRoomUserService.createOpenChatRoomUser(new OpenChatRoomUser(openChatRoom.getId(), authUserId));
-        openChatRoomService.updateIncrementCurrentCapacity(openChatRoom.getId());
     }
 }
