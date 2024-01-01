@@ -1,11 +1,9 @@
-package com.jongho.openChatRoom.dao.mapper;
+package com.jongho.openChatRoom.application.service;
 
 import com.jongho.openChatRoom.domain.model.OpenChatRoom;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
-public interface OpenChatRoomMapper {
-    public int countByManagerId(Long managerId);
+public interface OpenChatRoomService {
     public void createOpenChatRoom(OpenChatRoom openChatRoom);
+    public int getCountByManagerId(Long managerId);
     public void updateIncrementCurrentCapacity(Long openChatRoomId);
 }
