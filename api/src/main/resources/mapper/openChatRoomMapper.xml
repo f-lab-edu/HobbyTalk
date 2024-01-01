@@ -13,4 +13,10 @@
         INSERT INTO open_chat_rooms (manager_id, title, notice, category_id, maximumCapacity, password)
         VALUES (#{managerId}, #{title}, #{notice}, #{categoryId}, #{maximumCapacity}, #{password})
     </insert>
+    <update id="updateIncrementCurrentCapacity" parameterType="Long">
+        UPDATE open_chat_rooms
+        SET current_capacity = current_capacity + 1
+        WHERE id = #{id}
+        AND deleted_time is null
+    </update>
 </mapper>
