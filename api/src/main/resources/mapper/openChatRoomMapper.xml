@@ -9,4 +9,8 @@
         AND open_chat_rooms.deleted_time is null
         LIMIT 1
     </select>
+    <insert id="createOpenChatRoom" parameterType="com.jongho.openChatRoom.domain.model.OpenChatRoom" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO open_chat_rooms (manager_id, title, notice, category_id, maximumCapacity, password)
+        VALUES (#{managerId}, #{title}, #{notice}, #{categoryId}, #{maximumCapacity}, #{password})
+    </insert>
 </mapper>

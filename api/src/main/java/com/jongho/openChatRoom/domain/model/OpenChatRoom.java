@@ -1,11 +1,9 @@
 package com.jongho.openChatRoom.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode
