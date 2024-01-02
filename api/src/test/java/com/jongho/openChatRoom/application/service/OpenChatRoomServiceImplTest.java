@@ -57,7 +57,7 @@ public class OpenChatRoomServiceImplTest {
             when(openChatRoomRepository.countByManagerId(managerId)).thenReturn(5);
 
             // when
-            int result = openChatRoomServiceImpl.getCountByManagerId(managerId);
+            int result = openChatRoomServiceImpl.getOpenChatRoomCountByManagerId(managerId);
 
             // then
             verify(openChatRoomRepository, times(1)).countByManagerId(managerId);

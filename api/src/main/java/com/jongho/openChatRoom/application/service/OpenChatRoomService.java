@@ -4,6 +4,6 @@ import com.jongho.openChatRoom.domain.model.OpenChatRoom;
 
 public interface OpenChatRoomService {
     public void createOpenChatRoom(OpenChatRoom openChatRoom);
-    public int getCountByManagerId(Long managerId);
-    public void updateIncrementCurrentCapacity(Long openChatRoomId);
+    public int getOpenChatRoomCountByManagerId(Long managerId);
+    public void incrementOpenChatRoomCurrentAttendance(Long openChatRoomId);
 }

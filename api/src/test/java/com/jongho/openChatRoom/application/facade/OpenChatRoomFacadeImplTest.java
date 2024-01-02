@@ -64,7 +64,7 @@ public class OpenChatRoomFacadeImplTest {
         @DisplayName("생성하려는 유저가 소유하고있는 챗룸이 5개 이상이면 MaxChatRoomsExceededException예외를 던진다")
         void 생성하려는_유저가_소유하고있는_챗룸이_5개_이상이면_MaxChatRoomsExceededException예외를_던진다() {
             // given
-            when(openChatRoomService.getCountByManagerId(userId)).thenReturn(5);
+            when(openChatRoomService.getOpenChatRoomCountByManagerId(userId)).thenReturn(5);
 
             // when then
             assertThrows(MaxChatRoomsExceededException.class, () -> {openChatRoomFacadeImpl.createOpenChatRoomAndOpenChatRoomUser(userId, openChatRoomCreateDto);});
@@ -74,7 +74,7 @@ public class OpenChatRoomFacadeImplTest {
         @DisplayName("생성하려는 챗룸의 카테고리가 존재하지 않으면 CategoryNotFoundException예외를 던진다")
         void 생성하려는_챗룸의_카테고리가_존재하지_않으면_CategoryNotFoundException예외를_던진다() {
             // given
-            when(openChatRoomService.getCountByManagerId(userId)).thenReturn(4);
+            when(openChatRoomService.getOpenChatRoomCountByManagerId(userId)).thenReturn(4);
             when(categoryService.getOneCategoryById(openChatRoomCreateDto.getCategoryId())).thenReturn(Optional.empty());
 
             // when then
@@ -85,7 +85,7 @@ public class OpenChatRoomFacadeImplTest {
         @DisplayName("생성하려는 챗룸의 카테고리가 존재하고, 유저가 소유하고있는 챗룸이 5개 이하이면 챗룸을 생성하고, 챗룸유저를 생성한다")
         void 생성하려는_챗룸의_카테고리가_존재하고_유저가_소유하고있는_챗룸이_5개_이하이면_챗룸을_생성하고_챗룸유저를_생성한다() {
             // given
-            when(openChatRoomService.getCountByManagerId(userId)).thenReturn(4);
+            when(openChatRoomService.getOpenChatRoomCountByManagerId(userId)).thenReturn(4);
             when(categoryService.getOneCategoryById(openChatRoomCreateDto.getCategoryId())).thenReturn(Optional.of(new Category("카테고리이름", 1L)));
             doNothing().when(openChatRoomService).createOpenChatRoom(openChatRoom);
 

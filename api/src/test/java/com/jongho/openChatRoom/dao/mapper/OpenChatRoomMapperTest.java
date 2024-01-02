@@ -61,14 +61,12 @@ public class OpenChatRoomMapperTest extends BaseMapperTest {
                     "비밀번호"
             );
             openChatRoomMapper.createOpenChatRoom(openChatRoom);
-            openChatRoomMapper.createOpenChatRoom(openChatRoom);
-            openChatRoomMapper.createOpenChatRoom(openChatRoom);
 
             // when
             int count = openChatRoomMapper.countByManagerId(openChatRoom.getManagerId());
 
             // then
-            assertEquals(3, count);
+            assertEquals(1, count);
         }
     }
 }

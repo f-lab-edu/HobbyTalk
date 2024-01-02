@@ -69,7 +69,8 @@ CREATE TABLE IF NOT EXISTS open_chat_rooms (
   password varchar(255) NULL COMMENT '오픈채팅방 비밀번호',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
   deleted_time timestamp COMMENT '삭제 날짜',
-  created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'
+  created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜',
+  UNIQUE (manager_id, title)
 );
 
 CREATE TABLE IF NOT EXISTS open_chat_room_users (

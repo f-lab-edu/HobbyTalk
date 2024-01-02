@@ -68,7 +68,7 @@ public class OpenChatRoomControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(openChatRoomCreateDtoJson))
                     .andExpect(status().isCreated())
-                    .andExpect(jsonPath("$.message").value("open chat room create"))
+                    .andExpect(jsonPath("$.message").value("CREATED"))
                     .andDo(print());
         }
     }

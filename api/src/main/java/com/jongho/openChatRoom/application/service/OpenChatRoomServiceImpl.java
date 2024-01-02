@@ -14,11 +14,11 @@ public class OpenChatRoomServiceImpl implements OpenChatRoomService{
         openChatRoomRepository.createOpenChatRoom(openChatRoom);
     }
     @Override
-    public int getCountByManagerId(Long managerId) {
+    public int getOpenChatRoomCountByManagerId(Long managerId) {
         return openChatRoomRepository.countByManagerId(managerId);
     }
     @Override
-    public void updateIncrementCurrentCapacity(Long openChatRoomId) {
+    public void incrementOpenChatRoomCurrentAttendance(Long openChatRoomId) {
         openChatRoomRepository.updateIncrementCurrentCapacity(openChatRoomId);
     }
 }

@@ -1,6 +1,7 @@
 package com.jongho.openChatRoom.controller;
 
 import com.jongho.common.annotaition.HttpRequestLogging;
+import com.jongho.common.response.BaseMessageEnum;
 import com.jongho.common.response.BaseResponseEntity;
 import com.jongho.common.util.threadlocal.AuthenticatedUserThreadLocalManager;
 import com.jongho.openChatRoom.application.dto.request.OpenChatRoomCreateDto;
@@ -24,6 +25,6 @@ public class OpenChatRoomController {
     public ResponseEntity<BaseResponseEntity<?>> createOpenChatRoom(@Validated @RequestBody OpenChatRoomCreateDto openChatRoomCreateDto){
         openChatRoomFacade.createOpenChatRoomAndOpenChatRoomUser(AuthenticatedUserThreadLocalManager.get(), openChatRoomCreateDto);
 
-        return BaseResponseEntity.create("open chat room create");
+        return BaseResponseEntity.create(BaseMessageEnum.CREATED.getValue());
     }
 }

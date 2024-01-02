@@ -15,7 +15,14 @@
     </insert>
     <update id="updateIncrementCurrentCapacity" parameterType="Long">
         UPDATE open_chat_rooms
-        SET current_attendance = current_attendance + 1
+        SET current_attendance = (
+            SELECT current_attendance
+            FROM open_chat_rooms
+            WHERE id = #{id}
+            AND deleted_time is null
+            FOR UPDATE
+        ) + 1
+        WHERE id = #{id}
         WHERE id = #{id}
         AND deleted_time is null
     </update>
