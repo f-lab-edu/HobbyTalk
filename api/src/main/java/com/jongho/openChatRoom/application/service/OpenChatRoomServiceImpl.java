@@ -18,7 +18,7 @@ public class OpenChatRoomServiceImpl implements OpenChatRoomService{
         return openChatRoomRepository.countByManagerId(managerId);
     }
     @Override
-    public void incrementOpenChatRoomCurrentAttendance(Long openChatRoomId) {
-        openChatRoomRepository.updateIncrementCurrentCapacity(openChatRoomId);
+    public void incrementOpenChatRoomCurrentAttendance(Long openChatRoomId, int currentAttendance) {
+        openChatRoomRepository.updateIncrementCurrentCapacity(openChatRoomId, currentAttendance);
     }
 }

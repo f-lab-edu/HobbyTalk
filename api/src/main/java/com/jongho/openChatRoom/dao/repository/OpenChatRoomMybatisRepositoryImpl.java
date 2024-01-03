@@ -19,7 +19,7 @@ public class OpenChatRoomMybatisRepositoryImpl implements OpenChatRoomRepository
         openChatRoomMapper.createOpenChatRoom(openChatRoom);
     }
     @Override
-    public void updateIncrementCurrentCapacity(Long openChatRoomId) {
-        openChatRoomMapper.updateIncrementCurrentCapacity(openChatRoomId);
+    public void updateIncrementCurrentCapacity(Long openChatRoomId, int currentAttendance) {
+        openChatRoomMapper.updateIncrementCurrentCapacity(openChatRoomId, currentAttendance);
     }
 }

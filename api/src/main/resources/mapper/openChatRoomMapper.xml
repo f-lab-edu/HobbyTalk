@@ -13,17 +13,26 @@
         INSERT INTO open_chat_rooms (manager_id, title, notice, category_id, maximum_capacity, password)
         VALUES (#{managerId}, #{title}, #{notice}, #{categoryId}, #{maximumCapacity}, #{password})
     </insert>
-    <update id="updateIncrementCurrentCapacity" parameterType="Long">
+    <update id="updateIncrementCurrentCapacity">
         UPDATE open_chat_rooms
-        SET current_attendance = (
-            SELECT current_attendance
-            FROM open_chat_rooms
-            WHERE id = #{id}
-            AND deleted_time is null
-            FOR UPDATE
-        ) + 1
-        WHERE id = #{id}
+        SET current_attendance = #{currentAttendance} + 1
         WHERE id = #{id}
         AND deleted_time is null
     </update>
+    <select id="selectOneOpenChatRoomById" parameterType="Long" resultType="com.jongho.openChatRoom.domain.model.OpenChatRoom">
+        SELECT
+            id,
+            manager_id,
+            title,
+            notice,
+            category_id,
+            maximum_capacity,
+            current_attendance,
+            password
+        FROM open_chat_rooms
+        WHERE id = #{id}
+        AND deleted_time is null
+        LIMIT 1
+        FOR UPDATE
+    </select>
 </mapper>
