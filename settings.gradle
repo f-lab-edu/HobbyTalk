@@ -1,7 +1,4 @@
 rootProject.name = 'hobbytalk'
 include 'api'
-include 'open-chat-api'
-include 'common'
 include 'batch'
-include 'api-gateway'
 
