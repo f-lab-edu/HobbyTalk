@@ -2,6 +2,7 @@ package com.jongho.openChatRoom.application.facade;
 
 import com.jongho.category.application.service.CategoryService;
 import com.jongho.category.domain.model.Category;
+import com.jongho.common.exception.AlreadyExistsException;
 import com.jongho.common.exception.CategoryNotFoundException;
 import com.jongho.common.exception.MaxChatRoomsExceededException;
 import com.jongho.openChatRoom.application.dto.request.OpenChatRoomCreateDto;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.rmi.AlreadyBoundException;
 import java.util.Optional;
 
 @Service
@@ -31,6 +33,10 @@ public class OpenChatRoomFacadeImpl implements OpenChatRoomFacade {
         Optional<Category> category = categoryService.getOneCategoryById(openChatRoomCreateDto.getCategoryId());
         if(category.isEmpty()){
             throw new CategoryNotFoundException("존재하지 않는 카테고리입니다.");
+        }
+        Optional<OpenChatRoom> openChatRoomByManagerIdAndTitle = openChatRoomService.getOpenChatRoomByManagerIdAndTitle(authUserId, openChatRoomCreateDto.getTitle());
+        if(openChatRoomByManagerIdAndTitle.isPresent()){
+            throw new AlreadyExistsException("이미 존재하는 채팅방입니다.");
         }
 
         OpenChatRoom openChatRoom = new OpenChatRoom(

@@ -5,6 +5,8 @@ import com.jongho.openChatRoom.domain.repository.OpenChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class OpenChatRoomServiceImpl implements OpenChatRoomService{
@@ -20,5 +22,9 @@ public class OpenChatRoomServiceImpl implements OpenChatRoomService{
     @Override
     public void incrementOpenChatRoomCurrentAttendance(Long openChatRoomId, int currentAttendance) {
         openChatRoomRepository.updateIncrementCurrentCapacity(openChatRoomId, currentAttendance);
+    }
+    @Override
+    public Optional<OpenChatRoom> getOpenChatRoomByManagerIdAndTitle(Long managerId, String title) {
+        return openChatRoomRepository.selectOneOpenChatRoomByManagerIdAndTitle(managerId, title);
     }
 }

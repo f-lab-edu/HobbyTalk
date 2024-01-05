@@ -2,6 +2,7 @@ package com.jongho.openChatRoom.application.facade;
 
 import com.jongho.category.application.service.CategoryService;
 import com.jongho.category.domain.model.Category;
+import com.jongho.common.exception.AlreadyExistsException;
 import com.jongho.common.exception.CategoryNotFoundException;
 import com.jongho.common.exception.MaxChatRoomsExceededException;
 import com.jongho.openChatRoom.application.dto.request.OpenChatRoomCreateDto;
@@ -19,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -82,12 +84,27 @@ public class OpenChatRoomFacadeImplTest {
         }
 
         @Test
+        @DisplayName("생성하려는 챗룸의 카테고리가 존재하고, 유저가 소유하고있는 챗룸이 5개 이하이면서, 이미 존재하는 챗룸이면 AlreadyExistsException예외를 던진다")
+        void 생성하려는_챗룸의_카테고리가_존재하고_유저가_소유하고있는_챗룸이_5개_이하이면서_이미_존재하는_챗룸이면_AlreadyExistsException예외를_던진다() {
+            // given
+            when(openChatRoomService.getOpenChatRoomCountByManagerId(userId)).thenReturn(4);
+            when(categoryService.getOneCategoryById(openChatRoomCreateDto.getCategoryId())).thenReturn(Optional.of(new Category("카테고리이름", 1L)));
+            when(openChatRoomService.getOpenChatRoomByManagerIdAndTitle(userId, openChatRoomCreateDto.getTitle())).thenReturn(Optional.of(openChatRoom));
+
+            // when then
+            Exception e = assertThrows(AlreadyExistsException.class, () -> {openChatRoomFacadeImpl.createOpenChatRoomAndOpenChatRoomUser(userId, openChatRoomCreateDto);});
+            assertEquals("이미 존재하는 채팅방입니다.", e.getMessage());
+        }
+
+        @Test
         @DisplayName("생성하려는 챗룸의 카테고리가 존재하고, 유저가 소유하고있는 챗룸이 5개 이하이면 챗룸을 생성하고, 챗룸유저를 생성한다")
         void 생성하려는_챗룸의_카테고리가_존재하고_유저가_소유하고있는_챗룸이_5개_이하이면_챗룸을_생성하고_챗룸유저를_생성한다() {
             // given
             when(openChatRoomService.getOpenChatRoomCountByManagerId(userId)).thenReturn(4);
             when(categoryService.getOneCategoryById(openChatRoomCreateDto.getCategoryId())).thenReturn(Optional.of(new Category("카테고리이름", 1L)));
+            when(openChatRoomService.getOpenChatRoomByManagerIdAndTitle(userId, openChatRoomCreateDto.getTitle())).thenReturn(Optional.empty());
             doNothing().when(openChatRoomService).createOpenChatRoom(openChatRoom);
+
 
             // when
             openChatRoomFacadeImpl.createOpenChatRoomAndOpenChatRoomUser(userId, openChatRoomCreateDto);
