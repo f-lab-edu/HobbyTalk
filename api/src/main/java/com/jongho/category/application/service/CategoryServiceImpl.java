@@ -29,4 +29,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryRepository.selectSubCategory(parentId);
     }
+
+    @Override
+    public Optional<Category> getOneCategoryById(Long categoryId) {
+        return categoryRepository.selectOneCategoryById(categoryId);
+    }
 }

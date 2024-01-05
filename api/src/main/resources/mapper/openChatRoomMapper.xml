@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jongho.openChatRoom.dao.mapper.OpenChatRoomMapper">
+    <select id="countByManagerId" parameterType="Long" resultType="int">
+        SELECT
+            COUNT(*) AS count
+        FROM open_chat_rooms
+        WHERE open_chat_rooms.manager_id = #{managerId}
+        AND open_chat_rooms.deleted_time is null
+        LIMIT 1
+    </select>
+    <insert id="createOpenChatRoom" parameterType="com.jongho.openChatRoom.domain.model.OpenChatRoom" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO open_chat_rooms (manager_id, title, notice, category_id, maximum_capacity, password)
+        VALUES (#{managerId}, #{title}, #{notice}, #{categoryId}, #{maximumCapacity}, #{password})
+    </insert>
+    <update id="updateIncrementCurrentCapacity">
+        UPDATE open_chat_rooms
+        SET current_attendance = #{currentAttendance} + 1
+        WHERE id = #{id}
+        AND deleted_time is null
+    </update>
+    <select id="selectOneOpenChatRoomById" parameterType="Long" resultType="com.jongho.openChatRoom.domain.model.OpenChatRoom">
+        SELECT
+            id,
+            manager_id,
+            title,
+            notice,
+            category_id,
+            maximum_capacity,
+            current_attendance,
+            password
+        FROM open_chat_rooms
+        WHERE id = #{id}
+        AND deleted_time is null
+        LIMIT 1
+        FOR UPDATE
+    </select>
+</mapper>
