@@ -72,4 +72,31 @@ public class OpenChatRoomControllerTest {
                     .andDo(print());
         }
     }
+
+    @Nested
+    @DisplayName("joinOpenChatRoom 메소드는")
+    class Describe_joinOpenChatRoom {
+        private String password;
+        private Long openChatRoomId;
+
+        @BeforeEach
+        public void setUp() {
+            password = "비밀번호";
+            openChatRoomId = 1L;
+        }
+        @Test
+        @DisplayName("호출이 되면 status 200과 success라는 메세지를 반환한다.")
+        void 호출이_되면_status_200과_success라는_메세지를_반환한다() throws Exception{
+            // given
+            doNothing().when(openChatRoomFacade).joinOpenChatRoom(1L, 1L, "비밀번호");
+
+            // when
+            mockMvc.perform(post("/api/v1/open-chat-rooms/{openChatRoomId}/join", openChatRoomId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"password\":\"비밀번호\"}"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.message").value("SUCCESS"))
+                    .andDo(print());
+        }
+    }
 }

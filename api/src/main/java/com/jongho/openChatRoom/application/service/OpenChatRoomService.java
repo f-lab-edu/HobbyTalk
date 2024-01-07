@@ -9,4 +9,5 @@ public interface OpenChatRoomService {
     public int getOpenChatRoomCountByManagerId(Long managerId);
     public Optional<OpenChatRoom> getOpenChatRoomByManagerIdAndTitle(Long managerId, String title);
     public void incrementOpenChatRoomCurrentAttendance(Long openChatRoomId, int currentAttendance);
+    public Optional<OpenChatRoom> getOpenChatRoomById(Long openChatRoomId);
 }

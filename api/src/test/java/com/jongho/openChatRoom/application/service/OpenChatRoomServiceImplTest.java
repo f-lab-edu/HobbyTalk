@@ -10,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -25,8 +27,8 @@ public class OpenChatRoomServiceImplTest {
     @DisplayName("createOpenChatRoom 메소드는")
     class Describe_createOpenChatRoom {
         @Test
-        @DisplayName("OpenChatRoomServiceImpl의 createOpenChatRoom 메소드를 호출한다")
-        void OpenChatRoomServiceImpl의_createOpenChatRoom메소드를_한번_호출한다() {
+        @DisplayName("OpenChatRoomRepository의 createOpenChatRoom 메소드를 호출한다")
+        void OpenChatRoomRepository의_createOpenChatRoom메소드를_한번_호출한다() {
             // given
             OpenChatRoom openChatRoom = new OpenChatRoom(
                     "타이틀",
@@ -50,8 +52,8 @@ public class OpenChatRoomServiceImplTest {
     @DisplayName("countByManagerId 메소드는")
     class Describe_countByManagerId {
         @Test
-        @DisplayName("OpenChatRoomServiceImpl의 countByManagerId 메소드를 호출해서 받은 count를 반환한다")
-        void OpenChatRoomServiceImpl의_countByManagerId메소드를_한번_호출해서_받은_count를_반환한다() {
+        @DisplayName("OpenChatRoomRepository의 countByManagerId 메소드를 호출해서 받은 count를 반환한다")
+        void OpenChatRoomRepository의_countByManagerId메소드를_한번_호출해서_받은_count를_반환한다() {
             // given
             Long managerId = 1L;
             when(openChatRoomRepository.countByManagerId(managerId)).thenReturn(5);
@@ -62,6 +64,80 @@ public class OpenChatRoomServiceImplTest {
             // then
             verify(openChatRoomRepository, times(1)).countByManagerId(managerId);
             assertEquals(5, result);
+        }
+    }
+
+    @Nested
+    @DisplayName("updateIncrementCurrentCapacity 메소드는")
+    class Describe_updateIncrementCurrentCapacity {
+        @Test
+        @DisplayName("OpenChatRoomRepository의 updateIncrementCurrentCapacity 메소드를 호출한다")
+        void OpenChatRoomRepository의_updateIncrementCurrentCapacity메소드를_한번_호출한다() {
+            // given
+            Long openChatRoomId = 1L;
+            int currentAttendance = 1;
+            doNothing().when(openChatRoomRepository).updateIncrementCurrentCapacity(openChatRoomId, currentAttendance);
+
+            // when
+            openChatRoomServiceImpl.incrementOpenChatRoomCurrentAttendance(openChatRoomId, currentAttendance);
+
+            // then
+            verify(openChatRoomRepository, times(1)).updateIncrementCurrentCapacity(openChatRoomId, currentAttendance);
+        }
+    }
+
+    @Nested
+    @DisplayName("selectOneOpenChatRoomByManagerIdAndTitle 메소드는")
+    class Describe_selectOneOpenChatRoomByManagerIdAndTitle {
+        @Test
+        @DisplayName("OpenChatRoomRepository의 selectOneOpenChatRoomByManagerIdAndTitle 메소드를 호출해서 받은 openChatRoom을 반환한다")
+        void OpenChatRoomRepository의_selectOneOpenChatRoomByManagerIdAndTitle메소드를_한번_호출해서_받은_openChatRoom을_반환한다() {
+            // given
+            Long managerId = 1L;
+            String title = "타이틀";
+            OpenChatRoom openChatRoom = new OpenChatRoom(
+                    "타이틀",
+                    "공지사항",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            when(openChatRoomRepository.selectOneOpenChatRoomByManagerIdAndTitle(managerId, title)).thenReturn(Optional.of(openChatRoom));
+
+            // when
+            OpenChatRoom result = openChatRoomServiceImpl.getOpenChatRoomByManagerIdAndTitle(managerId, title).get();
+
+            // then
+            verify(openChatRoomRepository, times(1)).selectOneOpenChatRoomByManagerIdAndTitle(managerId, title);
+            assertEquals(openChatRoom, result);
+        }
+    }
+
+    @Nested
+    @DisplayName("selectOneOpenChatRoomById 메소드는")
+    class Describe_selectOneOpenChatRoomById {
+        @Test
+        @DisplayName("OpenChatRoomRepository의 selectOneOpenChatRoomById 메소드를 호출해서 받은 openChatRoom을 반환한다")
+        void OpenChatRoomRepository의_selectOneOpenChatRoomById메소드를_한번_호출해서_받은_openChatRoom을_반환한다() {
+            // given
+            Long openChatRoomId = 1L;
+            OpenChatRoom openChatRoom = new OpenChatRoom(
+                    "타이틀",
+                    "공지사항",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            when(openChatRoomRepository.selectOneOpenChatRoomById(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
+
+            // when
+            OpenChatRoom result = openChatRoomServiceImpl.getOpenChatRoomById(openChatRoomId).get();
+
+            // then
+            verify(openChatRoomRepository, times(1)).selectOneOpenChatRoomById(openChatRoomId);
+            assertEquals(openChatRoom, result);
         }
     }
 }

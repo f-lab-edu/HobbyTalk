@@ -69,4 +69,94 @@ public class OpenChatRoomMapperTest extends BaseMapperTest {
             assertEquals(1, count);
         }
     }
+
+    @Nested
+    @DisplayName("updateIncrementCurrentCapacity 메소드는")
+    class Describe_updateIncrementCurrentCapacity {
+        @BeforeEach
+        void setUp() {
+            cleanUpOpenChatRoomTable();
+        }
+
+        @Test
+        @DisplayName("인자로 받은 오픈채팅방의 현재 참여 인원을 1 증가시킨다.")
+        void 오픈채팅방의_현재_참여_인원을_1_증가시킨다() {
+            // given
+            OpenChatRoom openChatRoom = new OpenChatRoom(
+                    "타이틀",
+                    "공지사항",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            openChatRoomMapper.createOpenChatRoom(openChatRoom);
+
+            // when
+            openChatRoomMapper.updateIncrementCurrentCapacity(openChatRoom.getId(), 1);
+
+            // then
+            assertEquals(2, openChatRoomMapper.selectOneOpenChatRoomById(openChatRoom.getId()).getCurrentAttendance());
+        }
+    }
+
+    @Nested
+    @DisplayName("selectOneOpenChatRoomByManagerIdAndTitle 메소드는")
+    class Describe_selectOneOpenChatRoomByManagerIdAndTitle {
+        @BeforeEach
+        void setUp() {
+            cleanUpOpenChatRoomTable();
+        }
+
+        @Test
+        @DisplayName("인자로 받은 매니저 아이디와 타이틀을 가진 오픈채팅방을 반환한다.")
+        void 오픈채팅방을_반환한다() {
+            // given
+            OpenChatRoom openChatRoom = new OpenChatRoom(
+                    "타이틀",
+                    "공지사항",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            openChatRoomMapper.createOpenChatRoom(openChatRoom);
+
+            // when
+            OpenChatRoom result = openChatRoomMapper.selectOneOpenChatRoomByManagerIdAndTitle(openChatRoom.getManagerId(), openChatRoom.getTitle());
+
+            // then
+            assertEquals(openChatRoom.getId(), result.getId());
+        }
+    }
+
+    @Nested
+    @DisplayName("selectOneOpenChatRoomById 메소드는")
+    class Describe_selectOneOpenChatRoomById {
+        @BeforeEach
+        void setUp() {
+            cleanUpOpenChatRoomTable();
+        }
+
+        @Test
+        @DisplayName("인자로 받은 오픈채팅방 아이디를 가진 오픈채팅방을 반환한다.")
+        void 오픈채팅방을_반환한다() {
+            // given
+            OpenChatRoom openChatRoom = new OpenChatRoom(
+                    "타이틀",
+                    "공지사항",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            openChatRoomMapper.createOpenChatRoom(openChatRoom);
+
+            // when
+            OpenChatRoom result = openChatRoomMapper.selectOneOpenChatRoomById(openChatRoom.getId());
+
+            // then
+            assertEquals(openChatRoom.getId(), result.getId());
+        }
+    }
 }
