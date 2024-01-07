@@ -6,4 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface OpenChatRoomUserMapper {
     void createOpenChatRoomUser(OpenChatRoomUser openChatRoomUser);
+    OpenChatRoomUser selectOneOpenChatRoomUserByOpenChatRoomIdAndUserId(Long openChatRoomId, Long userId);
 }

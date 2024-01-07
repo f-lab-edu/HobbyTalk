@@ -5,4 +5,11 @@
         INSERT INTO open_chat_room_users (open_chat_room_id, user_id )
         VALUES (#{openChatRoomId}, #{userId})
     </insert>
+    <select id="selectOpenChatRoomUserByOpenChatRoomIdAndUserId" parameterType="com.jongho.openChatRoomUser.domain.model.OpenChatRoomUser" resultType="com.jongho.openChatRoomUser.domain.model.OpenChatRoomUser">
+        SELECT open_chat_room_id, user_id
+        FROM open_chat_room_users
+        WHERE open_chat_room_id = #{openChatRoomId}
+        AND user_id = #{userId}
+        And deleted_time IS NULL
+    </select>
 </mapper>
