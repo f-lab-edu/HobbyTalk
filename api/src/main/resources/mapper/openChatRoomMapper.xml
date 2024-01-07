@@ -19,6 +19,22 @@
         WHERE id = #{id}
         AND deleted_time is null
     </update>
+    <select id="selectOneOpenChatRoomByManagerIdAndTitle" parameterType="com.jongho.openChatRoom.domain.model.OpenChatRoom" resultType="com.jongho.openChatRoom.domain.model.OpenChatRoom">
+        SELECT
+            id,
+            manager_id,
+            title,
+            notice,
+            category_id,
+            maximum_capacity,
+            current_attendance,
+            password
+        FROM open_chat_rooms
+        WHERE manager_id = #{managerId}
+        AND title = #{title}
+        AND deleted_time is null
+        LIMIT 1
+    </select>
     <select id="selectOneOpenChatRoomById" parameterType="Long" resultType="com.jongho.openChatRoom.domain.model.OpenChatRoom">
         SELECT
             id,
