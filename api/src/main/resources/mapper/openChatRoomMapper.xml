@@ -22,9 +22,9 @@
     <select id="selectOneOpenChatRoomByManagerIdAndTitle" parameterType="com.jongho.openChatRoom.domain.model.OpenChatRoom" resultType="com.jongho.openChatRoom.domain.model.OpenChatRoom">
         SELECT
             id,
-            manager_id,
             title,
             notice,
+            manager_id,
             category_id,
             maximum_capacity,
             current_attendance,
@@ -38,9 +38,9 @@
     <select id="selectOneOpenChatRoomById" parameterType="Long" resultType="com.jongho.openChatRoom.domain.model.OpenChatRoom">
         SELECT
             id,
-            manager_id,
             title,
             notice,
+            manager_id,
             category_id,
             maximum_capacity,
             current_attendance,
