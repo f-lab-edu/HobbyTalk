@@ -6,6 +6,7 @@ import com.jongho.common.exception.AlreadyExistsException;
 import com.jongho.common.exception.CategoryNotFoundException;
 import com.jongho.common.exception.MaxChatRoomsExceededException;
 import com.jongho.openChatRoom.application.dto.request.OpenChatRoomCreateDto;
+import com.jongho.openChatRoom.application.dto.response.MyOpenChatRoomListDto;
 import com.jongho.openChatRoom.application.service.OpenChatRoomService;
 import com.jongho.openChatRoom.domain.model.OpenChatRoom;
 import com.jongho.openChatRoomUser.application.service.OpenChatRoomUserService;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.rmi.AlreadyBoundException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,5 +51,12 @@ public class OpenChatRoomFacadeImpl implements OpenChatRoomFacade {
         );
         openChatRoomService.createOpenChatRoom(openChatRoom);
         openChatRoomUserService.createOpenChatRoomUser(new OpenChatRoomUser(openChatRoom.getId(), authUserId));
+    }
+
+    @Override
+    public List<MyOpenChatRoomListDto> getMyOpenChatRoomList(Long userId, int offset) {
+        int DEFAULT_OFFSET = 0;
+        if (offset == DEFAULT_OFFSET) return openChatRoomService.getMyOpenChatRoomList(userId);
+        return openChatRoomService.getMyOpenChatRoomList(userId, offset);
     }
 }

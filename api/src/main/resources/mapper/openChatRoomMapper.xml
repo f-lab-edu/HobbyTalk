@@ -35,4 +35,70 @@
         LIMIT 1
         FOR UPDATE
     </select>
+    <select id="selectMyOpenChatRoomListByUserId" resultType="com.jongho.openChatRoom.application.dto.response.MyOpenChatRoomListDto">
+        SELECT
+            ocr.id,
+            ocr.title,
+            ocr.notice,
+            ocr.maximum_capacity,
+            ocr.current_attendance,
+            ocr.created_time,
+            if(ocr.manager_id = #{userId}, 1, 0) as is_manager,
+            hc.name as category_name,
+            if(oc.id is null, null, oc.message) as last_message,
+            if(oc.id is null, null, oc.created_time) as last_message_time
+        FROM open_chat_rooms as ocr
+        INNER JOIN open_chat_room_users as ocru
+            ON ocru.open_chat_room_id = ocr.id
+            AND ocru.user_id = #{userId}
+            AND ocru.deleted_time is null
+        INNER JOIN hobby_categories as hc
+            ON hc.id = ocr.category_id
+        LEFT JOIN open_chats as oc
+            ON oc.id = (
+                SELECT
+                    id
+                FROM open_chats
+                WHERE open_chat_room_id = ocr.id
+                AND deleted_time is null
+                ORDER BY created_time DESC
+                LIMIT 1
+            )
+        WHERE ocr.deleted_time is null
+        ORDER BY last_message_time DESC, ocr.created_time DESC
+        LIMIT 20
+    </select>
+    <select id="selectMyOpenChatRoomListByUserIdAndOffset" resultType="com.jongho.openChatRoom.application.dto.response.MyOpenChatRoomListDto">
+        SELECT
+            ocr.id,
+            ocr.title,
+            ocr.notice,
+            ocr.maximum_capacity,
+            ocr.current_attendance,
+            ocr.created_time,
+            if(ocr.manager_id = #{userId}, 1, 0) as is_manager,
+            hc.name as category_name,
+            if(oc.id is null, null, oc.message) as last_message,
+            if(oc.id is null, null, oc.created_time) as last_message_time
+        FROM open_chat_rooms as ocr
+        INNER JOIN open_chat_room_users as ocru
+            ON ocru.open_chat_room_id = ocr.id
+            AND ocru.user_id = #{userId}
+            AND ocru.deleted_time is null
+        INNER JOIN hobby_categories as hc
+            ON hc.id = ocr.category_id
+        LEFT JOIN open_chats as oc
+            ON oc.id = (
+                SELECT
+                id
+                FROM open_chats
+                WHERE open_chat_room_id = ocr.id
+                AND deleted_time is null
+                ORDER BY created_time DESC
+                LIMIT 1
+            )
+        WHERE ocr.deleted_time is null
+        ORDER BY last_message_time DESC, ocr.created_time DESC
+        LIMIT 20 OFFSET #{offset}
+    </select>
 </mapper>
