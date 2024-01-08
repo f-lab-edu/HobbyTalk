@@ -114,4 +114,43 @@ public class OpenChatRoomFacadeImplTest {
             verify(openChatRoomUserService, times(1)).createOpenChatRoomUser(any());
         }
     }
+
+    @Nested
+    @DisplayName("getMyOpenChatRoomList 메소드는")
+    class Describe_getMyOpenChatRoomList {
+        private Long userId;
+        private int offset;
+        @BeforeEach
+        void setUp() {
+            userId = 1L;
+            offset = 0;
+        }
+
+        @Test
+        @DisplayName("offset이 0이면 userId인자만 받는 getMyOpenChatRoomList를 호출한다")
+        void offset이_0이면_userId인자만_받는_getMyOpenChatRoomList를_호출한다() {
+            // given
+            when(openChatRoomService.getMyOpenChatRoomList(userId)).thenReturn(null);
+
+            // when
+            openChatRoomFacadeImpl.getMyOpenChatRoomList(userId, offset);
+
+            // then
+            verify(openChatRoomService, times(1)).getMyOpenChatRoomList(userId);
+        }
+
+        @Test
+        @DisplayName("offset이 0이 아니면 userId와 offset을 인자로 받는 getMyOpenChatRoomList를 호출한다")
+        void offset이_0이_아니면_userId와_offset을_인자로_받는_getMyOpenChatRoomList를_호출한다() {
+            // given
+            offset = 1;
+            when(openChatRoomService.getMyOpenChatRoomList(userId, offset)).thenReturn(null);
+
+            // when
+            openChatRoomFacadeImpl.getMyOpenChatRoomList(userId, offset);
+
+            // then
+            verify(openChatRoomService, times(1)).getMyOpenChatRoomList(userId, offset);
+        }
+    }
 }

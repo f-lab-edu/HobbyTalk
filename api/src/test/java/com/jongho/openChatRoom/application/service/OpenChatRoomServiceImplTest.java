@@ -25,8 +25,8 @@ public class OpenChatRoomServiceImplTest {
     @DisplayName("createOpenChatRoom 메소드는")
     class Describe_createOpenChatRoom {
         @Test
-        @DisplayName("OpenChatRoomServiceImpl의 createOpenChatRoom 메소드를 호출한다")
-        void OpenChatRoomServiceImpl의_createOpenChatRoom메소드를_한번_호출한다() {
+        @DisplayName("OpenChatRoomRepository의 createOpenChatRoom 메소드를 호출한다")
+        void OpenChatRoomRepositoryl의_createOpenChatRoom메소드를_한번_호출한다() {
             // given
             OpenChatRoom openChatRoom = new OpenChatRoom(
                     "타이틀",
@@ -50,8 +50,8 @@ public class OpenChatRoomServiceImplTest {
     @DisplayName("countByManagerId 메소드는")
     class Describe_countByManagerId {
         @Test
-        @DisplayName("OpenChatRoomServiceImpl의 countByManagerId 메소드를 호출해서 받은 count를 반환한다")
-        void OpenChatRoomServiceImpl의_countByManagerId메소드를_한번_호출해서_받은_count를_반환한다() {
+        @DisplayName("OpenChatRoomRepository의 countByManagerId 메소드를 호출해서 받은 count를 반환한다")
+        void OpenChatRoomRepository의_countByManagerId메소드를_한번_호출해서_받은_count를_반환한다() {
             // given
             Long managerId = 1L;
             when(openChatRoomRepository.countByManagerId(managerId)).thenReturn(5);
@@ -62,6 +62,41 @@ public class OpenChatRoomServiceImplTest {
             // then
             verify(openChatRoomRepository, times(1)).countByManagerId(managerId);
             assertEquals(5, result);
+        }
+    }
+
+    @Nested
+    @DisplayName("getMyOpenChatRoomList 메소드는")
+    class Describe_getMyOpenChatRoomList {
+        @Test
+        @DisplayName("OpenChatRoomRepository의 selectMyOpenChatRoomListByUserId 메소드를 호출한다")
+        void OpenChatRoomRepository의_selectMyOpenChatRoomListByUserId메소드를_한번_호출한다() {
+            // given
+            Long userId = 1L;
+
+            // when
+            openChatRoomServiceImpl.getMyOpenChatRoomList(userId);
+
+            // then
+            verify(openChatRoomRepository, times(1)).selectMyOpenChatRoomListByUserId(userId);
+        }
+    }
+
+    @Nested
+    @DisplayName("getMyOpenChatRoomList 메소드는")
+    class Describe_getMyOpenChatRoomListWithOffset {
+        @Test
+        @DisplayName("OpenChatRoomRepository의 selectMyOpenChatRoomListByUserIdAndOffset 메소드를 호출한다")
+        void OpenChatRoomRepository의_selectMyOpenChatRoomListByUserIdAndOffset메소드를_한번_호출한다() {
+            // given
+            Long userId = 1L;
+            int offset = 1;
+
+            // when
+            openChatRoomServiceImpl.getMyOpenChatRoomList(userId, offset);
+
+            // then
+            verify(openChatRoomRepository, times(1)).selectMyOpenChatRoomListByUserIdAndOffset(userId, offset);
         }
     }
 }
