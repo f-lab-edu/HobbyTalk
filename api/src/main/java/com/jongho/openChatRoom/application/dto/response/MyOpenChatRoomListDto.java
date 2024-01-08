@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Setter
 @RequiredArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class MyOpenChatRoomListDto {
     public final Long id;
     public final String title;
