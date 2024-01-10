@@ -40,7 +40,7 @@ public class OpenChatRoomServiceImpl implements OpenChatRoomService{
     @Override
     public void updateOpenChatRoomNotice(Long userId, Long openChatRoomId, String notice) {
         OpenChatRoom openChatRoom= this.getOpenChatRoomById(openChatRoomId).orElseThrow(() -> new OpenChatRoomNotFoundException("존재하지 않는 채팅방입니다."));
-        if(openChatRoom.getId().equals(userId)){
+        if(!openChatRoom.getManagerId().equals(userId)){
             throw new UnAuthorizedException("채팅방 공지 수정 권한이 없습니다.");
         }
         openChatRoomRepository.updateOpenChatRoomNotice(openChatRoomId, notice);
