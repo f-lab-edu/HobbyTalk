@@ -27,4 +27,8 @@ public class OpenChatRoomServiceImpl implements OpenChatRoomService{
     public Optional<OpenChatRoom> getOpenChatRoomByManagerIdAndTitle(Long managerId, String title) {
         return openChatRoomRepository.selectOneOpenChatRoomByManagerIdAndTitle(managerId, title);
     }
+    @Override
+    public Optional<OpenChatRoom> getOpenChatRoomById(Long openChatRoomId) {
+        return openChatRoomRepository.selectOneOpenChatRoomById(openChatRoomId);
+    }
 }
