@@ -35,7 +35,7 @@
         AND deleted_time is null
         LIMIT 1
     </select>
-    <select id="selectOneOpenChatRoomById" parameterType="Long" resultType="com.jongho.openChatRoom.domain.model.OpenChatRoom">
+    <select id="selectOneOpenChatRoomByIdForUpdate" parameterType="Long" resultType="com.jongho.openChatRoom.domain.model.OpenChatRoom">
         SELECT
             id,
             title,

@@ -9,5 +9,5 @@ public interface OpenChatRoomRepository {
     public void createOpenChatRoom(OpenChatRoom openChatRoom);
     public void updateIncrementCurrentCapacity(Long openChatRoomId, int currentAttendance);
     public Optional<OpenChatRoom> selectOneOpenChatRoomByManagerIdAndTitle(Long managerId, String title);
-    public Optional<OpenChatRoom> selectOneOpenChatRoomById(Long openChatRoomId);
+    public Optional<OpenChatRoom> selectOneOpenChatRoomByIdForUpdate(Long openChatRoomId);
 }

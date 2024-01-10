@@ -115,11 +115,11 @@ public class OpenChatRoomServiceImplTest {
     }
 
     @Nested
-    @DisplayName("selectOneOpenChatRoomById 메소드는")
-    class Describe_selectOneOpenChatRoomById {
+    @DisplayName("selectOneOpenChatRoomByIdForUpdate 메소드는")
+    class Describe_selectOneOpenChatRoomByIdForUpdate {
         @Test
-        @DisplayName("OpenChatRoomRepository의 selectOneOpenChatRoomById 메소드를 호출해서 받은 openChatRoom을 반환한다")
-        void OpenChatRoomRepository의_selectOneOpenChatRoomById메소드를_한번_호출해서_받은_openChatRoom을_반환한다() {
+        @DisplayName("OpenChatRoomRepository의 selectOneOpenChatRoomByIdForUpdate 메소드를 호출해서 받은 openChatRoom을 반환한다")
+        void OpenChatRoomRepository의_selectOneOpenChatRoomByIdForUpdate메소드를_한번_호출해서_받은_openChatRoom을_반환한다() {
             // given
             Long openChatRoomId = 1L;
             OpenChatRoom openChatRoom = new OpenChatRoom(
@@ -130,13 +130,13 @@ public class OpenChatRoomServiceImplTest {
                     200,
                     "비밀번호"
             );
-            when(openChatRoomRepository.selectOneOpenChatRoomById(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
+            when(openChatRoomRepository.selectOneOpenChatRoomByIdForUpdate(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
 
             // when
             OpenChatRoom result = openChatRoomServiceImpl.getOpenChatRoomById(openChatRoomId).get();
 
             // then
-            verify(openChatRoomRepository, times(1)).selectOneOpenChatRoomById(openChatRoomId);
+            verify(openChatRoomRepository, times(1)).selectOneOpenChatRoomByIdForUpdate(openChatRoomId);
             assertEquals(openChatRoom, result);
         }
     }

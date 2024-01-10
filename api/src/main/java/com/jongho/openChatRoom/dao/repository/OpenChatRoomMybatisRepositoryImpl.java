@@ -29,7 +29,7 @@ public class OpenChatRoomMybatisRepositoryImpl implements OpenChatRoomRepository
         return Optional.ofNullable(openChatRoomMapper.selectOneOpenChatRoomByManagerIdAndTitle(managerId, title));
     }
     @Override
-    public Optional<OpenChatRoom> selectOneOpenChatRoomById(Long openChatRoomId) {
-        return Optional.ofNullable(openChatRoomMapper.selectOneOpenChatRoomById(openChatRoomId));
+    public Optional<OpenChatRoom> selectOneOpenChatRoomByIdForUpdate(Long openChatRoomId) {
+        return Optional.ofNullable(openChatRoomMapper.selectOneOpenChatRoomByIdForUpdate(openChatRoomId));
     }
 }

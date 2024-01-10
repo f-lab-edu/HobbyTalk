@@ -9,6 +9,6 @@ public interface OpenChatRoomMapper {
     public int countByManagerId(Long managerId);
     public void createOpenChatRoom(OpenChatRoom openChatRoom);
     public void updateIncrementCurrentCapacity(@Param("id") Long id, @Param("currentAttendance") int currentAttendance);
-    public OpenChatRoom selectOneOpenChatRoomById(@Param("id") Long id);
+    public OpenChatRoom selectOneOpenChatRoomByIdForUpdate(@Param("id") Long id);
     public OpenChatRoom selectOneOpenChatRoomByManagerIdAndTitle(@Param("managerId") Long managerId, @Param("title") String title);
 }

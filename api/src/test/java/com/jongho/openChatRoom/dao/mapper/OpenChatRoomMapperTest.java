@@ -96,7 +96,7 @@ public class OpenChatRoomMapperTest extends BaseMapperTest {
             openChatRoomMapper.updateIncrementCurrentCapacity(openChatRoom.getId(), 1);
 
             // then
-            assertEquals(2, openChatRoomMapper.selectOneOpenChatRoomById(openChatRoom.getId()).getCurrentAttendance());
+            assertEquals(2, openChatRoomMapper.selectOneOpenChatRoomByIdForUpdate(openChatRoom.getId()).getCurrentAttendance());
         }
     }
 
@@ -131,8 +131,8 @@ public class OpenChatRoomMapperTest extends BaseMapperTest {
     }
 
     @Nested
-    @DisplayName("selectOneOpenChatRoomById 메소드는")
-    class Describe_selectOneOpenChatRoomById {
+    @DisplayName("selectOneOpenChatRoomByIdForUpdate 메소드는")
+    class Describe_selectOneOpenChatRoomByIdForUpdate {
         @BeforeEach
         void setUp() {
             cleanUpOpenChatRoomTable();
@@ -153,7 +153,7 @@ public class OpenChatRoomMapperTest extends BaseMapperTest {
             openChatRoomMapper.createOpenChatRoom(openChatRoom);
 
             // when
-            OpenChatRoom result = openChatRoomMapper.selectOneOpenChatRoomById(openChatRoom.getId());
+            OpenChatRoom result = openChatRoomMapper.selectOneOpenChatRoomByIdForUpdate(openChatRoom.getId());
 
             // then
             assertEquals(openChatRoom.getId(), result.getId());
