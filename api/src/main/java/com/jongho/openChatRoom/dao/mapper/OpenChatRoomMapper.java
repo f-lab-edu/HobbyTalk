@@ -10,5 +10,7 @@ public interface OpenChatRoomMapper {
     public void createOpenChatRoom(OpenChatRoom openChatRoom);
     public void updateIncrementCurrentCapacity(@Param("id") Long id, @Param("currentAttendance") int currentAttendance);
     public OpenChatRoom selectOneOpenChatRoomByIdForUpdate(@Param("id") Long id);
+    public OpenChatRoom selectOneOpenChatRoomById(@Param("id") Long id);
+    public void updateOpenChatRoomNotice(@Param("id") Long id, @Param("notice") String notice);
     public OpenChatRoom selectOneOpenChatRoomByManagerIdAndTitle(@Param("managerId") Long managerId, @Param("title") String title);
 }

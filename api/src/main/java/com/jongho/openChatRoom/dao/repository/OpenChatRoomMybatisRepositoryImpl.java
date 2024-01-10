@@ -32,4 +32,12 @@ public class OpenChatRoomMybatisRepositoryImpl implements OpenChatRoomRepository
     public Optional<OpenChatRoom> selectOneOpenChatRoomByIdForUpdate(Long openChatRoomId) {
         return Optional.ofNullable(openChatRoomMapper.selectOneOpenChatRoomByIdForUpdate(openChatRoomId));
     }
+    @Override
+    public Optional<OpenChatRoom> selectOneOpenChatRoomById(Long openChatRoomId) {
+        return Optional.ofNullable(openChatRoomMapper.selectOneOpenChatRoomById(openChatRoomId));
+    }
+    @Override
+    public void updateOpenChatRoomNotice(Long openChatRoomId, String notice) {
+        openChatRoomMapper.updateOpenChatRoomNotice(openChatRoomId, notice);
+    }
 }
