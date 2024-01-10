@@ -50,8 +50,8 @@ public class OpenChatRoomFacadeImpl implements OpenChatRoomFacade {
     @Override
     @Transactional
     public void joinOpenChatRoom(Long authUserId, Long openChatRoomId, String password) {
-        OpenChatRoom openChatRoom = openChatRoomService.getOpenChatRoomById(openChatRoomId)
-                .orElseThrow(()-> new OpenChatRoonNotFoundException("존재하지 않는 채팅방입니다."));
+        OpenChatRoom openChatRoom = openChatRoomService.getOpenChatRoomByIdForUpdate(openChatRoomId)
+                .orElseThrow(()-> new OpenChatRoomNotFoundException("존재하지 않는 채팅방입니다."));
         if(openChatRoom.getPassword() != null){
             if(!openChatRoom.getPassword().equals(password)){
                 throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");

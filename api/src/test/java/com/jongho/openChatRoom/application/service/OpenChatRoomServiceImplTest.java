@@ -133,7 +133,7 @@ public class OpenChatRoomServiceImplTest {
             when(openChatRoomRepository.selectOneOpenChatRoomByIdForUpdate(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
 
             // when
-            OpenChatRoom result = openChatRoomServiceImpl.getOpenChatRoomById(openChatRoomId).get();
+            OpenChatRoom result = openChatRoomServiceImpl.getOpenChatRoomByIdForUpdate(openChatRoomId).get();
 
             // then
             verify(openChatRoomRepository, times(1)).selectOneOpenChatRoomByIdForUpdate(openChatRoomId);
