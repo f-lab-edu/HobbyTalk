@@ -5,6 +5,7 @@ import com.jongho.common.config.WebMvcConfig;
 import com.jongho.common.interceptor.AuthInterceptor;
 import com.jongho.openChatRoom.application.dto.request.OpenChatRoomCreateDto;
 import com.jongho.openChatRoom.application.facade.OpenChatRoomFacade;
+import com.jongho.openChatRoom.application.service.OpenChatRoomService;
 import com.jongho.openChatRoom.controller.OpenChatRoomController;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,6 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class OpenChatRoomControllerTest {
     @MockBean
     private OpenChatRoomFacade openChatRoomFacade;
+    @MockBean
+    private OpenChatRoomService openChatRoomService;
     @Autowired
     private MockMvc mockMvc;
 
@@ -94,6 +98,33 @@ public class OpenChatRoomControllerTest {
             mockMvc.perform(post("/api/v1/open-chat-rooms/{openChatRoomId}/join", openChatRoomId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{\"password\":\"비밀번호\"}"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.message").value("SUCCESS"))
+                    .andDo(print());
+        }
+    }
+
+    @Nested
+    @DisplayName("updateOpenChatRoomNotice 메소드는")
+    class Describe_updateOpenChatRoomNotice {
+        private String notice;
+        private Long openChatRoomId;
+
+        @BeforeEach
+        public void setUp() {
+            notice = "공지사항";
+            openChatRoomId = 1L;
+        }
+        @Test
+        @DisplayName("호출이 되면 status 200과 success라는 메세지를 반환한다.")
+        void 호출이_되면_status_200과_success라는_메세지를_반환한다() throws Exception{
+            // given
+            doNothing().when(openChatRoomService).updateOpenChatRoomNotice(1L, 1L, "공지사항");
+
+            // when
+            mockMvc.perform(patch("/api/v1/open-chat-rooms/{openChatRoomId}/notice", openChatRoomId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"notice\":\"공지사항\"}"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.message").value("SUCCESS"))
                     .andDo(print());
