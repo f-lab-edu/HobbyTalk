@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OpenChatRoomMembershipRequest {
     private  Long id;
-    private final Long requester_id;
-    private final Long open_chat_room_id;
+    private final Long requesterId;
+    private final Long openChatRoomId;
     private final String message;
     private final int status;
     public void setId(Long id) {

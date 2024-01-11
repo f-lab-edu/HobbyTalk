@@ -7,7 +7,7 @@
         FROM open_chat_room_membership_requests
         WHERE requester_id = #{requesterId}
         AND status = #{status}
-        AND deleted_at IS NULL
+        AND deleted_time IS NULL
     </select>
     <select id="existsByRequesterIdAndOpenChatRoomIdAndStatus" resultType="boolean">
         SELECT
@@ -18,7 +18,7 @@
                 WHERE requester_id = #{requesterId}
                 AND open_chat_room_id = #{openChatRoomId}
                 AND status = #{status}
-                AND deleted_at IS NULL
+                AND deleted_time IS NULL
             )
     </select>
     <insert id="createOpenChatRoomMembershipRequest" parameterType="com.jongho.OpenChatRoomMembershipRequest.domain.model.OpenChatRoomMembershipRequest" useGeneratedKeys="true" keyProperty="id">
@@ -26,11 +26,12 @@
             requester_id,
             open_chat_room_id,
             message,
-            status,
+            status
         ) VALUES (
             #{requesterId},
             #{openChatRoomId},
             #{message},
             #{status}
         )
+    </insert>
 </mapper>
