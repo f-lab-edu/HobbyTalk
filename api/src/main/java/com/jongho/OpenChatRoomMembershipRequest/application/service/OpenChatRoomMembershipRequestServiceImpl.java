@@ -1,6 +1,6 @@
 package com.jongho.OpenChatRoomMembershipRequest.application.service;
 
-import com.jongho.OpenChatRoomMembershipRequest.dao.mapper.OpenChatRoomMembershipRequestMapper;
+import com.jongho.OpenChatRoomMembershipRequest.domain.model.OpenChatRoomMembershipRequest;
 import com.jongho.OpenChatRoomMembershipRequest.domain.repository.OpenChatRoomMembershipRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class OpenChatRoomMembershipRequestServiceImpl implements OpenChatRoomMem
     }
 
     @Override
-    public void createOpenChatRoomMembershipRequest(OpenChatRoomMembershipRequestMapper openChatRoomMembershipRequestMapper) {
-        openChatRoomMembershipRequestRepository.createOpenChatRoomMembershipRequest(openChatRoomMembershipRequestMapper);
+    public void createOpenChatRoomMembershipRequest(OpenChatRoomMembershipRequest openChatRoomMembershipRequest) {
+        openChatRoomMembershipRequestRepository.createOpenChatRoomMembershipRequest(openChatRoomMembershipRequest);
     }
 }

@@ -1,6 +1,7 @@
 package com.jongho.OpenChatRoomMembershipRequest.dao.repository;
 
 import com.jongho.OpenChatRoomMembershipRequest.dao.mapper.OpenChatRoomMembershipRequestMapper;
+import com.jongho.OpenChatRoomMembershipRequest.domain.model.OpenChatRoomMembershipRequest;
 import com.jongho.OpenChatRoomMembershipRequest.domain.repository.OpenChatRoomMembershipRequestRepository;
 import com.jongho.openChatRoom.domain.model.OpenChatRoom;
 import com.jongho.openChatRoom.domain.repository.OpenChatRoomRepository;
@@ -22,7 +23,7 @@ public class OpenChatRoomMembershipRequestMybatisRepositoryImpl implements OpenC
         return openChatRoomMapper.existsByRequesterIdAndOpenChatRoomIdAndStatus(requesterId, openChatRoomId, status);
     }
     @Override
-    public void createOpenChatRoomMembershipRequest(OpenChatRoomMembershipRequestMapper openChatRoomMembershipRequestMapper) {
-        openChatRoomMapper.createOpenChatRoomMembershipRequest(openChatRoomMembershipRequestMapper);
+    public void createOpenChatRoomMembershipRequest(OpenChatRoomMembershipRequest openChatRoomMembershipRequest) {
+        openChatRoomMapper.createOpenChatRoomMembershipRequest(openChatRoomMembershipRequest);
     }
 }
