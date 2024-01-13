@@ -1,5 +1,7 @@
 package com.jongho.openChatRoom.application.service;
 
+import com.jongho.common.exception.OpenChatRoomNotFoundException;
+import com.jongho.common.exception.UnAuthorizedException;
 import com.jongho.openChatRoom.domain.model.OpenChatRoom;
 import com.jongho.openChatRoom.domain.repository.OpenChatRoomRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -115,6 +118,33 @@ public class OpenChatRoomServiceImplTest {
     }
 
     @Nested
+    @DisplayName("selectOneOpenChatRoomByIdForUpdate 메소드는")
+    class Describe_selectOneOpenChatRoomByIdForUpdate {
+        @Test
+        @DisplayName("OpenChatRoomRepository의 selectOneOpenChatRoomByIdForUpdate 메소드를 호출해서 받은 openChatRoom을 반환한다")
+        void OpenChatRoomRepository의_selectOneOpenChatRoomByIdForUpdate메소드를_한번_호출해서_받은_openChatRoom을_반환한다() {
+            // given
+            Long openChatRoomId = 1L;
+            OpenChatRoom openChatRoom = new OpenChatRoom(
+                    "타이틀",
+                    "공지사항",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            when(openChatRoomRepository.selectOneOpenChatRoomByIdForUpdate(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
+
+            // when
+            OpenChatRoom result = openChatRoomServiceImpl.getOpenChatRoomByIdForUpdate(openChatRoomId).get();
+
+            // then
+            verify(openChatRoomRepository, times(1)).selectOneOpenChatRoomByIdForUpdate(openChatRoomId);
+            assertEquals(openChatRoom, result);
+        }
+    }
+
+    @Nested
     @DisplayName("selectOneOpenChatRoomById 메소드는")
     class Describe_selectOneOpenChatRoomById {
         @Test
@@ -138,6 +168,72 @@ public class OpenChatRoomServiceImplTest {
             // then
             verify(openChatRoomRepository, times(1)).selectOneOpenChatRoomById(openChatRoomId);
             assertEquals(openChatRoom, result);
+        }
+    }
+
+    @Nested
+    @DisplayName("updateOpenChatRoomNotice 메소드는")
+    class Describe_updateOpenChatRoomNotice {
+        @Test
+        @DisplayName("OpenChatRoomRepository의 updateOpenChatRoomNotice 메소드를 호출한다")
+        void OpenChatRoomRepository의_updateOpenChatRoomNotice메소드를_한번_호출한다() {
+            // given
+            Long userId = 1L;
+            Long openChatRoomId = 1L;
+            String notice = "공지사항";
+            OpenChatRoom openChatRoom = new OpenChatRoom(
+                    "타이틀",
+                    "공지사항",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            when(openChatRoomRepository.selectOneOpenChatRoomById(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
+            doNothing().when(openChatRoomRepository).updateOpenChatRoomNotice(openChatRoomId, notice);
+
+            // when
+            openChatRoomServiceImpl.updateOpenChatRoomNotice(userId, openChatRoomId, notice);
+
+            // then
+            verify(openChatRoomRepository, times(1)).selectOneOpenChatRoomById(openChatRoomId);
+            verify(openChatRoomRepository, times(1)).updateOpenChatRoomNotice(openChatRoomId, notice);
+        }
+
+        @Test
+        @DisplayName("오픈채팅방이 존재하지 않으면 OpenChatRoomNotFoundException을 던진다")
+        void 오픈채팅방이_존재하지_않으면_OpenChatRoomNotFoundException을_던진다() {
+            // given
+            Long userId = 1L;
+            Long openChatRoomId = 1L;
+            String notice = "공지사항";
+            when(openChatRoomRepository.selectOneOpenChatRoomById(openChatRoomId)).thenReturn(Optional.empty());
+
+            // when
+            // then
+            assertThrows(OpenChatRoomNotFoundException.class, () -> openChatRoomServiceImpl.updateOpenChatRoomNotice(userId, openChatRoomId, notice));
+        }
+
+        @Test
+        @DisplayName("오픈채팅방의 매니저가 아니면 UnAuthorizedException을 던진다")
+        void 오픈채팅방의_매니저가_아니면_UnAuthorizedException을_던진다() {
+            // given
+            Long userId = 1L;
+            Long openChatRoomId = 1L;
+            String notice = "공지사항";
+            OpenChatRoom openChatRoom = new OpenChatRoom(
+                    "타이틀",
+                    "공지사항",
+                    2L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            when(openChatRoomRepository.selectOneOpenChatRoomById(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
+
+            // when
+            // then
+            assertThrows(UnAuthorizedException.class, () -> openChatRoomServiceImpl.updateOpenChatRoomNotice(userId, openChatRoomId, notice));
         }
     }
 }

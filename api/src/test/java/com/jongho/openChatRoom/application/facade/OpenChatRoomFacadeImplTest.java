@@ -141,13 +141,13 @@ public class OpenChatRoomFacadeImplTest {
         }
 
         @Test
-        @DisplayName("입장하려는 챗룸이 존재하지 않으면 OpenChatRoonNotFoundException예외를 던진다")
-        void 입장하려는_챗룸이_존재하지_않으면_OpenChatRoonNotFoundException예외를_던진다() {
+        @DisplayName("입장하려는 챗룸이 존재하지 않으면 OpenChatRoomNotFoundException예외를 던진다")
+        void 입장하려는_챗룸이_존재하지_않으면_OpenChatRoomNotFoundException예외를_던진다() {
             // given
-            when(openChatRoomService.getOpenChatRoomById(openChatRoomId)).thenReturn(Optional.empty());
+            when(openChatRoomService.getOpenChatRoomByIdForUpdate(openChatRoomId)).thenReturn(Optional.empty());
 
             // when then
-            assertThrows(OpenChatRoonNotFoundException.class, () -> {
+            assertThrows(OpenChatRoomNotFoundException.class, () -> {
                 openChatRoomFacadeImpl.joinOpenChatRoom(userId, openChatRoomId, password);
             });
         }
@@ -157,7 +157,7 @@ public class OpenChatRoomFacadeImplTest {
         void 입장하려는_챗룸의_비밀번호가_일치하지_않으면_InvalidPasswordException예외를_던진다() {
             // given
             password = "비밀번호1";
-            when(openChatRoomService.getOpenChatRoomById(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
+            when(openChatRoomService.getOpenChatRoomByIdForUpdate(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
 
             // when then
             assertThrows(InvalidPasswordException.class, () -> {
@@ -178,7 +178,7 @@ public class OpenChatRoomFacadeImplTest {
                     1,
                     "비밀번호"
             );
-            when(openChatRoomService.getOpenChatRoomById(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
+            when(openChatRoomService.getOpenChatRoomByIdForUpdate(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
 
             // when then
             assertThrows(MaxChatRoomsJoinException.class, () -> {
@@ -190,7 +190,7 @@ public class OpenChatRoomFacadeImplTest {
         @DisplayName("이미 참여중인 챗룸이면 AlreadyExistsException예외를 던진다")
         void 이미_참여중인_챗룸이면_AlreadyExistsException예외를_던진다() {
             // given
-            when(openChatRoomService.getOpenChatRoomById(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
+            when(openChatRoomService.getOpenChatRoomByIdForUpdate(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
             when(openChatRoomUserService.getOpenChatRoomUserByOpenChatRoomIdAndUserId(openChatRoomId, userId)).thenReturn(Optional.of(new OpenChatRoomUser(openChatRoomId, userId)));
 
             // when then
@@ -203,7 +203,7 @@ public class OpenChatRoomFacadeImplTest {
         @DisplayName("모든 밸리데이션 검사가 끝나고 문제가 없으면 챗룸에 참여하고, 챗룸의 현재인원을 증가시킨다")
         void 모든_밸리데이션_검사가_끝나고_문제가_없으면_챗룸에_참여하고_챗룸의_현재인원을_증가시킨다() {
             // given
-            when(openChatRoomService.getOpenChatRoomById(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
+            when(openChatRoomService.getOpenChatRoomByIdForUpdate(openChatRoomId)).thenReturn(Optional.of(openChatRoom));
             when(openChatRoomUserService.getOpenChatRoomUserByOpenChatRoomIdAndUserId(openChatRoomId, userId)).thenReturn(Optional.empty());
             doNothing().when(openChatRoomUserService).createOpenChatRoomUser(any());
             doNothing().when(openChatRoomService).incrementOpenChatRoomCurrentAttendance(openChatRoomId, openChatRoom.getCurrentAttendance());
@@ -247,7 +247,7 @@ public class OpenChatRoomFacadeImplTest {
             when(openChatRoomService.getOpenChatRoomById(openChatRoomId)).thenReturn(Optional.empty());
 
             // when then
-            assertThrows(OpenChatRoonNotFoundException.class, () -> {
+            assertThrows(OpenChatRoomNotFoundException.class, () -> {
                 openChatRoomFacadeImpl.createOpenChatRoomMembershipRequest(userId, openChatRoomId, message);
             });
         }

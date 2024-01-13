@@ -54,8 +54,8 @@ public class OpenChatRoomFacadeImpl implements OpenChatRoomFacade {
     @Override
     @Transactional
     public void joinOpenChatRoom(Long authUserId, Long openChatRoomId, String password) {
-        OpenChatRoom openChatRoom = openChatRoomService.getOpenChatRoomById(openChatRoomId)
-                .orElseThrow(()-> new OpenChatRoonNotFoundException("존재하지 않는 채팅방입니다."));
+        OpenChatRoom openChatRoom = openChatRoomService.getOpenChatRoomByIdForUpdate(openChatRoomId)
+                .orElseThrow(()-> new OpenChatRoomNotFoundException("존재하지 않는 채팅방입니다."));
         if(openChatRoom.getPassword() != null){
             if(!openChatRoom.getPassword().equals(password)){
                 throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
@@ -75,7 +75,7 @@ public class OpenChatRoomFacadeImpl implements OpenChatRoomFacade {
     @Transactional
     public void createOpenChatRoomMembershipRequest(Long authUserId, Long openChatRoomId, String message) {
         OpenChatRoom openChatRoom = openChatRoomService.getOpenChatRoomById(openChatRoomId)
-                .orElseThrow(()-> new OpenChatRoonNotFoundException("존재하지 않는 채팅방입니다."));
+                .orElseThrow(()-> new OpenChatRoomNotFoundException("존재하지 않는 채팅방입니다."));
         if(openChatRoom.getMaximumCapacity() <= openChatRoom.getCurrentAttendance()){
             throw new MaxChatRoomsJoinException("채팅방의 최대 인원을 초과하여 입장할 수 없습니다.");
         }
