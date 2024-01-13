@@ -96,7 +96,7 @@ public class OpenChatRoomMapperTest extends BaseMapperTest {
             openChatRoomMapper.updateIncrementCurrentCapacity(openChatRoom.getId(), 1);
 
             // then
-            assertEquals(2, openChatRoomMapper.selectOneOpenChatRoomById(openChatRoom.getId()).getCurrentAttendance());
+            assertEquals(2, openChatRoomMapper.selectOneOpenChatRoomByIdForUpdate(openChatRoom.getId()).getCurrentAttendance());
         }
     }
 
@@ -131,6 +131,36 @@ public class OpenChatRoomMapperTest extends BaseMapperTest {
     }
 
     @Nested
+    @DisplayName("selectOneOpenChatRoomByIdForUpdate 메소드는")
+    class Describe_selectOneOpenChatRoomByIdForUpdate {
+        @BeforeEach
+        void setUp() {
+            cleanUpOpenChatRoomTable();
+        }
+
+        @Test
+        @DisplayName("인자로 받은 오픈채팅방 아이디를 가진 오픈채팅방을 반환한다.")
+        void 오픈채팅방을_반환한다() {
+            // given
+            OpenChatRoom openChatRoom = new OpenChatRoom(
+                    "타이틀",
+                    "공지사항",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            openChatRoomMapper.createOpenChatRoom(openChatRoom);
+
+            // when
+            OpenChatRoom result = openChatRoomMapper.selectOneOpenChatRoomByIdForUpdate(openChatRoom.getId());
+
+            // then
+            assertEquals(openChatRoom.getId(), result.getId());
+        }
+    }
+
+    @Nested
     @DisplayName("selectOneOpenChatRoomById 메소드는")
     class Describe_selectOneOpenChatRoomById {
         @BeforeEach
@@ -157,6 +187,36 @@ public class OpenChatRoomMapperTest extends BaseMapperTest {
 
             // then
             assertEquals(openChatRoom.getId(), result.getId());
+        }
+    }
+
+    @Nested
+    @DisplayName("updateOpenChatRoomNotice 메소드는")
+    class Describe_updateOpenChatRoomNotice {
+        @BeforeEach
+        void setUp() {
+            cleanUpOpenChatRoomTable();
+        }
+
+        @Test
+        @DisplayName("인자로 받은 오픈채팅방 아이디를 가진 오픈채팅방의 공지사항을 수정한다.")
+        void 오픈채팅방의_공지사항을_수정한다() {
+            // given
+            OpenChatRoom openChatRoom = new OpenChatRoom(
+                    "타이틀",
+                    "공지사항",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            openChatRoomMapper.createOpenChatRoom(openChatRoom);
+
+            // when
+            openChatRoomMapper.updateOpenChatRoomNotice(openChatRoom.getId(), "수정된 공지사항");
+
+            // then
+            assertEquals("수정된 공지사항", openChatRoomMapper.selectOneOpenChatRoomById(openChatRoom.getId()).getNotice());
         }
     }
 }

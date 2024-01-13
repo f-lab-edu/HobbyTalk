@@ -2,8 +2,8 @@ package com.jongho.common.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class OpenChatRoonNotFoundException extends CustomBusinessException{
-    public OpenChatRoonNotFoundException(String message) {
+public class OpenChatRoomNotFoundException extends CustomBusinessException{
+    public OpenChatRoomNotFoundException(String message) {
         super(message, HttpStatus.NOT_FOUND);
     }
 }
