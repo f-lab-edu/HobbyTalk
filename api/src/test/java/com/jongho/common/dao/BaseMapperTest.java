@@ -81,6 +81,11 @@ public class BaseMapperTest {
         excuteTruncateTable("open_chat_room_users");
     }
 
+    protected void cleanUpOpenChatRoomMembershipRequestTable(){
+        excuteTruncateTable("open_chat_room_membership_requests");
+        initializeAutoIncrement("open_chat_room_membership_requests");
+    }
+
     protected void setUpCategoryTable(){
         try {
             String sql = new String(Files.readAllBytes(Paths.get("src/test/resources/setupDummyData/categoryDummyData.sql")));
