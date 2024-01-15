@@ -6,6 +6,7 @@ import com.jongho.common.response.BaseResponseEntity;
 import com.jongho.common.util.threadlocal.AuthenticatedUserThreadLocalManager;
 import com.jongho.openChatRoom.application.dto.request.OpenChatRoomCreateDto;
 import com.jongho.openChatRoom.application.dto.request.OpenChatRoomJoinDto;
+import com.jongho.openChatRoom.application.dto.request.OpenChatRoomMembershipRequestDto;
 import com.jongho.openChatRoom.application.dto.request.OpenChatRoomNoticeUpdateDto;
 import com.jongho.openChatRoom.application.facade.OpenChatRoomFacade;
 import com.jongho.openChatRoom.application.service.OpenChatRoomService;
@@ -36,6 +37,12 @@ public class OpenChatRoomController {
         return BaseResponseEntity.ok(BaseMessageEnum.SUCCESS.getValue());
     }
 
+    @PostMapping("/{openChatRoomId}/membership-requests")
+    public ResponseEntity<BaseResponseEntity<?>> createOpenChatRoomMembershipRequest(@PathVariable("openChatRoomId") Long openChatRoomId, @Validated @RequestBody OpenChatRoomMembershipRequestDto openChatRoomMembershipRequestDto){
+        openChatRoomFacade.createOpenChatRoomMembershipRequest(AuthenticatedUserThreadLocalManager.get(), openChatRoomId, openChatRoomMembershipRequestDto.getMessage());
+
+        return BaseResponseEntity.ok(BaseMessageEnum.SUCCESS.getValue());
+    }
     @PatchMapping("/{openChatRoomId}/notice")
     public ResponseEntity<BaseResponseEntity<?>> updateOpenChatRoomNotice(@PathVariable("openChatRoomId") Long openChatRoomId, @Validated @RequestBody OpenChatRoomNoticeUpdateDto openChatRoomNoticeUpdateDto){
         openChatRoomService.updateOpenChatRoomNotice(AuthenticatedUserThreadLocalManager.get(), openChatRoomId, openChatRoomNoticeUpdateDto.getNotice());

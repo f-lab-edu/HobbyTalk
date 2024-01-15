@@ -105,6 +105,31 @@ public class OpenChatRoomControllerTest {
     }
 
     @Nested
+    @DisplayName("createOpenChatRoomMembershipRequest 메소드는")
+    class Describe_createOpenChatRoomMembershipRequest {
+        private String message;
+        private Long openChatRoomId;
+        @BeforeEach
+        public void setUp() {
+            message = "참가요청";
+            openChatRoomId = 1L;
+
+        }
+        @Test
+        @DisplayName("호출이 되면 status 200과 success라는 메세지를 반환한다.")
+        void 호출이_되면_status_200과_success라는_메세지를_반환한다() throws Exception{
+            // given
+            doNothing().when(openChatRoomFacade).createOpenChatRoomMembershipRequest(1L, 1L, "참가요청");
+
+            // when
+            mockMvc.perform(post("/api/v1/open-chat-rooms/{openChatRoomId}/membership-requests", openChatRoomId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"message\":\"참가요청\"}"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.message").value("SUCCESS"))
+                    .andDo(print());
+        }
+    }
     @DisplayName("updateOpenChatRoomNotice 메소드는")
     class Describe_updateOpenChatRoomNotice {
         private String notice;

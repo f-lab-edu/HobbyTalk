@@ -1,5 +1,8 @@
 package com.jongho.openChatRoom.application.facade;
 
+import com.jongho.OpenChatRoomMembershipRequest.application.service.OpenChatRoomMembershipRequestService;
+import com.jongho.OpenChatRoomMembershipRequest.common.util.MembershipRequestStatusEnum;
+import com.jongho.OpenChatRoomMembershipRequest.domain.model.OpenChatRoomMembershipRequest;
 import com.jongho.category.application.service.CategoryService;
 import com.jongho.category.domain.model.Category;
 import com.jongho.common.exception.*;
@@ -19,6 +22,7 @@ import java.util.Optional;
 public class OpenChatRoomFacadeImpl implements OpenChatRoomFacade {
     private final OpenChatRoomService openChatRoomService;
     private final OpenChatRoomUserService openChatRoomUserService;
+    private final OpenChatRoomMembershipRequestService openChatRoomMembershipRequestService;
     private final CategoryService categoryService;
     private final int MAXIMUM_OPEN_CHAT_ROOM_COUNT = 5;
     @Override
@@ -66,5 +70,29 @@ public class OpenChatRoomFacadeImpl implements OpenChatRoomFacade {
         }
         openChatRoomUserService.createOpenChatRoomUser(new OpenChatRoomUser(openChatRoomId, authUserId));
         openChatRoomService.incrementOpenChatRoomCurrentAttendance(openChatRoomId, openChatRoom.getCurrentAttendance());
+    }
+    @Override
+    @Transactional
+    public void createOpenChatRoomMembershipRequest(Long authUserId, Long openChatRoomId, String message) {
+        OpenChatRoom openChatRoom = openChatRoomService.getOpenChatRoomById(openChatRoomId)
+                .orElseThrow(()-> new OpenChatRoomNotFoundException("존재하지 않는 채팅방입니다."));
+        if(openChatRoom.getMaximumCapacity() <= openChatRoom.getCurrentAttendance()){
+            throw new MaxChatRoomsJoinException("채팅방의 최대 인원을 초과하여 입장할 수 없습니다.");
+        }
+        if(openChatRoomMembershipRequestService.existsByRequesterIdAndOpenChatRoomIdAndStatus(authUserId, openChatRoomId, MembershipRequestStatusEnum.PARTICIPATION_REQUEST.getValue())){
+            throw new AlreadyExistsException("이미 참여신청한 채팅방입니다.");
+        }
+        if(openChatRoomUserService.getOpenChatRoomUserByOpenChatRoomIdAndUserId(openChatRoomId, authUserId).isPresent()){
+            throw new AlreadyExistsException("이미 참여중인 채팅방입니다.");
+        }
+        if(openChatRoomMembershipRequestService.countByRequesterIdAndStatus(authUserId, MembershipRequestStatusEnum.PARTICIPATION_REQUEST.getValue()) >= 5){
+            throw new MaxChatRoomsJoinException("최대 5개의 채팅방에 참여신청 할 수 있습니다.");
+        }
+        openChatRoomMembershipRequestService.createOpenChatRoomMembershipRequest(
+                new OpenChatRoomMembershipRequest(
+                        authUserId,
+                        openChatRoomId,
+                        message,
+                        MembershipRequestStatusEnum.PARTICIPATION_REQUEST.getValue()));
     }
 }
