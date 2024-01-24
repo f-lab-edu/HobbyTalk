@@ -18,8 +18,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
     private final WebSocketOpenChatRoomHandler webSocketOpenChatRoomHandler;
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketOpenChatRoomHandler, "/openChatRoom")
-                .addHandler(webSocketOpenChatHandler, "/openChat")
+        registry.addHandler(webSocketOpenChatRoomHandler, "/open-chat-rooms")
+                .addHandler(webSocketOpenChatHandler, "/open-chats")
                 .addInterceptors(webSocketAuthInterceptor)
                 .setAllowedOrigins("*");
     }
