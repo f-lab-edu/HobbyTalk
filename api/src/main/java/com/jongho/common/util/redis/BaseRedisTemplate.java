@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 @RequiredArgsConstructor
 public class BaseRedisTemplate {
@@ -19,6 +23,22 @@ public class BaseRedisTemplate {
         String jsonValue = stringRedisTemplate.opsForValue().get(key);
 
         return toObject(jsonValue, valueType);
+    }
+
+    public <T> List<T> getAllListData(String key, Class<T> valueType) {
+        List<String> jsonValue = stringRedisTemplate.opsForList().range(key, 0, -1);
+        if(jsonValue == null){
+            return null;
+        }
+        return mappingToElement(jsonValue, valueType);
+    }
+
+    public <T> List<T> getListData(String key, Class<T> valueType, int offset, int limit) {
+        List<String> jsonValue = stringRedisTemplate.opsForList().range(key, offset, limit);
+        if(jsonValue == null){
+            return null;
+        }
+        return mappingToElement(jsonValue, valueType);
     }
 
     public <T> T toObject(String json, Class<T> valueType) {
@@ -35,5 +55,9 @@ public class BaseRedisTemplate {
         }catch (Exception e) {
             throw new MyJsonProcessingException(e.getMessage()!=null? e.getMessage():"json processing error");
         }
+    }
+
+    private <T> List<T> mappingToElement(Collection<String> jsonList, Class<T> valueType){
+        return jsonList.stream().map(json -> toObject(json, valueType)).collect(Collectors.toList());
     }
 }

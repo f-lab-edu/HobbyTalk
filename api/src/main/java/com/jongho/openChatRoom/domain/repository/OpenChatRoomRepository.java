@@ -1,7 +1,9 @@
 package com.jongho.openChatRoom.domain.repository;
 
+import com.jongho.openChatRoom.application.dto.response.OpenChatRoomDto;
 import com.jongho.openChatRoom.domain.model.OpenChatRoom;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface OpenChatRoomRepository {
@@ -12,4 +14,5 @@ public interface OpenChatRoomRepository {
     public Optional<OpenChatRoom> selectOneOpenChatRoomByIdForUpdate(Long openChatRoomId);
     public Optional<OpenChatRoom> selectOneOpenChatRoomById(Long openChatRoomId);
     public void updateOpenChatRoomNotice(Long openChatRoomId, String notice);
+    public List<OpenChatRoomDto> selectJoinOpenChatRoomByUserId(Long userId);
 }
