@@ -23,6 +23,7 @@ public class OpenChatRoomDto {
     private final String createdTime;
     private OpenChat openChat;
     private List<Long> openChatRoomUserIds;
+    private OpenChatRoomConnectionInfo openChatRoomConnectionInfo;
 
     @JsonCreator
     public OpenChatRoomDto(
@@ -74,5 +75,9 @@ public class OpenChatRoomDto {
 
     public void setOpenChatRoomUserIds(List<Long> openChatRoomUserIds) {
         this.openChatRoomUserIds = openChatRoomUserIds;
+    }
+
+    public void setOpenChatRoomConnectionInfo(OpenChatRoomConnectionInfo openChatRoomConnectionInfo) {
+        this.openChatRoomConnectionInfo = openChatRoomConnectionInfo;
     }
 }
