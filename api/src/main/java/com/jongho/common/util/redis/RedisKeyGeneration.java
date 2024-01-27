@@ -13,4 +13,7 @@ public class RedisKeyGeneration {
     public static String getChatRoomMessageKey(Long openChatRoomId) {
         return "chatRooms:" + openChatRoomId + ":chats";
     }
+    public static String getLastMessageKey(Long openChatRoomId) {
+        return "chatRooms:" + openChatRoomId + ":lastMessage";
+    }
 }

@@ -1,6 +1,6 @@
 package com.jongho.openChatRoom.application.dto.response;
 
-import com.jongho.openChat.domain.OpenChat;
+import com.jongho.openChat.domain.model.OpenChat;
 import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoomConnectionInfo;
 import lombok.*;
 

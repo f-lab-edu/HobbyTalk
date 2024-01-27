@@ -1,4 +1,4 @@
-package com.jongho.openChat.domain;
+package com.jongho.openChat.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
