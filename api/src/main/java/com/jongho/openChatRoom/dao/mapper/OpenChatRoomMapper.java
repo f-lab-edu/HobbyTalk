@@ -17,4 +17,5 @@ public interface OpenChatRoomMapper {
     public void updateOpenChatRoomNotice(@Param("id") Long id, @Param("notice") String notice);
     public OpenChatRoom selectOneOpenChatRoomByManagerIdAndTitle(@Param("managerId") Long managerId, @Param("title") String title);
     public List<OpenChatRoomDto> selectJoinOpenChatRoomByUserId(Long userId);
+    public List<Long> selectOpenChatRoomUser(Long openChatRoomId);
 }

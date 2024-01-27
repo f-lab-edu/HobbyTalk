@@ -46,4 +46,8 @@ public class OpenChatRoomMybatisRepositoryImpl implements OpenChatRoomRepository
     public List<OpenChatRoomDto> selectJoinOpenChatRoomByUserId(Long userId){
         return openChatRoomMapper.selectJoinOpenChatRoomByUserId(userId);
     };
+    @Override
+    public List<Long> selectOpenChatRoomUser(Long openChatRoomId){
+        return openChatRoomMapper.selectOpenChatRoomUser(openChatRoomId);
+    };
 }

@@ -15,4 +15,5 @@ public interface OpenChatRoomRepository {
     public Optional<OpenChatRoom> selectOneOpenChatRoomById(Long openChatRoomId);
     public void updateOpenChatRoomNotice(Long openChatRoomId, String notice);
     public List<OpenChatRoomDto> selectJoinOpenChatRoomByUserId(Long userId);
+    public List<Long> selectOpenChatRoomUser(Long openChatRoomId);
 }

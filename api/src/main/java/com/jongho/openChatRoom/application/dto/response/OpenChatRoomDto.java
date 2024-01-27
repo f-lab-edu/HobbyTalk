@@ -21,8 +21,7 @@ public class OpenChatRoomDto {
     private final int maximumCapacity;
     private final int currentAttendance;
     private final String createdTime;
-    private OpenChat openChat;
-    private List<Long> openChatRoomUserIds;
+    private OpenChat lastChat;
     private OpenChatRoomConnectionInfo openChatRoomConnectionInfo;
 
     @JsonCreator
@@ -55,8 +54,7 @@ public class OpenChatRoomDto {
             @JsonProperty("maximumCapacity") int maximumCapacity,
             @JsonProperty("currentAttendance") int currentAttendance,
             @JsonProperty("createdTime") String createdTime,
-            @JsonProperty("openChat") OpenChat openChat,
-            @JsonProperty("openChatRoomUserIds") List<Long> openChatRoomUserIds) {
+            @JsonProperty("openChat") OpenChat lastChat) {
         this.id = id;
         this.title = title;
         this.notice = notice;
@@ -65,16 +63,11 @@ public class OpenChatRoomDto {
         this.maximumCapacity = maximumCapacity;
         this.currentAttendance = currentAttendance;
         this.createdTime = createdTime;
-        this.openChat = openChat;
-        this.openChatRoomUserIds = openChatRoomUserIds;
+        this.lastChat = lastChat;
     }
 
-    public void setOpenChat(OpenChat openChat) {
-        this.openChat = openChat;
-    }
-
-    public void setOpenChatRoomUserIds(List<Long> openChatRoomUserIds) {
-        this.openChatRoomUserIds = openChatRoomUserIds;
+    public void setOpenChat(OpenChat lastChat) {
+        this.lastChat = lastChat;
     }
 
     public void setOpenChatRoomConnectionInfo(OpenChatRoomConnectionInfo openChatRoomConnectionInfo) {

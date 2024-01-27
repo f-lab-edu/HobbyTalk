@@ -51,4 +51,8 @@ public class OpenChatRoomServiceImpl implements OpenChatRoomService{
     public List<OpenChatRoomDto> getJoinOpenChatRoomList(Long userId) {
         return openChatRoomRepository.selectJoinOpenChatRoomByUserId(userId);
     }
+    @Override
+    public List<Long> getOpenChatRoomUserList(Long openChatRoomId) {
+        return openChatRoomRepository.selectOpenChatRoomUser(openChatRoomId);
+    }
 }
