@@ -1,4 +1,4 @@
-package com.jongho.openChatRoom.application.dto.response;
+package com.jongho.openChatRoom.domain.model.redis;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,13 +9,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class OpenChatRoomConnectionInfo {
+public class RedisOpenChatRoomConnectionInfo {
     private int active;
     private int unReadMessageCount;
     private int lastExitTime;
 
     @JsonCreator
-    public OpenChatRoomConnectionInfo(
+    public RedisOpenChatRoomConnectionInfo(
             @JsonProperty("active") int active,
             @JsonProperty("unReadMessageCount") int unReadMessageCount,
             @JsonProperty("lastExitTime") int lastExitTime) {
