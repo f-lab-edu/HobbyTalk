@@ -6,7 +6,7 @@
         VALUES (#{openChatRoomId}, #{userId})
     </insert>
     <select id="selectOneOpenChatRoomUserByOpenChatRoomIdAndUserId" parameterType="com.jongho.openChatRoomUser.domain.model.OpenChatRoomUser" resultType="com.jongho.openChatRoomUser.domain.model.OpenChatRoomUser">
-        SELECT open_chat_room_id, user_id
+        SELECT open_chat_room_id, user_id, last_exit_time
         FROM open_chat_room_users
         WHERE open_chat_room_id = #{openChatRoomId}
         AND user_id = #{userId}

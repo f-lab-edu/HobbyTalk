@@ -16,4 +16,13 @@
         ORDER BY id DESC
         LIMIT 1
     </select>
+    <select id="selectUnReadOpenChatCountByChatRoomIdAndLastExitTime">
+        SELECT
+            COUNT(*) AS unread_message_count
+        FROM open_chats
+        WHERE open_chat_room_id = #{openChatRoomId}
+        AND created_time > #{lastExitTime}
+        AND is_deleted = 0
+        LIMIT 200
+    </select>
 </mapper>

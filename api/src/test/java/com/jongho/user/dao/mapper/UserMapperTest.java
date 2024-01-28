@@ -64,7 +64,6 @@ public class UserMapperTest extends BaseMapperTest {
             User user = new User("jonghao", "a123b123", "whdgh9595", "01012341234", null);
 
             // when
-            System.out.println(user.getId());
             userMapper.createUser(user);
             User selectUser = userMapper.findOneById(user.getId());
 

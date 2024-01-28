@@ -73,7 +73,7 @@
         WHERE id = #{id}
         AND deleted_time is null
     </update>
-    <select id="selectJoinOpenChatRoomByUserId" parameterType="Long" resultType="com.jongho.openChatRoom.application.dto.response.MyOpenChatRoomDto">
+    <select id="selectJoinOpenChatRoomByUserId" parameterType="Long" resultType="com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom">
         SELECT
             open_chat_rooms.id,
             open_chat_rooms.title,
@@ -100,5 +100,20 @@
             AND open_chat_room_users.deleted_time is null
         WHERE open_chat_rooms.id = #{openChatRoomId}
             AND open_chat_rooms.deleted_time is null
+    </select>
+    <select id="selectRedisOpenChatRoomById" parameterType="Long" resultType="com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom">
+        SELECT
+            id,
+            title,
+            notice,
+            manager_id,
+            category_id,
+            maximum_capacity,
+            current_attendance,
+            created_time
+        FROM open_chat_rooms
+        WHERE id = #{openChatRoomId}
+        AND deleted_time is null
+        LIMIT 1
     </select>
 </mapper>
