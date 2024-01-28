@@ -7,6 +7,7 @@ import com.jongho.openChat.domain.repository.OpenChatRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,4 +21,10 @@ public class OpenChatRedisRepositoryImpl implements OpenChatRedisRepository {
                 RedisKeyGeneration.getLastMessageKey(openChatRoomId),
                 OpenChat.class));
     }
+    @Override
+    public List<OpenChat> selectOpenChatListByChatRoomId(Long openChatRoomId){
+        return baseRedisTemplate.getReverseRangeAllListData(
+                RedisKeyGeneration.getChatRoomMessageKey(openChatRoomId),
+                OpenChat.class);
+    };
 }

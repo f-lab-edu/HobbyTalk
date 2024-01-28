@@ -5,6 +5,7 @@ import com.jongho.openChat.domain.repository.OpenChatRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,5 +16,9 @@ public class OpenChatRedisServiceImpl implements OpenChatRedisService {
     @Override
     public Optional<OpenChat> getLastOpenChatByOpenChatRoomId(Long openChatRoomId){
         return openChatRedisRepository.selectLastOpenChatByChatRoomId(openChatRoomId);
+    };
+    @Override
+    public List<OpenChat> getOpenChatListByOpenChatRoomId(Long openChatRoomId){
+        return openChatRedisRepository.selectOpenChatListByChatRoomId(openChatRoomId);
     };
 }
