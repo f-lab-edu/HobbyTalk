@@ -1,5 +1,7 @@
 package com.jongho.common.util.websocket;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jongho.common.exception.MyJsonProcessingException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -10,8 +12,13 @@ import lombok.ToString;
 public class BaseWebSocketMessage<T> {
     private final BaseMessageTypeEnum type;
     private final T data;
+    public static ObjectMapper objectMapper = new ObjectMapper();
 
-    public static <T> BaseWebSocketMessage<T> join(T data) {
-        return new BaseWebSocketMessage<T>(BaseMessageTypeEnum.JOIN, data);
+    public static <T> String join(T data) {
+        try {
+            return objectMapper.writeValueAsString(new BaseWebSocketMessage<T>(BaseMessageTypeEnum.JOIN, data));
+        }catch (Exception e) {
+            throw new MyJsonProcessingException(e.getMessage()!=null? e.getMessage():"json processing error");
+        }
     }
 }
