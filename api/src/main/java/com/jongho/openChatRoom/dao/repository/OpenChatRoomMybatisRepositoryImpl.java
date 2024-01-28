@@ -3,6 +3,7 @@ package com.jongho.openChatRoom.dao.repository;
 import com.jongho.openChatRoom.application.dto.response.OpenChatRoomDto;
 import com.jongho.openChatRoom.dao.mapper.OpenChatRoomMapper;
 import com.jongho.openChatRoom.domain.model.OpenChatRoom;
+import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom;
 import com.jongho.openChatRoom.domain.repository.OpenChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -43,11 +44,15 @@ public class OpenChatRoomMybatisRepositoryImpl implements OpenChatRoomRepository
         openChatRoomMapper.updateOpenChatRoomNotice(openChatRoomId, notice);
     }
     @Override
-    public List<OpenChatRoomDto> selectJoinOpenChatRoomByUserId(Long userId){
+    public List<RedisOpenChatRoom> selectJoinOpenChatRoomByUserId(Long userId){
         return openChatRoomMapper.selectJoinOpenChatRoomByUserId(userId);
     };
     @Override
     public List<Long> selectOpenChatRoomUser(Long openChatRoomId){
         return openChatRoomMapper.selectOpenChatRoomUser(openChatRoomId);
+    };
+    @Override
+    public Optional<RedisOpenChatRoom> selectRedisOpenChatRoomById(Long openChatRoomId){
+        return Optional.ofNullable(openChatRoomMapper.selectRedisOpenChatRoomById(openChatRoomId));
     };
 }

@@ -3,24 +3,38 @@ package com.jongho.openChatRoom.domain.model.redis;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class RedisOpenChatRoomConnectionInfo {
     private int active;
     private int unReadMessageCount;
-    private int lastExitTime;
+    private String lastExitTime;
 
     @JsonCreator
     public RedisOpenChatRoomConnectionInfo(
             @JsonProperty("active") int active,
             @JsonProperty("unReadMessageCount") int unReadMessageCount,
-            @JsonProperty("lastExitTime") int lastExitTime) {
+            @JsonProperty("lastExitTime") String lastExitTime) {
         this.active = active;
         this.unReadMessageCount = unReadMessageCount;
         this.lastExitTime = lastExitTime;
+    }
+
+    public Map<String, String> toMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put("active", this.active+"");
+        map.put("unReadMessageCount", this.unReadMessageCount+"");
+        map.put("lastExitTime", this.lastExitTime+"");
+
+        return map;
     }
 }
