@@ -3,6 +3,7 @@ package com.jongho.openChatRoom.application.service;
 import com.jongho.common.exception.OpenChatRoomNotFoundException;
 import com.jongho.common.exception.UnAuthorizedException;
 import com.jongho.openChatRoom.domain.model.OpenChatRoom;
+import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom;
 import com.jongho.openChatRoom.domain.repository.OpenChatRoomRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -12,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -234,6 +236,65 @@ public class OpenChatRoomServiceImplTest {
             // when
             // then
             assertThrows(UnAuthorizedException.class, () -> openChatRoomServiceImpl.updateOpenChatRoomNotice(userId, openChatRoomId, notice));
+        }
+    }
+    @Nested
+    @DisplayName("getJoinOpenChatRoomList 메소드는")
+    class Describe_getJoinOpenChatRoomList {
+        @Test
+        @DisplayName("OpenChatRoomRepository의 selectJoinOpenChatRoomByUserId 메소드를 호출해서 받은 openChatRoom을 반환한다")
+        void OpenChatRoomRepository의_selectJoinOpenChatRoomByUserId메소드를_한번_호출해서_받은_redisOpenChatRoom을_반환한다() {
+            // given
+            Long userId = 1L;
+            List<RedisOpenChatRoom> redisOpenChatRooms = List.of(
+                    new RedisOpenChatRoom(1L, "타이틀", "공지사항", 1L, 1L, 200, 1,"2024-01-30 12:34:56"),
+                    new RedisOpenChatRoom(2L, "타이틀", "공지사항", 1L, 1L, 200, 2, "2024-01-30 12:34:56")
+            );
+            when(openChatRoomRepository.selectJoinOpenChatRoomByUserId(userId)).thenReturn(redisOpenChatRooms);
+
+            // when
+            openChatRoomServiceImpl.getJoinOpenChatRoomList(userId);
+
+            // then
+            verify(openChatRoomRepository, times(1)).selectJoinOpenChatRoomByUserId(userId);
+        }
+    }
+    @Nested
+    @DisplayName("getOpenChatRoomUserList 메소드는")
+    class Describe_getOpenChatRoomUserList {
+        @Test
+        @DisplayName("OpenChatRoomRepository의 selectOpenChatRoomUserList 메소드를 호출해서 받은 openChatRoomUserList를 반환한다")
+        void OpenChatRoomRepository의_selectOpenChatRoomUserList메소드를_한번_호출해서_받은_openChatRoomUserList를_반환한다() {
+            // given
+            Long openChatRoomId = 1L;
+            List<Long> userIds = List.of(1L, 2L, 3L);
+            when(openChatRoomRepository.selectOpenChatRoomUser(openChatRoomId)).thenReturn(userIds);
+
+            // when
+            List<Long> result = openChatRoomServiceImpl.getOpenChatRoomUserList(openChatRoomId);
+
+            // then
+            verify(openChatRoomRepository, times(1)).selectOpenChatRoomUser(openChatRoomId);
+            assertEquals(userIds, result);
+        }
+    }
+    @Nested
+    @DisplayName("getRedisOpenChatRoomById 메소드는")
+    class Describe_getRedisOpenChatRoomById{
+        @Test
+        @DisplayName("OpenChatRoomRepository의 selectRedisOpenChatRoomById 메소드를 호출해서 받은 redisOpenChatRoom을 반환한다")
+        void OpenChatRoomRepository의_selectRedisOpenChatRoomById메소드를_한번_호출해서_받은_redisOpenChatRoom을_반환한다() {
+            // given
+            Long openChatRoomId = 1L;
+            RedisOpenChatRoom redisOpenChatRoom = new RedisOpenChatRoom(1L, "타이틀", "공지사항", 1L, 1L, 200, 1,"2024-01-30 12:34:56");
+            when(openChatRoomRepository.selectRedisOpenChatRoomById(openChatRoomId)).thenReturn(Optional.of(redisOpenChatRoom));
+
+            // when
+            RedisOpenChatRoom result = openChatRoomServiceImpl.getRedisOpenChatRoomById(openChatRoomId).get();
+
+            // then
+            verify(openChatRoomRepository, times(1)).selectRedisOpenChatRoomById(openChatRoomId);
+            assertEquals(redisOpenChatRoom, result);
         }
     }
 }

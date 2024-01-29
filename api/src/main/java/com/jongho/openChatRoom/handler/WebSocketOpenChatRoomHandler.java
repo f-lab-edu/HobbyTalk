@@ -20,7 +20,7 @@ public class WebSocketOpenChatRoomHandler extends TextWebSocketHandler {
         List<OpenChatRoomDto> openChatRoomDto = webSocketOpenChatRoomFacade.joinOpenChatRoomList((long) session.getAttributes().get("userId"));
 
         session.sendMessage(
-                new TextMessage(BaseWebSocketMessage.join(openChatRoomDto).toString()));
+                new TextMessage(BaseWebSocketMessage.join(openChatRoomDto)));
     }
 
     @Override

@@ -2,14 +2,21 @@ package com.jongho.openChatRoom.dao.mapper;
 
 import com.jongho.common.dao.BaseMapperTest;
 import com.jongho.openChatRoom.domain.model.OpenChatRoom;
+import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom;
+import com.jongho.openChatRoomUser.dao.mapper.OpenChatRoomUserMapper;
+import com.jongho.openChatRoomUser.domain.model.OpenChatRoomUser;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @DisplayName("OpenChatRoomMapper 인터페이스")
 public class OpenChatRoomMapperTest extends BaseMapperTest {
     @Autowired
     private OpenChatRoomMapper openChatRoomMapper;
+    @Autowired
+    private OpenChatRoomUserMapper openChatRoomUserMapper;
 
     @Nested
     @DisplayName("createOpenChatRoom 메소드는")
@@ -217,6 +224,111 @@ public class OpenChatRoomMapperTest extends BaseMapperTest {
 
             // then
             assertEquals("수정된 공지사항", openChatRoomMapper.selectOneOpenChatRoomById(openChatRoom.getId()).getNotice());
+        }
+    }
+    @Nested
+    @DisplayName("selectJoinOpenChatRoomByUserId 메소드는")
+    class Describe_selectJoinOpenChatRoomByUserId {
+        @BeforeEach
+        void setUp() {
+            cleanUpOpenChatRoomTable();
+            cleanUpOpenChatRoomUserTable();
+        }
+
+        @Test
+        @DisplayName("인자로 받은 유저 아이디를 가진 오픈채팅방유저를 반환한다.")
+        void 오픈채팅방유저_리스트를_반환한다() {
+            // given
+            OpenChatRoom openChatRoom1 = new OpenChatRoom(
+                    "타이틀1",
+                    "공지사항1",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            OpenChatRoom openChatRoom2 = new OpenChatRoom(
+                    "타이틀2",
+                    "공지사항2",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            openChatRoomMapper.createOpenChatRoom(openChatRoom1);
+            openChatRoomMapper.createOpenChatRoom(openChatRoom2);
+            openChatRoomUserMapper.createOpenChatRoomUser(new OpenChatRoomUser(openChatRoom1.getId(), 1L));
+            openChatRoomUserMapper.createOpenChatRoomUser(new OpenChatRoomUser(openChatRoom2.getId(), 1L));
+
+            // when
+            var result = openChatRoomMapper.selectJoinOpenChatRoomByUserId(1L);
+
+            // then
+            assertEquals(2, result.size());
+        }
+    }
+    @Nested
+    @DisplayName("selectOpenChatRoomUser 메소드는")
+    class Describe_selectOpenChatRoomUser {
+        @BeforeEach
+        void setUp() {
+            cleanUpOpenChatRoomTable();
+            cleanUpOpenChatRoomUserTable();
+        }
+
+        @Test
+        @DisplayName("인자로 받은 오픈채팅방 아이디를 가진 오픈채팅방유저를 반환한다.")
+        void 오픈채팅방유저_리스트를_반환한다() {
+            // given
+            OpenChatRoom openChatRoom = new OpenChatRoom(
+                    "타이틀1",
+                    "공지사항1",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            openChatRoomMapper.createOpenChatRoom(openChatRoom);
+            openChatRoomUserMapper.createOpenChatRoomUser(new OpenChatRoomUser(openChatRoom.getId(), 1L));
+            openChatRoomUserMapper.createOpenChatRoomUser(new OpenChatRoomUser(openChatRoom.getId(), 2L));
+            openChatRoomUserMapper.createOpenChatRoomUser(new OpenChatRoomUser(openChatRoom.getId(), 3L));
+
+            // when
+            var result = openChatRoomMapper.selectOpenChatRoomUser(openChatRoom.getId());
+
+            // then
+            assertEquals(3, result.size());
+        }
+    }
+    @Nested
+    @DisplayName("selectRedisOpenChatRoomById 메소드는")
+    class Describe_selectRedisOpenChatRoomById {
+        @BeforeEach
+        void setUp() {
+            cleanUpOpenChatRoomTable();
+            cleanUpOpenChatRoomUserTable();
+        }
+
+        @Test
+        @DisplayName("인자로 받은 오픈채팅방 아이디를 가진 오픈채팅방을 반환한다.")
+        void 오픈채팅방을_반환한다() {
+            // given
+            OpenChatRoom openChatRoom = new OpenChatRoom(
+                    "타이틀1",
+                    "공지사항1",
+                    1L,
+                    1L,
+                    200,
+                    "비밀번호"
+            );
+            openChatRoomMapper.createOpenChatRoom(openChatRoom);
+
+            // when
+            var result = openChatRoomMapper.selectRedisOpenChatRoomById(openChatRoom.getId());
+
+            // then
+            assertNotNull(result.getCreatedTime());
+            assertEquals(RedisOpenChatRoom.class, result.getClass());
         }
     }
 }
