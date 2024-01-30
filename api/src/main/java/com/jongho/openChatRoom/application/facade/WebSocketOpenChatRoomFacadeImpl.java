@@ -14,6 +14,9 @@ import com.jongho.openChatRoomUser.application.service.OpenChatRoomUserService;
 import com.jongho.openChatRoomUser.domain.model.OpenChatRoomUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,6 +32,8 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
     private final OpenChatService openChatService;
     private final OpenChatRedisService openChatRedisService;
     private final OpenChatRoomUserService openChatRoomUserService;
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public List<OpenChatRoomDto> joinOpenChatRoomList(Long userId){
         List<Long> openChatRoomIdList = openChatRoomRedisService.getOpenChatRoomIdList(userId);
         List<OpenChatRoomDto> openChatRoomDtoList;
