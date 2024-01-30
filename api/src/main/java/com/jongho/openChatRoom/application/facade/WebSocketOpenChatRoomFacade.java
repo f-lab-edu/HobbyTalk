@@ -5,5 +5,5 @@ import com.jongho.openChatRoom.application.dto.response.OpenChatRoomDto;
 import java.util.List;
 
 public interface WebSocketOpenChatRoomFacade {
-    public List<OpenChatRoomDto> joinOpenChatRoomList(Long userId);
+    public List<OpenChatRoomDto> getOpenChatRoomList(Long userId);
 }

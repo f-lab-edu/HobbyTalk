@@ -14,9 +14,6 @@ import com.jongho.openChatRoomUser.application.service.OpenChatRoomUserService;
 import com.jongho.openChatRoomUser.domain.model.OpenChatRoomUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,8 +30,14 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
     private final OpenChatRedisService openChatRedisService;
     private final OpenChatRoomUserService openChatRoomUserService;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
-    public List<OpenChatRoomDto> joinOpenChatRoomList(Long userId){
+    /**
+     * 자신이 참여중인 채팅방 목록 반환
+     *
+     * @author JongHo
+     * @param userId 1
+     * @return List<OpenChatRoomDto>
+     **/
+    public List<OpenChatRoomDto> getOpenChatRoomList(Long userId){
         List<Long> openChatRoomIdList = openChatRoomRedisService.getOpenChatRoomIdList(userId);
         List<OpenChatRoomDto> openChatRoomDtoList;
         if (openChatRoomIdList.size() == 0){
@@ -55,6 +58,14 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
         return sortOpenChatRoomDtoListByLastOpenChatCreatedTime(openChatRoomDtoList);
     }
 
+    /**
+     * 자신이 참여중인 채팅방 목록에
+     * 마지막 채팅 정보와
+     * 마지막 채팅 이후의 채팅 개수를 추가하여 반환
+     * @param userId 1
+     * @param openChatRoomList List<RedisOpenChatRoom>
+     * @return List<OpenChatRoomDto>
+     **/
     private List<OpenChatRoomDto> enrichOpenChatRoomDtoListWithLastOpenChat(Long userId, List<RedisOpenChatRoom> openChatRoomList) {
         return openChatRoomList
                 .stream()
@@ -67,6 +78,12 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
 
     }
 
+    /**
+     * 레디스에 저장된
+     * 채팅방 정보 반환
+     * @param openChatRoomId 1
+     * @return OpenChatRoomDto
+     **/
     public RedisOpenChatRoom getRedisOpenChatRoom(Long openChatRoomId){
         Optional<RedisOpenChatRoom> redisOpenChatRoom = openChatRoomRedisService.getOpenChatRoom(openChatRoomId);
         if (redisOpenChatRoom.isEmpty()){
@@ -81,6 +98,11 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
         return redisOpenChatRoom.get();
     }
 
+    /**
+     * 채팅방의 마지막 채팅 정보 반환
+     * @param openChatRoomDto OpenChatRoomDto
+     * @return OpenChat
+     **/
     private OpenChat getLastOpenChatByOpenChatRoomId(OpenChatRoomDto openChatRoomDto){
         Optional<OpenChat> openChat = openChatRedisService.getLastOpenChatByOpenChatRoomId(openChatRoomDto.getId());
         if(openChat.isEmpty()){
@@ -96,6 +118,11 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
         return openChat.get();
     }
 
+    /**
+     * 채팅방의 유저 id 리스트 반환
+     * @param openChatRoom RedisOpenChatRoom
+     * @return List<Long>
+     **/
     private List<Long> getOpenChatRoomUserList(RedisOpenChatRoom openChatRoom){
         List<Long> idList = openChatRoomRedisService.getOpenChatRoomIdList(openChatRoom.getId());
         if (idList.size() == 0 || idList.size() != openChatRoom.getCurrentAttendance()){
@@ -106,6 +133,12 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
         return idList;
     }
 
+    /**
+     * 유저의 채팅방 접속정보 반환
+     * @param userId 1
+     * @param openChatRoomDto OpenChatRoomDto
+     * @return RedisOpenChatRoomConnectionInfo
+     **/
     private RedisOpenChatRoomConnectionInfo getRedisOpenChatRoomConnectionInfo(Long userId, OpenChatRoomDto openChatRoomDto){
         RedisOpenChatRoomConnectionInfo redisOpenChatRoomConnectionInfo = openChatRoomRedisService.getRedisOpenChatRoomConnectionInfo(userId, openChatRoomDto.getId());
         if(redisOpenChatRoomConnectionInfo == null){
@@ -123,6 +156,12 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
         return redisOpenChatRoomConnectionInfo;
     }
 
+    /**
+     * 채팅방의 마지막 채팅 이후의 채팅 개수 반환
+     * @param openChatRoomDto OpenChatRoomDto
+     * @param lastExitTime String
+     * @return int
+     **/
     private int getUnReadMessageCount(OpenChatRoomDto openChatRoomDto, String lastExitTime){
         int count = 0;
         int maxCount = 200;
@@ -141,6 +180,12 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
         return count;
     }
 
+    /**
+     * 마지막 채팅이 생성된 시간을 기준으로
+     * 내림차순 정렬
+     * @param myOpenChatRoomDtoList List<OpenChatRoomDto>
+     * @return List<OpenChatRoomDto>
+     **/
     private List<OpenChatRoomDto> sortOpenChatRoomDtoListByLastOpenChatCreatedTime(List<OpenChatRoomDto> myOpenChatRoomDtoList) {
         return myOpenChatRoomDtoList.stream()
                 .sorted(
