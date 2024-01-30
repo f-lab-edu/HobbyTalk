@@ -3,13 +3,12 @@ package com.jongho.common.util.redis;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jongho.common.exception.MyJsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.WebSocketSession;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -74,6 +73,20 @@ public class BaseRedisTemplate {
             return null;
         }
         return mapToObject(map, valueType);
+    }
+
+    public void publish(String channel, String message) {
+        stringRedisTemplate.convertAndSend(channel, message);
+    }
+
+    public void subscribe(String channel, MessageListener messageListener) {
+        Objects.requireNonNull(stringRedisTemplate.getConnectionFactory()).getConnection().subscribe(messageListener, channel.getBytes());
+    }
+
+    public void subscribe(List<String> channel, MessageListener messageListener) {
+        for(String c : channel) {
+            Objects.requireNonNull(stringRedisTemplate.getConnectionFactory()).getConnection().subscribe(messageListener, c.getBytes());
+        }
     }
 
     public <T> T toObject(String json, Class<T> valueType) {
