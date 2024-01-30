@@ -70,13 +70,14 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
     private List<OpenChatRoomDto> enrichOpenChatRoomDtoListWithLastOpenChat(Long userId, List<RedisOpenChatRoom> openChatRoomList) {
         return openChatRoomList
                 .stream()
-                .map(OpenChatRoomDto::new)
-                .peek(openChatRoomDto -> {
+                .map(redisOpenChatRoom->{
+                    OpenChatRoomDto openChatRoomDto = new OpenChatRoomDto(redisOpenChatRoom);
                     openChatRoomDto.setOpenChat(getLastOpenChatByOpenChatRoomId(openChatRoomDto));
                     openChatRoomDto.setRedisOpenChatRoomConnectionInfo(getRedisOpenChatRoomConnectionInfo(userId, openChatRoomDto));
+
+                    return openChatRoomDto;
                 })
                 .toList();
-
     }
 
     /**
