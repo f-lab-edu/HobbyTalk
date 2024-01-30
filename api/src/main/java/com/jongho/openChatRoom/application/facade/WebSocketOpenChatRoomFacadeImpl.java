@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -166,7 +167,7 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
         int count = 0;
         int maxCount = 200;
         List<OpenChat> openChatList = openChatRedisService.getOpenChatListByOpenChatRoomId(openChatRoomDto.getId());
-        LocalDate lastExitDate = DateUtil.convertStringToDate(lastExitTime);
+        LocalDateTime lastExitDate = DateUtil.convertStringToDate(lastExitTime);
         for (OpenChat openChat : openChatList){
             if (DateUtil.convertStringToDate(openChat.getCreatedTime()).isAfter(lastExitDate)){
                 count++;
