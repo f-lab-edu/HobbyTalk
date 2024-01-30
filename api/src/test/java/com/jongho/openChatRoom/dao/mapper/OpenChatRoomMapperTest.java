@@ -2,7 +2,7 @@ package com.jongho.openChatRoom.dao.mapper;
 
 import com.jongho.common.dao.BaseMapperTest;
 import com.jongho.openChatRoom.domain.model.OpenChatRoom;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom;
 import com.jongho.openChatRoomUser.dao.mapper.OpenChatRoomUserMapper;
 import com.jongho.openChatRoomUser.domain.model.OpenChatRoomUser;
 import org.junit.jupiter.api.*;
@@ -302,7 +302,7 @@ public class OpenChatRoomMapperTest extends BaseMapperTest {
     }
     @Nested
     @DisplayName("selectRedisOpenChatRoomById 메소드는")
-    class Describe_selectRedisOpenChatRoomById {
+    class Describe_selectCachedOpenChatRoomById {
         @BeforeEach
         void setUp() {
             cleanUpOpenChatRoomTable();
@@ -328,7 +328,7 @@ public class OpenChatRoomMapperTest extends BaseMapperTest {
 
             // then
             assertNotNull(result.getCreatedTime());
-            assertEquals(RedisOpenChatRoom.class, result.getClass());
+            assertEquals(CachedOpenChatRoom.class, result.getClass());
         }
     }
 }

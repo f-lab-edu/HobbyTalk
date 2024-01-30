@@ -73,7 +73,7 @@
         WHERE id = #{id}
         AND deleted_time is null
     </update>
-    <select id="selectJoinOpenChatRoomByUserId" parameterType="Long" resultType="com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom">
+    <select id="selectJoinOpenChatRoomByUserId" parameterType="Long" resultType="com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom">
         SELECT
             open_chat_rooms.id,
             open_chat_rooms.title,
@@ -101,7 +101,7 @@
         WHERE open_chat_rooms.id = #{openChatRoomId}
             AND open_chat_rooms.deleted_time is null
     </select>
-    <select id="selectRedisOpenChatRoomById" parameterType="Long" resultType="com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom">
+    <select id="selectRedisOpenChatRoomById" parameterType="Long" resultType="com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom">
         SELECT
             id,
             title,

@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode(of = "id")
-public class RedisOpenChatRoom {
+public class CachedOpenChatRoom {
     private final Long id;
     private final String title;
     private final String notice;
@@ -20,7 +20,7 @@ public class RedisOpenChatRoom {
     private final String createdTime;
 
     @JsonCreator
-    public RedisOpenChatRoom(
+    public CachedOpenChatRoom(
             @JsonProperty("id") Long id,
             @JsonProperty("title") String title,
             @JsonProperty("notice") String notice,

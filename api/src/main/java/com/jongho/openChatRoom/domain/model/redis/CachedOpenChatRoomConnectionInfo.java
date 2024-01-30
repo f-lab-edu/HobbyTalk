@@ -14,13 +14,13 @@ import java.util.Map;
 @Setter
 @ToString
 @NoArgsConstructor
-public class RedisOpenChatRoomConnectionInfo {
+public class CachedOpenChatRoomConnectionInfo {
     private int active;
     private int unReadMessageCount;
     private String lastExitTime;
 
     @JsonCreator
-    public RedisOpenChatRoomConnectionInfo(
+    public CachedOpenChatRoomConnectionInfo(
             @JsonProperty("active") int active,
             @JsonProperty("unReadMessageCount") int unReadMessageCount,
             @JsonProperty("lastExitTime") String lastExitTime) {

@@ -1,8 +1,8 @@
 package com.jongho.openChatRoom.application.service;
 
 import com.jongho.openChat.domain.model.OpenChat;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoomConnectionInfo;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoomConnectionInfo;
 import com.jongho.openChatRoom.domain.repository.OpenChatRoomRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,15 +31,15 @@ public class OpenChatRoomRedisServiceImpl implements OpenChatRoomRedisService{
         openChatRoomRedisRepository.createOpenChatRoomLastMessage(openChatRoomId, openChat);
     }
     @Override
-    public void createRedisOpenChatRoomConnectionInfo(Long userId, Long openChatRoomId, RedisOpenChatRoomConnectionInfo redisOpenChatRoomConnectionInfo) {
-        openChatRoomRedisRepository.createRedisOpenChatRoomConnectionInfo(userId, openChatRoomId, redisOpenChatRoomConnectionInfo);
+    public void createRedisOpenChatRoomConnectionInfo(Long userId, Long openChatRoomId, CachedOpenChatRoomConnectionInfo cachedOpenChatRoomConnectionInfo) {
+        openChatRoomRedisRepository.createRedisOpenChatRoomConnectionInfo(userId, openChatRoomId, cachedOpenChatRoomConnectionInfo);
     }
     @Override
     public List<Long> getOpenChatRoomUserList(Long openChatRoomId) {
         return openChatRoomRedisRepository.getOpenChatRoomUserList(openChatRoomId);
     }
     @Override
-    public RedisOpenChatRoomConnectionInfo getRedisOpenChatRoomConnectionInfo(Long userId, Long openChatRoomId) {
+    public CachedOpenChatRoomConnectionInfo getRedisOpenChatRoomConnectionInfo(Long userId, Long openChatRoomId) {
         return openChatRoomRedisRepository.getRedisOpenChatRoomConnectionInfo(userId, openChatRoomId);
     }
     @Override
@@ -47,7 +47,7 @@ public class OpenChatRoomRedisServiceImpl implements OpenChatRoomRedisService{
         return openChatRoomRedisRepository.getLastOpenChatByChatRoomId(chatRoomId);
     };
     @Override
-    public Optional<RedisOpenChatRoom> getOpenChatRoom(Long openChatRoomId){
+    public Optional<CachedOpenChatRoom> getOpenChatRoom(Long openChatRoomId){
         return openChatRoomRedisRepository.getOpenChatRoom(openChatRoomId);
     };
 }

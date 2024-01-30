@@ -1,8 +1,8 @@
 package com.jongho.openChatRoom.application.dto.response;
 
 import com.jongho.openChat.domain.model.OpenChat;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoomConnectionInfo;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoomConnectionInfo;
 import lombok.*;
 
 @Getter
@@ -20,24 +20,24 @@ public class OpenChatRoomDto {
     private final int currentAttendance;
     private final String createdTime;
     private OpenChat lastChat;
-    private RedisOpenChatRoomConnectionInfo redisOpenChatRoomConnectionInfo;
+    private CachedOpenChatRoomConnectionInfo cachedOpenChatRoomConnectionInfo;
 
-    public OpenChatRoomDto(RedisOpenChatRoom redisOpenChatRoom) {
-        this.id = redisOpenChatRoom.getId();
-        this.title = redisOpenChatRoom.getTitle();
-        this.notice = redisOpenChatRoom.getNotice();
-        this.managerId = redisOpenChatRoom.getManagerId();
-        this.categoryId = redisOpenChatRoom.getCategoryId();
-        this.maximumCapacity = redisOpenChatRoom.getMaximumCapacity();
-        this.currentAttendance = redisOpenChatRoom.getCurrentAttendance();
-        this.createdTime = redisOpenChatRoom.getCreatedTime();
+    public OpenChatRoomDto(CachedOpenChatRoom cachedOpenChatRoom) {
+        this.id = cachedOpenChatRoom.getId();
+        this.title = cachedOpenChatRoom.getTitle();
+        this.notice = cachedOpenChatRoom.getNotice();
+        this.managerId = cachedOpenChatRoom.getManagerId();
+        this.categoryId = cachedOpenChatRoom.getCategoryId();
+        this.maximumCapacity = cachedOpenChatRoom.getMaximumCapacity();
+        this.currentAttendance = cachedOpenChatRoom.getCurrentAttendance();
+        this.createdTime = cachedOpenChatRoom.getCreatedTime();
     }
 
     public void setOpenChat(OpenChat lastChat) {
         this.lastChat = lastChat;
     }
 
-    public void setRedisOpenChatRoomConnectionInfo(RedisOpenChatRoomConnectionInfo redisOpenChatRoomConnectionInfo) {
-        this.redisOpenChatRoomConnectionInfo = redisOpenChatRoomConnectionInfo;
+    public void setCachedOpenChatRoomConnectionInfo(CachedOpenChatRoomConnectionInfo cachedOpenChatRoomConnectionInfo) {
+        this.cachedOpenChatRoomConnectionInfo = cachedOpenChatRoomConnectionInfo;
     }
 }

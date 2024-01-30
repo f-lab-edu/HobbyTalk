@@ -2,9 +2,8 @@ package com.jongho.openChatRoom.application.service;
 
 import com.jongho.common.exception.OpenChatRoomNotFoundException;
 import com.jongho.common.exception.UnAuthorizedException;
-import com.jongho.openChatRoom.application.dto.response.OpenChatRoomDto;
 import com.jongho.openChatRoom.domain.model.OpenChatRoom;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom;
 import com.jongho.openChatRoom.domain.repository.OpenChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,7 +48,7 @@ public class OpenChatRoomServiceImpl implements OpenChatRoomService{
         openChatRoomRepository.updateOpenChatRoomNotice(openChatRoomId, notice);
     }
     @Override
-    public List<RedisOpenChatRoom> getJoinOpenChatRoomList(Long userId) {
+    public List<CachedOpenChatRoom> getJoinOpenChatRoomList(Long userId) {
         return openChatRoomRepository.selectJoinOpenChatRoomByUserId(userId);
     }
     @Override
@@ -57,7 +56,7 @@ public class OpenChatRoomServiceImpl implements OpenChatRoomService{
         return openChatRoomRepository.selectOpenChatRoomUser(openChatRoomId);
     }
     @Override
-    public Optional<RedisOpenChatRoom> getRedisOpenChatRoomById(Long openChatRoomId) {
+    public Optional<CachedOpenChatRoom> getRedisOpenChatRoomById(Long openChatRoomId) {
         return openChatRoomRepository.selectRedisOpenChatRoomById(openChatRoomId);
     }
 }

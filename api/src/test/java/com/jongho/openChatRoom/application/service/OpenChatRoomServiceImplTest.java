@@ -3,7 +3,7 @@ package com.jongho.openChatRoom.application.service;
 import com.jongho.common.exception.OpenChatRoomNotFoundException;
 import com.jongho.common.exception.UnAuthorizedException;
 import com.jongho.openChatRoom.domain.model.OpenChatRoom;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom;
 import com.jongho.openChatRoom.domain.repository.OpenChatRoomRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -246,11 +246,11 @@ public class OpenChatRoomServiceImplTest {
         void OpenChatRoomRepository의_selectJoinOpenChatRoomByUserId메소드를_한번_호출해서_받은_redisOpenChatRoom을_반환한다() {
             // given
             Long userId = 1L;
-            List<RedisOpenChatRoom> redisOpenChatRooms = List.of(
-                    new RedisOpenChatRoom(1L, "타이틀", "공지사항", 1L, 1L, 200, 1,"2024-01-30 12:34:56"),
-                    new RedisOpenChatRoom(2L, "타이틀", "공지사항", 1L, 1L, 200, 2, "2024-01-30 12:34:56")
+            List<CachedOpenChatRoom> cachedOpenChatRooms = List.of(
+                    new CachedOpenChatRoom(1L, "타이틀", "공지사항", 1L, 1L, 200, 1,"2024-01-30 12:34:56"),
+                    new CachedOpenChatRoom(2L, "타이틀", "공지사항", 1L, 1L, 200, 2, "2024-01-30 12:34:56")
             );
-            when(openChatRoomRepository.selectJoinOpenChatRoomByUserId(userId)).thenReturn(redisOpenChatRooms);
+            when(openChatRoomRepository.selectJoinOpenChatRoomByUserId(userId)).thenReturn(cachedOpenChatRooms);
 
             // when
             openChatRoomServiceImpl.getJoinOpenChatRoomList(userId);
@@ -280,21 +280,21 @@ public class OpenChatRoomServiceImplTest {
     }
     @Nested
     @DisplayName("getRedisOpenChatRoomById 메소드는")
-    class Describe_getRedisOpenChatRoomById{
+    class Describe_getCachedOpenChatRoomById {
         @Test
         @DisplayName("OpenChatRoomRepository의 selectRedisOpenChatRoomById 메소드를 호출해서 받은 redisOpenChatRoom을 반환한다")
         void OpenChatRoomRepository의_selectRedisOpenChatRoomById메소드를_한번_호출해서_받은_redisOpenChatRoom을_반환한다() {
             // given
             Long openChatRoomId = 1L;
-            RedisOpenChatRoom redisOpenChatRoom = new RedisOpenChatRoom(1L, "타이틀", "공지사항", 1L, 1L, 200, 1,"2024-01-30 12:34:56");
-            when(openChatRoomRepository.selectRedisOpenChatRoomById(openChatRoomId)).thenReturn(Optional.of(redisOpenChatRoom));
+            CachedOpenChatRoom cachedOpenChatRoom = new CachedOpenChatRoom(1L, "타이틀", "공지사항", 1L, 1L, 200, 1,"2024-01-30 12:34:56");
+            when(openChatRoomRepository.selectRedisOpenChatRoomById(openChatRoomId)).thenReturn(Optional.of(cachedOpenChatRoom));
 
             // when
-            RedisOpenChatRoom result = openChatRoomServiceImpl.getRedisOpenChatRoomById(openChatRoomId).get();
+            CachedOpenChatRoom result = openChatRoomServiceImpl.getRedisOpenChatRoomById(openChatRoomId).get();
 
             // then
             verify(openChatRoomRepository, times(1)).selectRedisOpenChatRoomById(openChatRoomId);
-            assertEquals(redisOpenChatRoom, result);
+            assertEquals(cachedOpenChatRoom, result);
         }
     }
 }

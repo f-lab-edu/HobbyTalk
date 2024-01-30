@@ -3,8 +3,8 @@ package com.jongho.openChatRoom.dao.repository;
 import com.jongho.common.util.redis.BaseRedisTemplate;
 import com.jongho.common.util.redis.RedisKeyGeneration;
 import com.jongho.openChat.domain.model.OpenChat;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoomConnectionInfo;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoomConnectionInfo;
 import com.jongho.openChatRoom.domain.repository.OpenChatRoomRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -38,8 +38,8 @@ public class OpenChatRoomRedisRepositoryImpl implements OpenChatRoomRedisReposit
     }
 
     @Override
-    public void createRedisOpenChatRoomConnectionInfo(Long userId, Long openChatRoomId, RedisOpenChatRoomConnectionInfo redisOpenChatRoomConnectionInfo) {
-        baseRedisTemplate.setHashData(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), redisOpenChatRoomConnectionInfo.toMap());
+    public void createRedisOpenChatRoomConnectionInfo(Long userId, Long openChatRoomId, CachedOpenChatRoomConnectionInfo cachedOpenChatRoomConnectionInfo) {
+        baseRedisTemplate.setHashData(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), cachedOpenChatRoomConnectionInfo.toMap());
     }
 
     @Override
@@ -48,8 +48,8 @@ public class OpenChatRoomRedisRepositoryImpl implements OpenChatRoomRedisReposit
     }
 
     @Override
-    public RedisOpenChatRoomConnectionInfo getRedisOpenChatRoomConnectionInfo(Long userId, Long openChatRoomId) {
-        return baseRedisTemplate.getHashData(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), RedisOpenChatRoomConnectionInfo.class);
+    public CachedOpenChatRoomConnectionInfo getRedisOpenChatRoomConnectionInfo(Long userId, Long openChatRoomId) {
+        return baseRedisTemplate.getHashData(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), CachedOpenChatRoomConnectionInfo.class);
     }
 
     @Override
@@ -59,8 +59,8 @@ public class OpenChatRoomRedisRepositoryImpl implements OpenChatRoomRedisReposit
     }
 
     @Override
-    public Optional<RedisOpenChatRoom> getOpenChatRoom(Long openChatRoomId){
+    public Optional<CachedOpenChatRoom> getOpenChatRoom(Long openChatRoomId){
         return Optional.ofNullable(
-                baseRedisTemplate.getData(RedisKeyGeneration.getChatRoomKey(openChatRoomId), RedisOpenChatRoom.class));
+                baseRedisTemplate.getData(RedisKeyGeneration.getChatRoomKey(openChatRoomId), CachedOpenChatRoom.class));
     }
 }

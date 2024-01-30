@@ -8,14 +8,13 @@ import com.jongho.openChat.domain.model.OpenChat;
 import com.jongho.openChatRoom.application.dto.response.OpenChatRoomDto;
 import com.jongho.openChatRoom.application.service.OpenChatRoomRedisService;
 import com.jongho.openChatRoom.application.service.OpenChatRoomService;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoomConnectionInfo;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoomConnectionInfo;
 import com.jongho.openChatRoomUser.application.service.OpenChatRoomUserService;
 import com.jongho.openChatRoomUser.domain.model.OpenChatRoomUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -42,16 +41,16 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
         List<Long> openChatRoomIdList = openChatRoomRedisService.getOpenChatRoomIdList(userId);
         List<OpenChatRoomDto> openChatRoomDtoList;
         if (openChatRoomIdList.size() == 0){
-            List<RedisOpenChatRoom> openChatRoomList = openChatRoomService.getJoinOpenChatRoomList(userId);
+            List<CachedOpenChatRoom> openChatRoomList = openChatRoomService.getJoinOpenChatRoomList(userId);
             openChatRoomDtoList = enrichOpenChatRoomDtoListWithLastOpenChat(userId, openChatRoomList);
         }else{
-            List<RedisOpenChatRoom> openChatRoomList = new ArrayList<>();
+            List<CachedOpenChatRoom> openChatRoomList = new ArrayList<>();
             for (Long openChatRoomId : openChatRoomIdList){
-                RedisOpenChatRoom redisOpenChatRoom = getRedisOpenChatRoom(openChatRoomId);
-                if (redisOpenChatRoom == null){
+                CachedOpenChatRoom cachedOpenChatRoom = getRedisOpenChatRoom(openChatRoomId);
+                if (cachedOpenChatRoom == null){
                     continue;
                 }
-                openChatRoomList.add(redisOpenChatRoom);
+                openChatRoomList.add(cachedOpenChatRoom);
             }
             openChatRoomDtoList = enrichOpenChatRoomDtoListWithLastOpenChat(userId, openChatRoomList);
         }
@@ -67,13 +66,13 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
      * @param openChatRoomList List<RedisOpenChatRoom>
      * @return List<OpenChatRoomDto>
      **/
-    private List<OpenChatRoomDto> enrichOpenChatRoomDtoListWithLastOpenChat(Long userId, List<RedisOpenChatRoom> openChatRoomList) {
+    private List<OpenChatRoomDto> enrichOpenChatRoomDtoListWithLastOpenChat(Long userId, List<CachedOpenChatRoom> openChatRoomList) {
         return openChatRoomList
                 .stream()
                 .map(redisOpenChatRoom->{
                     OpenChatRoomDto openChatRoomDto = new OpenChatRoomDto(redisOpenChatRoom);
                     openChatRoomDto.setOpenChat(getLastOpenChatByOpenChatRoomId(openChatRoomDto));
-                    openChatRoomDto.setRedisOpenChatRoomConnectionInfo(getRedisOpenChatRoomConnectionInfo(userId, openChatRoomDto));
+                    openChatRoomDto.setCachedOpenChatRoomConnectionInfo(getRedisOpenChatRoomConnectionInfo(userId, openChatRoomDto));
 
                     return openChatRoomDto;
                 })
@@ -86,10 +85,10 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
      * @param openChatRoomId 1
      * @return OpenChatRoomDto
      **/
-    public RedisOpenChatRoom getRedisOpenChatRoom(Long openChatRoomId){
-        Optional<RedisOpenChatRoom> redisOpenChatRoom = openChatRoomRedisService.getOpenChatRoom(openChatRoomId);
+    public CachedOpenChatRoom getRedisOpenChatRoom(Long openChatRoomId){
+        Optional<CachedOpenChatRoom> redisOpenChatRoom = openChatRoomRedisService.getOpenChatRoom(openChatRoomId);
         if (redisOpenChatRoom.isEmpty()){
-            Optional<RedisOpenChatRoom> openChatRoom = openChatRoomService.getRedisOpenChatRoomById(openChatRoomId);
+            Optional<CachedOpenChatRoom> openChatRoom = openChatRoomService.getRedisOpenChatRoomById(openChatRoomId);
             if(openChatRoom.isEmpty()){
                 System.out.println("존재하지 않는 채팅방 id:" + openChatRoomId);
                 return null;
@@ -125,7 +124,7 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
      * @param openChatRoom RedisOpenChatRoom
      * @return List<Long>
      **/
-    private List<Long> getOpenChatRoomUserList(RedisOpenChatRoom openChatRoom){
+    private List<Long> getOpenChatRoomUserList(CachedOpenChatRoom openChatRoom){
         List<Long> idList = openChatRoomRedisService.getOpenChatRoomIdList(openChatRoom.getId());
         if (idList.size() == 0 || idList.size() != openChatRoom.getCurrentAttendance()){
             idList = openChatRoomService.getOpenChatRoomUserList(openChatRoom.getId());
@@ -141,21 +140,21 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
      * @param openChatRoomDto OpenChatRoomDto
      * @return RedisOpenChatRoomConnectionInfo
      **/
-    private RedisOpenChatRoomConnectionInfo getRedisOpenChatRoomConnectionInfo(Long userId, OpenChatRoomDto openChatRoomDto){
-        RedisOpenChatRoomConnectionInfo redisOpenChatRoomConnectionInfo = openChatRoomRedisService.getRedisOpenChatRoomConnectionInfo(userId, openChatRoomDto.getId());
-        if(redisOpenChatRoomConnectionInfo == null){
-            redisOpenChatRoomConnectionInfo = new RedisOpenChatRoomConnectionInfo();
+    private CachedOpenChatRoomConnectionInfo getRedisOpenChatRoomConnectionInfo(Long userId, OpenChatRoomDto openChatRoomDto){
+        CachedOpenChatRoomConnectionInfo cachedOpenChatRoomConnectionInfo = openChatRoomRedisService.getRedisOpenChatRoomConnectionInfo(userId, openChatRoomDto.getId());
+        if(cachedOpenChatRoomConnectionInfo == null){
+            cachedOpenChatRoomConnectionInfo = new CachedOpenChatRoomConnectionInfo();
             OpenChatRoomUser openChatRoomUser = openChatRoomUserService.getOpenChatRoomUserByOpenChatRoomIdAndUserId(openChatRoomDto.getId(), userId)
                     .orElseThrow(() -> new OpenChatRoomNotFoundException("채팅방에 참여하지 않은 유저입니다."));
 
-            redisOpenChatRoomConnectionInfo.setLastExitTime(openChatRoomUser.getLastExitTime());
-            redisOpenChatRoomConnectionInfo.setActive(0);
-            redisOpenChatRoomConnectionInfo.setUnReadMessageCount(getUnReadMessageCount(openChatRoomDto, openChatRoomUser.getLastExitTime()));
+            cachedOpenChatRoomConnectionInfo.setLastExitTime(openChatRoomUser.getLastExitTime());
+            cachedOpenChatRoomConnectionInfo.setActive(0);
+            cachedOpenChatRoomConnectionInfo.setUnReadMessageCount(getUnReadMessageCount(openChatRoomDto, openChatRoomUser.getLastExitTime()));
 
-            openChatRoomRedisService.createRedisOpenChatRoomConnectionInfo(userId, openChatRoomDto.getId(), redisOpenChatRoomConnectionInfo);
+            openChatRoomRedisService.createRedisOpenChatRoomConnectionInfo(userId, openChatRoomDto.getId(), cachedOpenChatRoomConnectionInfo);
         }
 
-        return redisOpenChatRoomConnectionInfo;
+        return cachedOpenChatRoomConnectionInfo;
     }
 
     /**

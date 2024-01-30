@@ -21,17 +21,26 @@ public class WebSocketOpenChatRoomHandler extends TextWebSocketHandler {
     private final WebSocketOpenChatRoomFacade webSocketOpenChatRoomFacade;
     @Override
     public void afterConnectionEstablished(@NotNull WebSocketSession session){
-        try (session) {
+        try  {
             List<OpenChatRoomDto> openChatRoomDto = webSocketOpenChatRoomFacade.getOpenChatRoomList((long) session.getAttributes().get("userId"));
 
             session.sendMessage(
                     new TextMessage(BaseWebSocketMessage.join(openChatRoomDto)));
         } catch (Exception e) {
-            log.error("WebSocketOpenChatRoomHandler.afterConnectionEstablished: " + e.getMessage());
+            log.error(e.getMessage());
+            handleWebSocketClose(session);
         }
     }
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    }
+
+    private void handleWebSocketClose(WebSocketSession session) {
+        try {
+            session.close();
+        } catch (IOException e) {
+            log.error("session.close");
+        }
     }
 }

@@ -1,8 +1,8 @@
 package com.jongho.openChatRoom.application.service;
 
 import com.jongho.openChat.domain.model.OpenChat;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoom;
-import com.jongho.openChatRoom.domain.model.redis.RedisOpenChatRoomConnectionInfo;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoomConnectionInfo;
 import com.jongho.openChatRoom.domain.repository.OpenChatRoomRedisRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -76,17 +76,17 @@ public class OpenChatRoomRedisServiceImplTest {
     }
     @Nested
     @DisplayName("createRedisOpenChatRoomConnectionInfo 메서드는")
-    class Describe_createRedisOpenChatRoomConnectionInfo{
+    class Describe_createCachedOpenChatRoomConnectionInfo {
         @Test
         @DisplayName("openChatRoomRedisRepository.createRedisOpenChatRoomConnectionInfo 메서드를 호출한다.")
         void openChatRoomRedisRepositoryd_createRedisOpenChatRoomConnectionInfo_메서드를_호출하고_받은_값을_반환한다(){
             // given
-            RedisOpenChatRoomConnectionInfo redisOpenChatRoomConnectionInfo = new RedisOpenChatRoomConnectionInfo();
+            CachedOpenChatRoomConnectionInfo cachedOpenChatRoomConnectionInfo = new CachedOpenChatRoomConnectionInfo();
             // when
-            openChatRoomRedisService.createRedisOpenChatRoomConnectionInfo(1L, 1L, redisOpenChatRoomConnectionInfo);
+            openChatRoomRedisService.createRedisOpenChatRoomConnectionInfo(1L, 1L, cachedOpenChatRoomConnectionInfo);
 
             // then
-            verify(openChatRoomRedisRepository).createRedisOpenChatRoomConnectionInfo(1L, 1L, redisOpenChatRoomConnectionInfo);
+            verify(openChatRoomRedisRepository).createRedisOpenChatRoomConnectionInfo(1L, 1L, cachedOpenChatRoomConnectionInfo);
         }
     }
     @Nested
@@ -109,20 +109,20 @@ public class OpenChatRoomRedisServiceImplTest {
     }
     @Nested
     @DisplayName("getRedisOpenChatRoomConnectionInfo 메서드는")
-    class Describe_getRedisOpenChatRoomConnectionInfo{
+    class Describe_getCachedOpenChatRoomConnectionInfo {
         @Test
         @DisplayName("openChatRoomRedisRepository.getRedisOpenChatRoomConnectionInfo 메서드를 호출한다.")
         void openChatRoomRedisRepositoryd_getRedisOpenChatRoomConnectionInfo_메서드를_호출하고_받은_값을_반환한다(){
             // given
-            RedisOpenChatRoomConnectionInfo redisOpenChatRoomConnectionInfo = new RedisOpenChatRoomConnectionInfo();
-            when(openChatRoomRedisRepository.getRedisOpenChatRoomConnectionInfo(1L, 1L)).thenReturn(redisOpenChatRoomConnectionInfo);
+            CachedOpenChatRoomConnectionInfo cachedOpenChatRoomConnectionInfo = new CachedOpenChatRoomConnectionInfo();
+            when(openChatRoomRedisRepository.getRedisOpenChatRoomConnectionInfo(1L, 1L)).thenReturn(cachedOpenChatRoomConnectionInfo);
 
             // when
-            RedisOpenChatRoomConnectionInfo result = openChatRoomRedisService.getRedisOpenChatRoomConnectionInfo(1L, 1L);
+            CachedOpenChatRoomConnectionInfo result = openChatRoomRedisService.getRedisOpenChatRoomConnectionInfo(1L, 1L);
 
             // then
             verify(openChatRoomRedisRepository).getRedisOpenChatRoomConnectionInfo(1L, 1L);
-            assertEquals(redisOpenChatRoomConnectionInfo, result);
+            assertEquals(cachedOpenChatRoomConnectionInfo, result);
         }
     }
     @Nested
@@ -159,7 +159,7 @@ public class OpenChatRoomRedisServiceImplTest {
         @DisplayName("openChatRoomRedisRepository.getOpenChatRoom 메서드를 호출한다.")
         void openChatRoomRedisRepositoryd_getOpenChatRoom_메서드를_호출하고_받은_값을_반환한다(){
             // given
-            Optional<RedisOpenChatRoom> redisOpenChatRoom  = Optional.of(new RedisOpenChatRoom(
+            Optional<CachedOpenChatRoom> redisOpenChatRoom  = Optional.of(new CachedOpenChatRoom(
                     1L,
                     "title",
                     "notice",
@@ -172,7 +172,7 @@ public class OpenChatRoomRedisServiceImplTest {
             when(openChatRoomRedisRepository.getOpenChatRoom(1L)).thenReturn(redisOpenChatRoom);
 
             // when
-            Optional<RedisOpenChatRoom> result = openChatRoomRedisService.getOpenChatRoom(1L);
+            Optional<CachedOpenChatRoom> result = openChatRoomRedisService.getOpenChatRoom(1L);
 
             // then
             verify(openChatRoomRedisRepository).getOpenChatRoom(1L);
