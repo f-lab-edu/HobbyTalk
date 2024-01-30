@@ -25,7 +25,7 @@ public class WebSocketOpenChatRoomHandler extends TextWebSocketHandler {
             List<OpenChatRoomDto> openChatRoomDto = webSocketOpenChatRoomFacade.getOpenChatRoomList((long) session.getAttributes().get("userId"));
 
             session.sendMessage(
-                    new TextMessage(BaseWebSocketMessage.join(openChatRoomDto)));
+                    new TextMessage(BaseWebSocketMessage.of(openChatRoomDto)));
         } catch (Exception e) {
             log.error(e.getMessage());
             handleWebSocketClose(session);

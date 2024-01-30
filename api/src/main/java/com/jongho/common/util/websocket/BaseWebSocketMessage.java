@@ -14,7 +14,7 @@ public class BaseWebSocketMessage<T> {
     private final T data;
     public static ObjectMapper objectMapper = new ObjectMapper();
 
-    public static <T> String join(T data) {
+    public static <T> String of(T data) {
         try {
             return objectMapper.writeValueAsString(new BaseWebSocketMessage<T>(BaseMessageTypeEnum.JOIN, data));
         }catch (Exception e) {
