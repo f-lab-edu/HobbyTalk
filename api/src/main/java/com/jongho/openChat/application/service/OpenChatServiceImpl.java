@@ -16,8 +16,8 @@ public class OpenChatServiceImpl implements OpenChatService{
         return openChatRepository.selectLastOpenChatByChatRoomId(openChatRoomId);
     };
     @Override
-    public int getUnReadOpenChatCountByOpenChatRoomIdAndLastExitTime(Long openChatRoomId, String lastExitTime){
-        return openChatRepository.selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(openChatRoomId, lastExitTime);
+    public int getUnReadOpenChatCountByOpenChatRoomIdAndLastExitTime(Long openChatRoomId, String lastExitTime, int limit){
+        return openChatRepository.selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(openChatRoomId, lastExitTime, limit);
     }
 
 

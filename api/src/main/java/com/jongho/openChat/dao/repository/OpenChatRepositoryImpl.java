@@ -18,7 +18,7 @@ public class OpenChatRepositoryImpl implements OpenChatRepository {
         return Optional.ofNullable(openChatMapper.selectLastOpenChatByChatRoomId(openChatRoomId));
     }
     @Override
-    public int selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(Long openChatRoomId, String lastExitTime) {
-        return openChatMapper.selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(openChatRoomId, lastExitTime);
+    public int selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(Long openChatRoomId, String lastExitTime, int limit) {
+        return openChatMapper.selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(openChatRoomId, lastExitTime, limit);
     }
 }

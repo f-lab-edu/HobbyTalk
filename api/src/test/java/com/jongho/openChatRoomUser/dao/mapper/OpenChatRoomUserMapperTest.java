@@ -31,12 +31,16 @@ public class OpenChatRoomUserMapperTest extends BaseMapperTest {
                     1L,
                     2L
             );
-
-            // when
             openChatRoomUserMapper.createOpenChatRoomUser(openChatRoomUser);
 
+            // when
+
+            OpenChatRoomUser selectOpenChatRoomUser = openChatRoomUserMapper.selectOneOpenChatRoomUserByOpenChatRoomIdAndUserId(
+                    openChatRoomUser.getOpenChatRoomId(),
+                    openChatRoomUser.getUserId());
             // then
-            assertEquals(openChatRoomUser, openChatRoomUserMapper.selectOneOpenChatRoomUserByOpenChatRoomIdAndUserId(openChatRoomUser.getOpenChatRoomId(), openChatRoomUser.getUserId()));
+            assertEquals(openChatRoomUser.getUserId(), selectOpenChatRoomUser.getUserId());
+            assertEquals(openChatRoomUser.getOpenChatRoomId(), selectOpenChatRoomUser.getOpenChatRoomId());
         }
     }
 }

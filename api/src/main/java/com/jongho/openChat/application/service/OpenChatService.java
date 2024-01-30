@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface OpenChatService {
     public Optional<OpenChat> getLastOpenChatByOpenChatRoomId(Long openChatRoomId);
-    public int getUnReadOpenChatCountByOpenChatRoomIdAndLastExitTime(Long openChatRoomId, String lastExitTime);
+    public int getUnReadOpenChatCountByOpenChatRoomIdAndLastExitTime(Long openChatRoomId, String lastExitTime, int limit);
 }

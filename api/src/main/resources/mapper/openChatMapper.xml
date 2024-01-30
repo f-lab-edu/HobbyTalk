@@ -23,6 +23,6 @@
         WHERE open_chat_room_id = #{openChatRoomId}
         AND created_time > #{lastExitTime}
         AND is_deleted = 0
-        LIMIT 200
+        LIMIT #{limit}
     </select>
 </mapper>

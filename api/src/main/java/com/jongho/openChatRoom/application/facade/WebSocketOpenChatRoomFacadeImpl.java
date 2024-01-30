@@ -176,7 +176,7 @@ public class WebSocketOpenChatRoomFacadeImpl implements WebSocketOpenChatRoomFac
             }
         }
 
-        count += openChatService.getUnReadOpenChatCountByOpenChatRoomIdAndLastExitTime(openChatRoomDto.getId(), lastExitTime);
+        count += openChatService.getUnReadOpenChatCountByOpenChatRoomIdAndLastExitTime(openChatRoomDto.getId(), lastExitTime, maxCount - count);
 
         return count;
     }

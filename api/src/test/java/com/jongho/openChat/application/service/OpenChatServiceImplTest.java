@@ -61,13 +61,14 @@ public class OpenChatServiceImplTest {
             Long chatRoomId = 1L;
             String lastExitTime = "2024-01-29 00:00:00";
             int unReadOpenChatCount = 1;
-            when(openChatRepository.selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(chatRoomId, lastExitTime)).thenReturn(unReadOpenChatCount);
+            int limit = 150;
+            when(openChatRepository.selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(chatRoomId, lastExitTime, limit)).thenReturn(unReadOpenChatCount);
 
             // when
-            int result = openChatService.getUnReadOpenChatCountByOpenChatRoomIdAndLastExitTime(chatRoomId, lastExitTime);
+            int result = openChatService.getUnReadOpenChatCountByOpenChatRoomIdAndLastExitTime(chatRoomId, lastExitTime, limit);
 
             // then
-            verify(openChatRepository).selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(chatRoomId, lastExitTime);
+            verify(openChatRepository).selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(chatRoomId, lastExitTime, limit);
             assertEquals(unReadOpenChatCount, result);
         }
     }

@@ -9,5 +9,6 @@ public interface OpenChatMapper {
     public OpenChat selectLastOpenChatByChatRoomId(Long openChatRoomId);
     public int selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(
             @Param("openChatRoomId") Long openChatRoomId,
-            @Param("lastExitTime") String lastExitTime);
+            @Param("lastExitTime") String lastExitTime,
+            @Param("limit") int limit);
 }
