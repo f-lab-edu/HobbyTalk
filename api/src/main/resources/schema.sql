@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS open_chat_rooms (
 CREATE TABLE IF NOT EXISTS open_chat_room_users (
   user_id int NOT NULL COMMENT '유저 id',
   open_chat_room_id int NOT NULL COMMENT '오픈채팅방 id',
+  last_exit_time timestamp NOT NULL DEFAULT NOW() COMMENT '채팅방 나간 시간',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
   deleted_time timestamp COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜',

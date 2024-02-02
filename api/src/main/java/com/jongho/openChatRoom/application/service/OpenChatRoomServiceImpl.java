@@ -3,10 +3,12 @@ package com.jongho.openChatRoom.application.service;
 import com.jongho.common.exception.OpenChatRoomNotFoundException;
 import com.jongho.common.exception.UnAuthorizedException;
 import com.jongho.openChatRoom.domain.model.OpenChatRoom;
+import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom;
 import com.jongho.openChatRoom.domain.repository.OpenChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,5 +46,17 @@ public class OpenChatRoomServiceImpl implements OpenChatRoomService{
             throw new UnAuthorizedException("채팅방 공지 수정 권한이 없습니다.");
         }
         openChatRoomRepository.updateOpenChatRoomNotice(openChatRoomId, notice);
+    }
+    @Override
+    public List<CachedOpenChatRoom> getJoinOpenChatRoomList(Long userId) {
+        return openChatRoomRepository.selectJoinOpenChatRoomByUserId(userId);
+    }
+    @Override
+    public List<Long> getOpenChatRoomUserList(Long openChatRoomId) {
+        return openChatRoomRepository.selectOpenChatRoomUser(openChatRoomId);
+    }
+    @Override
+    public Optional<CachedOpenChatRoom> getRedisOpenChatRoomById(Long openChatRoomId) {
+        return openChatRoomRepository.selectRedisOpenChatRoomById(openChatRoomId);
     }
 }

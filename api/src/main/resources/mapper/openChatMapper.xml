@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jongho.openChat.dao.mapper.OpenChatMapper">
+    <select id="selectLastOpenChatByChatRoomId" resultType="com.jongho.openChat.domain.model.OpenChat">
+        SELECT
+            id,
+            sender_id,
+            open_chat_room_id,
+            message,
+            type,
+            is_deleted,
+            deleted_time,
+            created_time
+        FROM open_chats
+        WHERE open_chat_room_id = #{openChatRoomId}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+    <select id="selectUnReadOpenChatCountByChatRoomIdAndLastExitTime">
+        SELECT
+            COUNT(*) AS unread_message_count
+        FROM open_chats
+        WHERE open_chat_room_id = #{openChatRoomId}
+        AND created_time > #{lastExitTime}
+        AND is_deleted = 0
+        LIMIT #{limit}
+    </select>
+</mapper>
