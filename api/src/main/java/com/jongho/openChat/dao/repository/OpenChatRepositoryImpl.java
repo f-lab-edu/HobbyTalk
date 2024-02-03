@@ -1,11 +1,13 @@
 package com.jongho.openChat.dao.repository;
 
+import com.jongho.openChat.application.dto.OpenChatDto;
 import com.jongho.openChat.dao.mapper.OpenChatMapper;
 import com.jongho.openChat.domain.model.OpenChat;
 import com.jongho.openChat.domain.repository.OpenChatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,4 +23,9 @@ public class OpenChatRepositoryImpl implements OpenChatRepository {
     public int selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(Long openChatRoomId, String lastExitTime, int limit) {
         return openChatMapper.selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(openChatRoomId, lastExitTime, limit);
     }
+    @Override
+    public List<OpenChatDto> selectOpenChatCountByChatRoomIdAndLastExitTime(Long openChatRoomId, String lastExitTime, int limit) {
+        return openChatMapper.selectOpenChatCountByChatRoomIdAndLastExitTime(openChatRoomId, lastExitTime, limit);
+    }
+
 }

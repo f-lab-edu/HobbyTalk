@@ -25,4 +25,39 @@
         AND is_deleted = 0
         LIMIT #{limit}
     </select>
+    <resultMap id="openChatDtoResultMap" type="com.jongho.openChat.application.dto.OpenChatDto">
+        <id property="id" column="id"/>
+        <result property="openChatRoomId" column="openChatRoomId"/>
+        <result property="message" column="message"/>
+        <result property="type" column="type"/>
+        <result property="isDeleted" column="isDeleted"/>
+        <result property="deletedTime" column="deletedTime"/>
+        <result property="createdTime" column="createdTime"/>
+        <association property="senderInfo" resultMap="senderInfoResultMap"/>
+    </resultMap>
+    <resultMap id="senderInfoResultMap" type="com.jongho.user.domain.model.redis.CachedUserProfile">
+        <result property="id" column="id"/>
+        <result property="nickname" column="nickname"/>
+        <result property="profileImage" column="profileImage"/>
+    </resultMap>
+    <select id="selectOpenChatCountByChatRoomIdAndLastExitTime" resultMap="openChatDtoResultMap">
+        SELECT
+            open_chats.id,
+            open_chats.open_chat_room_id,
+            open_chats.message,
+            open_chats.type,
+            open_chats.is_deleted,
+            open_chats.deleted_time,
+            open_chats.created_time
+            users.id as "senderInfo.id",
+            users.nickname as "senderInfo.nickname",
+            users.profile_image as "senderInfo.profileImage"
+        FROM open_chats
+        INNER JOIN users
+            ON open_chats.sender_id = users.id
+        WHERE open_chat_room_id = #{openChatRoomId}
+        AND open_chats.created_time &lt; #{lastCreatedTime}
+        ORDER BY open_chats.createdTime DESC
+        LIMIT #{limit}
+    </select>
 </mapper>
