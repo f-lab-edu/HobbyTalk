@@ -19,4 +19,5 @@ public interface OpenChatRoomRedisService {
     public Optional<CachedOpenChatRoom> getOpenChatRoom(Long openChatRoomId);
     public void updateInitUnreadChatCount(Long userId, Long openChatRoomId);
     public void updateActiveChatRoom(Long userId, Long openChatRoomId);
+    public void incrementUnreadMessageCount(Long userId, Long openChatRoomId);
 }

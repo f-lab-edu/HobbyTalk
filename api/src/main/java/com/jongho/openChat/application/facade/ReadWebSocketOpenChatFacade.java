@@ -4,6 +4,6 @@ import com.jongho.openChat.application.dto.OpenChatDto;
 
 import java.util.List;
 
-public interface WebSocketOpenChatFacade {
+public interface ReadWebSocketOpenChatFacade {
     public List<OpenChatDto> getInitialOpenChatList(Long openChatRoomId);
 }

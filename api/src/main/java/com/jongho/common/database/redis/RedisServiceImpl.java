@@ -1,6 +1,12 @@
 package com.jongho.common.database.redis;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
+import com.jongho.common.exception.MyJsonProcessingException;
 import com.jongho.common.util.redis.BaseRedisTemplate;
+import com.jongho.common.util.websocket.BaseWebSocketMessage;
+import com.jongho.openChat.application.dto.OpenChatDto;
+import com.jongho.openChat.domain.model.OpenChat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +35,9 @@ public class RedisServiceImpl implements RedisService{
 
     private RedisMessageHandler getMessageHandler(WebSocketSession session) {
         return new RedisMessageHandler(session);
+    }
+    public BaseWebSocketMessage<OpenChatDto> convertStringMessageToBaseWebSocketMessage(TextMessage message){
+        return baseRedisTemplate.getWebSocketMessage(message);
     }
 }
 

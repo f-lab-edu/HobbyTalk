@@ -40,13 +40,14 @@ public class WebSocketPathVariablesInterceptor implements HandshakeInterceptor {
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
         if (request instanceof ServletServerHttpRequest servletRequest) {
+            String OPEN_CHAT_ROOM_ENDPOIND = "/open-chat-rooms";
             HttpServletResponse servletResponse = ((ServletServerHttpResponse) response).getServletResponse();
             String path = servletRequest.getURI().getPath();
-            String[] pathVariables = path.split("/");
-            if (pathVariables.length < 2) {
+            if(path.equals(OPEN_CHAT_ROOM_ENDPOIND)){
                 return true;
             }
 
+            String[] pathVariables = path.split("/");
             Long openChatRoomId = Long.parseLong(pathVariables[pathVariables.length - 2]);
             Optional<OpenChatRoom> openChatRoom = openChatRoomService.getOpenChatRoomById(openChatRoomId);
             if (openChatRoom.isEmpty()) {

@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class WebSocketOpenChatFacadeImpl implements WebSocketOpenChatFacade{
+public class ReadWebSocketOpenChatFacadeImpl implements ReadWebSocketOpenChatFacade {
     private final OpenChatService openChatService;
     private final OpenChatRedisService openChatRedisService;
     private final OpenChatRoomRedisService openChatRoomRedisService;

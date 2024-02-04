@@ -2,6 +2,7 @@ package com.jongho.common.util.websocket;
 
 public enum BaseMessageTypeEnum {
     SEND("SEND"),
+    PAGINATION("PAGINATION"),
     RECEIVE("RECEIVE"),
     JOIN("JOIN"),
     LEAVE("LEAVE"),

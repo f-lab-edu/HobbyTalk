@@ -1,12 +1,15 @@
 package com.jongho.common.util.redis;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jongho.common.exception.MyJsonProcessingException;
+import com.jongho.common.util.websocket.BaseWebSocketMessage;
+import com.jongho.openChat.application.dto.OpenChatDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.TextMessage;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -81,6 +84,9 @@ public class BaseRedisTemplate {
     public <T> void setHashDataColumn(String key, String column, T value) {
         stringRedisTemplate.opsForHash().put(key, column, value);
     }
+    public void incrementHashDataColumn(String key, String column, int value) {
+        stringRedisTemplate.opsForHash().increment(key, column, value);
+    }
 
     public <T> T getHashData(String key, Class<T> valueType) {
         Map<Object, Object> map = stringRedisTemplate.opsForHash().entries(key);
@@ -126,6 +132,16 @@ public class BaseRedisTemplate {
         }catch (Exception e) {
             throw new MyJsonProcessingException(e.getMessage()!=null? e.getMessage():"json processing error");
         }
+    }
+
+    public BaseWebSocketMessage<OpenChatDto> getWebSocketMessage(TextMessage textMessage){
+        try {
+            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(BaseWebSocketMessage.class, OpenChatDto.class);
+            return objectMapper.readValue(textMessage.getPayload(), javaType);
+        }catch (Exception e) {
+            throw new MyJsonProcessingException(e.getMessage()!=null? e.getMessage():"json processing error");
+        }
+
     }
 
     private <T> List<T> mappingToElement(Collection<String> jsonList, Class<T> valueType){

@@ -1,6 +1,7 @@
 package com.jongho.openChatRoom.handler;
 
 import com.jongho.common.database.redis.RedisService;
+import com.jongho.common.util.websocket.BaseMessageTypeEnum;
 import com.jongho.common.util.websocket.BaseWebSocketMessage;
 import com.jongho.openChatRoom.application.dto.response.OpenChatRoomDto;
 import com.jongho.openChatRoom.application.facade.WebSocketOpenChatRoomFacade;
@@ -29,7 +30,7 @@ public class WebSocketOpenChatRoomHandler extends TextWebSocketHandler {
             redisService.subscribe(getChannelList(openChatRoomDto), session);
 
             session.sendMessage(
-                    new TextMessage(BaseWebSocketMessage.of(openChatRoomDto)));
+                    new TextMessage(BaseWebSocketMessage.of(BaseMessageTypeEnum.PAGINATION, openChatRoomDto)));
         } catch (Exception e) {
             log.error(e.getMessage());
             handleWebSocketClose(session);

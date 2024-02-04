@@ -1,9 +1,11 @@
 package com.jongho.openChat.handler;
 
 import com.jongho.common.database.redis.RedisService;
+import com.jongho.common.util.websocket.BaseMessageTypeEnum;
 import com.jongho.common.util.websocket.BaseWebSocketMessage;
 import com.jongho.openChat.application.dto.OpenChatDto;
-import com.jongho.openChat.application.facade.WebSocketOpenChatFacade;
+import com.jongho.openChat.application.facade.ReadWebSocketOpenChatFacade;
+import com.jongho.openChat.application.facade.SendWebSocketOpenChatFacade;
 import com.jongho.openChatRoom.application.service.OpenChatRoomRedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,7 +22,8 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 public class WebSocketOpenChatHandler extends TextWebSocketHandler {
-    private final WebSocketOpenChatFacade webSocketOpenChatFacade;
+    private final ReadWebSocketOpenChatFacade readWebSocketOpenChatFacade;
+    private final SendWebSocketOpenChatFacade sendWebSocketOpenChatFacade;
     private final OpenChatRoomRedisService openChatRoomRedisService;
     private final RedisService redisService;
     private final String OPEN_CHAT_ROOM_CHANNEL = "openChatRoom:";
@@ -34,18 +37,31 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
         try  {
             Long openChatRoomId = (Long) session.getAttributes().get("openChatRoomId");
             Long userId = (Long) session.getAttributes().get("userId");
-            List<OpenChatDto> openChatDtoList = webSocketOpenChatFacade.getInitialOpenChatList(openChatRoomId);
+            List<OpenChatDto> openChatDtoList = readWebSocketOpenChatFacade.getInitialOpenChatList(openChatRoomId);
             initConnectionInfoAndSubscribe(session, openChatRoomId, userId);
 
             session.sendMessage(
-                    new TextMessage(BaseWebSocketMessage.of(openChatDtoList)));
+                    new TextMessage(BaseWebSocketMessage.of(BaseMessageTypeEnum.PAGINATION ,openChatDtoList)));
         } catch (Exception e) {
             log.error(e.getMessage());
             handleWebSocketClose(session);
         }
     }
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    public void handleTextMessage(@NotNull WebSocketSession session, @NotNull TextMessage message) {
+        try {
+            Long openChatRoomId = (Long) session.getAttributes().get("openChatRoomId");
+            Long userId = (Long) session.getAttributes().get("userId");
+            BaseWebSocketMessage<OpenChatDto> baseWebSocketMessage = redisService.convertStringMessageToBaseWebSocketMessage(message);
+
+            switch (baseWebSocketMessage.getType().getValue()) {
+                case "SEND" -> createOpenChatAndSendMessage(baseWebSocketMessage.getData());
+
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            handleWebSocketClose(session);
+        }
     }
     private void handleWebSocketClose(WebSocketSession session) {
         try {
@@ -65,5 +81,12 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
         openChatRoomRedisService.updateInitUnreadChatCount(userId, openChatRoomId);
         openChatRoomRedisService.updateActiveChatRoom(userId, openChatRoomId);
         redisService.subscribe(OPEN_CHAT_ROOM_CHANNEL + openChatRoomId, session);
+    }
+
+    private void createOpenChatAndSendMessage(OpenChatDto openChatDto) {
+        sendWebSocketOpenChatFacade.sendOpenChat(openChatDto);
+        redisService.publish(
+                OPEN_CHAT_ROOM_CHANNEL + openChatDto.getOpenChatRoomId(),
+                BaseWebSocketMessage.of(BaseMessageTypeEnum.SEND, openChatDto));
     }
 }
