@@ -55,8 +55,8 @@ public class OpenChatRoomRedisServiceImpl implements OpenChatRoomRedisService{
         openChatRoomRedisRepository.updateInitUnreadChatCount(userId, openChatRoomId);
     }
     @Override
-    public void updateActiveChatRoom(Long userId, Long openChatRoomId){
-        openChatRoomRedisRepository.updateActiveChatRoom(userId, openChatRoomId);
+    public void updateActiveChatRoom(Long userId, Long openChatRoomId, int activeFlag){
+        openChatRoomRedisRepository.updateActiveChatRoom(userId, openChatRoomId, activeFlag);
     }
     @Override
     public void incrementUnreadMessageCount(Long userId, Long openChatRoomId){

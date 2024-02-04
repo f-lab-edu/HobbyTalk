@@ -5,7 +5,6 @@ import com.jongho.common.util.websocket.BaseMessageTypeEnum;
 import com.jongho.common.util.websocket.BaseWebSocketMessage;
 import com.jongho.openChat.application.dto.OpenChatDto;
 import com.jongho.openChat.application.facade.ReadWebSocketOpenChatFacade;
-import com.jongho.openChat.application.facade.ReadWebSocketOpenChatFacadeImpl;
 import com.jongho.openChat.application.facade.SendWebSocketOpenChatFacade;
 import com.jongho.openChatRoom.application.service.OpenChatRoomRedisService;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +47,12 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
             handleWebSocketClose(session, BaseMessageTypeEnum.ERROR, e.getMessage());
         }
     }
+
+    /**
+     * 웹소켓 메시지를 처리한다.
+     * @param session 웹소켓 세션
+     * @param message 웹소켓 메시지
+     */
     @Override
     public void handleTextMessage(@NotNull WebSocketSession session, @NotNull TextMessage message) {
         try {
@@ -62,12 +67,34 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
             handleWebSocketClose(session, BaseMessageTypeEnum.ERROR, e.getMessage());
         }
     }
+    /**
+     * 웹소켓 연결이 닫힐 때 호출
+     * LastExitTime 변경해주고
+     * 연결을 종료한다.
+     * @param session 웹소켓 세션
+     * @param status 웹소켓 연결 상태
+     */
+    @Override
+    public void afterConnectionClosed(@NotNull WebSocketSession session, @NotNull org.springframework.web.socket.CloseStatus status) {
+        try {
+            int INACTIVE = 0;
+            Long openChatRoomId = (Long) session.getAttributes().get("openChatRoomId");
+            Long userId = (Long) session.getAttributes().get("userId");
+            openChatRoomRedisService.updateActiveChatRoom(userId, openChatRoomId, INACTIVE);
+            handleWebSocketClose(session, BaseMessageTypeEnum.LEAVE, "연결이 종료되었습니다.");
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            handleWebSocketClose(session, BaseMessageTypeEnum.ERROR, e.getMessage());
+        }
+    }
     private void handleWebSocketClose(WebSocketSession session, BaseMessageTypeEnum type, String message) {
         try {
-            session.sendMessage(new TextMessage(BaseWebSocketMessage.of(type, message)));
-            session.close();
+            if(session.isOpen()){
+                session.sendMessage(new TextMessage(BaseWebSocketMessage.of(type, message)));
+                session.close();
+            }
         } catch (IOException e) {
-            log.error("session.close");
+            log.error(e.getMessage());
         }
     }
 
@@ -78,8 +105,9 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
      * @param userId 사용자 아이디
      */
     private void initConnectionInfoAndSubscribe(WebSocketSession session, Long openChatRoomId, Long userId) {
+        int ACTIVE = 1;
         openChatRoomRedisService.updateInitUnreadChatCount(userId, openChatRoomId);
-        openChatRoomRedisService.updateActiveChatRoom(userId, openChatRoomId);
+        openChatRoomRedisService.updateActiveChatRoom(userId, openChatRoomId, ACTIVE);
         redisService.subscribe(OPEN_CHAT_ROOM_CHANNEL + openChatRoomId, session);
     }
 

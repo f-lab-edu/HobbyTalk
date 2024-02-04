@@ -53,6 +53,12 @@ public class ReadWebSocketOpenChatFacadeImpl implements ReadWebSocketOpenChatFac
                 openChatDtos
         );
     }
+    /**
+     * PAGINATION을 위한 채팅 목록을 가져온다.
+     * @param openChatRoomId 채팅방 아이디
+     * @param lastCreatedTime 마지막 생성 시간
+     * @return 채팅 목록
+     */
     @Override
     public List<OpenChatDto> getOpenChatListByOpenChatRoomIdAndLastCreatedTime(Long openChatRoomId, String lastCreatedTime){
         List<OpenChat> openChatList = openChatRedisService.getOpenChatListByOpenChatRoomId(openChatRoomId);
