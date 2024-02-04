@@ -5,6 +5,7 @@ import com.jongho.common.util.websocket.BaseMessageTypeEnum;
 import com.jongho.common.util.websocket.BaseWebSocketMessage;
 import com.jongho.openChat.application.dto.OpenChatDto;
 import com.jongho.openChat.application.facade.ReadWebSocketOpenChatFacade;
+import com.jongho.openChat.application.facade.ReadWebSocketOpenChatFacadeImpl;
 import com.jongho.openChat.application.facade.SendWebSocketOpenChatFacade;
 import com.jongho.openChatRoom.application.service.OpenChatRoomRedisService;
 import lombok.RequiredArgsConstructor;
@@ -50,13 +51,11 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
     @Override
     public void handleTextMessage(@NotNull WebSocketSession session, @NotNull TextMessage message) {
         try {
-            Long openChatRoomId = (Long) session.getAttributes().get("openChatRoomId");
-            Long userId = (Long) session.getAttributes().get("userId");
             BaseWebSocketMessage<OpenChatDto> baseWebSocketMessage = redisService.convertStringMessageToBaseWebSocketMessage(message);
 
             switch (baseWebSocketMessage.getType().getValue()) {
                 case "SEND" -> createOpenChatAndSendMessage(baseWebSocketMessage.getData());
-
+                case "PAGINATION" -> readWebSocketOpenChatFacade.getOpenChatListByOpenChatRoomIdAndLastCreatedTime(baseWebSocketMessage.getData().getOpenChatRoomId(), baseWebSocketMessage.getData().getCreatedTime());
             }
         } catch (Exception e) {
             log.error(e.getMessage());

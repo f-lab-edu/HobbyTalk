@@ -53,6 +53,37 @@ public class ReadWebSocketOpenChatFacadeImpl implements ReadWebSocketOpenChatFac
                 openChatDtos
         );
     }
+    @Override
+    public List<OpenChatDto> getOpenChatListByOpenChatRoomIdAndLastCreatedTime(Long openChatRoomId, String lastCreatedTime){
+        List<OpenChat> openChatList = openChatRedisService.getOpenChatListByOpenChatRoomId(openChatRoomId);
+        if(openChatList.size() == 0){
+            return openChatService.getOpenChatByOpenChatRoomIdAndLastCreatedTime(openChatRoomId, lastCreatedTime, limit);
+        }
+        List<OpenChatDto> openChatDtoList = filterOpenChatsByCreatedTime(openChatList, lastCreatedTime);
+        if(openChatDtoList.size() >= limit){
+            return openChatDtoList;
+        }
+
+        return getMergeOepnChatDtoList(
+                openChatDtoList,
+                openChatService.getOpenChatByOpenChatRoomIdAndLastCreatedTime(openChatRoomId, lastCreatedTime, limit - openChatDtoList.size())
+        );
+    }
+
+    /**
+     * 채팅 목록을 시간으로 필터링한다.
+     * @param openChatList List<OpenChat>
+     * @param lastCreatedTime 마지막 생성 시간
+     * @return 채팅 목록
+     */
+    public List<OpenChatDto> filterOpenChatsByCreatedTime(List<OpenChat> openChatList, String lastCreatedTime){
+        List<OpenChat> filterList = openChatList
+                .stream()
+                .filter(openChat -> DateUtil.convertStringToDate(openChat.getCreatedTime()).isAfter(DateUtil.convertStringToDate(lastCreatedTime)))
+                .toList();
+
+        return getOpenChatDtoList(filterList);
+    }
 
     /**
      * OpenChat을 OpenChatDto로 변환후 반환한다.
