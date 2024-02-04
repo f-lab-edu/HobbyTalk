@@ -47,6 +47,17 @@ public class BaseRedisTemplate {
         return result;
     }
 
+    public <T> List<T> getReverseRangeListData(String key, Class<T> valueType, int offset, int limit) {
+        List<String> jsonValue = stringRedisTemplate.opsForList().range(key, offset, limit);
+        if(jsonValue == null){
+            return null;
+        }
+        List<T> result = mappingToElement(jsonValue, valueType);
+        Collections.reverse(result);
+
+        return result;
+    }
+
     public <T> void setAllListData(String key, List<T> value) {
         stringRedisTemplate.opsForList().rightPushAll(key, value.stream().map(this::toJson).collect(Collectors.toList()));
     }
@@ -65,6 +76,10 @@ public class BaseRedisTemplate {
 
     public void setHashData(String key, Map<String, String> value) {
         stringRedisTemplate.opsForHash().putAll(key, value);
+    }
+
+    public <T> void setHashDataColumn(String key, String column, T value) {
+        stringRedisTemplate.opsForHash().put(key, column, value);
     }
 
     public <T> T getHashData(String key, Class<T> valueType) {

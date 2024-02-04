@@ -50,4 +50,12 @@ public class OpenChatRoomRedisServiceImpl implements OpenChatRoomRedisService{
     public Optional<CachedOpenChatRoom> getOpenChatRoom(Long openChatRoomId){
         return openChatRoomRedisRepository.getOpenChatRoom(openChatRoomId);
     };
+    @Override
+    public void updateInitUnreadChatCount(Long userId, Long openChatRoomId){
+        openChatRoomRedisRepository.updateInitUnreadChatCount(userId, openChatRoomId);
+    }
+    @Override
+    public void updateActiveChatRoom(Long userId, Long openChatRoomId){
+        openChatRoomRedisRepository.updateActiveChatRoom(userId, openChatRoomId);
+    }
 }

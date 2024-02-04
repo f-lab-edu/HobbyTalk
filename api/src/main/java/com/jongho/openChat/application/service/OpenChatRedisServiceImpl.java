@@ -21,4 +21,8 @@ public class OpenChatRedisServiceImpl implements OpenChatRedisService {
     public List<OpenChat> getOpenChatListByOpenChatRoomId(Long openChatRoomId){
         return openChatRedisRepository.selectOpenChatListByChatRoomId(openChatRoomId);
     };
+    @Override
+    public List<OpenChat> getOpenChatListByOpenChatRoomIdAndOffsetAndLimit(Long openChatRoomId, int offset, int limit){
+        return openChatRedisRepository.selectOpenChatListByOpenChatRoomIdAndOffsetAndLimit(openChatRoomId, offset, limit);
+    };
 }

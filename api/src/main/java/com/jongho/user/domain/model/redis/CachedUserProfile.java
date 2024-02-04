@@ -16,10 +16,10 @@ class CachedUserProfile{
     @JsonCreator
     public CachedUserProfile(
             @JsonProperty("id") Long id,
-            @JsonProperty("nickname") String name,
+            @JsonProperty("nickname") String nickname,
             @JsonProperty("profileImage") String profileImage) {
         this.id = id;
-        this.nickname = name;
+        this.nickname = nickname;
         this.profileImage = profileImage;
     }
 }

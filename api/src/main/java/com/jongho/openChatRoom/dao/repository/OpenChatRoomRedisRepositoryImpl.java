@@ -63,4 +63,16 @@ public class OpenChatRoomRedisRepositoryImpl implements OpenChatRoomRedisReposit
         return Optional.ofNullable(
                 baseRedisTemplate.getData(RedisKeyGeneration.getChatRoomKey(openChatRoomId), CachedOpenChatRoom.class));
     }
+    @Override
+    public void updateInitUnreadChatCount(Long userId, Long openChatRoomId){
+        String UNREAD_CHAT_COUNT = "unReadMessageCount";
+        String initCount = "0";
+        baseRedisTemplate.setHashDataColumn(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), UNREAD_CHAT_COUNT, initCount);
+    }
+    @Override
+    public void updateActiveChatRoom(Long userId, Long openChatRoomId){
+        String ACTIVE = "active";
+        String value = "1";
+        baseRedisTemplate.setHashDataColumn(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), ACTIVE, value);
+    }
 }

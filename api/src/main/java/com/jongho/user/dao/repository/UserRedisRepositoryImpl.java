@@ -13,6 +13,10 @@ public class UserRedisRepositoryImpl implements UserRedisRepository {
     private final BaseRedisTemplate baseRedisTemplate;
     @Override
     public CachedUserProfile selectUserProfileByUserId(Long userId) {
-        return baseRedisTemplate.getHashData(RedisKeyGeneration.getUserProfileKey(userId), CachedUserProfile.class);
+        return baseRedisTemplate.getData(RedisKeyGeneration.getUserProfileKey(userId), CachedUserProfile.class);
+    }
+    @Override
+    public void createUserProfileByUserId(Long userId, String nickname, String profileImage) {
+        baseRedisTemplate.setData(RedisKeyGeneration.getUserProfileKey(userId), new CachedUserProfile(userId, nickname, profileImage));
     }
 }

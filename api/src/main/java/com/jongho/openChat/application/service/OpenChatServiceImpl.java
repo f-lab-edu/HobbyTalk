@@ -1,10 +1,12 @@
 package com.jongho.openChat.application.service;
 
+import com.jongho.openChat.application.dto.OpenChatDto;
 import com.jongho.openChat.domain.model.OpenChat;
 import com.jongho.openChat.domain.repository.OpenChatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,9 +18,12 @@ public class OpenChatServiceImpl implements OpenChatService{
         return openChatRepository.selectLastOpenChatByChatRoomId(openChatRoomId);
     };
     @Override
-    public int getUnReadOpenChatCountByOpenChatRoomIdAndLastExitTime(Long openChatRoomId, String lastExitTime, int limit){
-        return openChatRepository.selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(openChatRoomId, lastExitTime, limit);
+    public int getUnReadOpenChatCountByOpenChatRoomIdAndLastExitTime(Long openChatRoomId, String lastCreatedTime, int limit){
+        return openChatRepository.selectUnReadOpenChatCountByChatRoomIdAndLastExitTime(openChatRoomId, lastCreatedTime, limit);
     }
-
+    @Override
+    public List<OpenChatDto> getOpenChatByOpenChatRoomIdAndLastCreatedTime(Long openChatRoomId, String lastCreatedTime, int limit){
+        return openChatRepository.selectOpenChatByChatRoomIdAndLastCreatedTime(openChatRoomId, lastCreatedTime, limit);
+    }
 
 }

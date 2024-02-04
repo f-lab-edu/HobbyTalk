@@ -27,4 +27,13 @@ public class OpenChatRedisRepositoryImpl implements OpenChatRedisRepository {
                 RedisKeyGeneration.getChatRoomMessageKey(openChatRoomId),
                 OpenChat.class);
     };
+
+    @Override
+    public List<OpenChat> selectOpenChatListByOpenChatRoomIdAndOffsetAndLimit(Long openChatRoomId, int offset, int limit){
+        return baseRedisTemplate.getReverseRangeListData(
+                RedisKeyGeneration.getChatRoomMessageKey(openChatRoomId),
+                OpenChat.class,
+                offset,
+                limit);
+    };
 }

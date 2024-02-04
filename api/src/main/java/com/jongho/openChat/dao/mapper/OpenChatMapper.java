@@ -14,8 +14,8 @@ public interface OpenChatMapper {
             @Param("openChatRoomId") Long openChatRoomId,
             @Param("lastExitTime") String lastExitTime,
             @Param("limit") int limit);
-    public List<OpenChatDto> selectOpenChatCountByChatRoomIdAndLastExitTime(
+    public List<OpenChatDto> selectOpenChatByChatRoomIdAndLastCreatedTime(
             @Param("openChatRoomId") Long openChatRoomId,
-            @Param("lastExitTime") String lastExitTime,
+            @Param("lastCreatedTime") String lastCreatedTime,
             @Param("limit") int limit);
 }
