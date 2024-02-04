@@ -59,7 +59,7 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            handleWebSocketClose(session, e);
+            handleWebSocketClose(session, BaseMessageTypeEnum.ERROR, e.getMessage());
         }
     }
     private void handleWebSocketClose(WebSocketSession session, BaseMessageTypeEnum type, String message) {
