@@ -1,5 +1,6 @@
 package com.jongho.openChatRoom.application.service;
 
+import com.jongho.common.util.date.DateUtil;
 import com.jongho.openChat.domain.model.OpenChat;
 import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom;
 import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoomConnectionInfo;
@@ -55,11 +56,15 @@ public class OpenChatRoomRedisServiceImpl implements OpenChatRoomRedisService{
         openChatRoomRedisRepository.updateInitUnreadChatCount(userId, openChatRoomId);
     }
     @Override
-    public void updateActiveChatRoom(Long userId, Long openChatRoomId, int activeFlag){
+    public void updateActiveChatRoom(Long userId, Long openChatRoomId, String activeFlag){
         openChatRoomRedisRepository.updateActiveChatRoom(userId, openChatRoomId, activeFlag);
     }
     @Override
     public void incrementUnreadMessageCount(Long userId, Long openChatRoomId){
         openChatRoomRedisRepository.incrementUnreadMessageCount(userId, openChatRoomId);
+    }
+    @Override
+    public void updateLastExitTime(Long userId, Long openChatRoomId){
+        openChatRoomRedisRepository.updateLastExitTime(userId, openChatRoomId, DateUtil.now());
     }
 }

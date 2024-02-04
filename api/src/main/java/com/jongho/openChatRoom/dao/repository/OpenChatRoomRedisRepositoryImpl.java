@@ -70,7 +70,7 @@ public class OpenChatRoomRedisRepositoryImpl implements OpenChatRoomRedisReposit
         baseRedisTemplate.setHashDataColumn(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), UNREAD_CHAT_COUNT, initCount);
     }
     @Override
-    public void updateActiveChatRoom(Long userId, Long openChatRoomId, int activeFlag){
+    public void updateActiveChatRoom(Long userId, Long openChatRoomId, String activeFlag){
         String ACTIVE = "active";
         baseRedisTemplate.setHashDataColumn(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), ACTIVE, activeFlag);
     }
@@ -79,5 +79,10 @@ public class OpenChatRoomRedisRepositoryImpl implements OpenChatRoomRedisReposit
         String UNREAD_CHAT_COUNT = "unReadMessageCount";
         int value = 1;
         baseRedisTemplate.incrementHashDataColumn(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), UNREAD_CHAT_COUNT, value);
+    }
+    @Override
+    public void updateLastExitTime(Long userId, Long openChatRoomId, String lastExitTime){
+        String LAST_EXIT_TIME = "lastExitTime";
+        baseRedisTemplate.setHashDataColumn(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), LAST_EXIT_TIME, lastExitTime);
     }
 }

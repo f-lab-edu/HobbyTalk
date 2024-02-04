@@ -43,8 +43,7 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
             session.sendMessage(
                     new TextMessage(BaseWebSocketMessage.of(BaseMessageTypeEnum.PAGINATION ,openChatDtoList)));
         } catch (Exception e) {
-            log.error(e.getMessage());
-            handleWebSocketClose(session, BaseMessageTypeEnum.ERROR, e.getMessage());
+            handleWebSocketClose(session, e.getMessage());
         }
     }
 
@@ -63,8 +62,7 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
                 case "PAGINATION" -> readWebSocketOpenChatFacade.getOpenChatListByOpenChatRoomIdAndLastCreatedTime(baseWebSocketMessage.getData().getOpenChatRoomId(), baseWebSocketMessage.getData().getCreatedTime());
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
-            handleWebSocketClose(session, BaseMessageTypeEnum.ERROR, e.getMessage());
+            handleWebSocketClose(session, e.getMessage());
         }
     }
     /**
@@ -77,22 +75,23 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(@NotNull WebSocketSession session, @NotNull org.springframework.web.socket.CloseStatus status) {
         try {
-            int INACTIVE = 0;
+            String INACTIVE = "0";
             Long openChatRoomId = (Long) session.getAttributes().get("openChatRoomId");
             Long userId = (Long) session.getAttributes().get("userId");
             openChatRoomRedisService.updateActiveChatRoom(userId, openChatRoomId, INACTIVE);
-            handleWebSocketClose(session, BaseMessageTypeEnum.LEAVE, "연결이 종료되었습니다.");
+            openChatRoomRedisService.updateLastExitTime(userId, openChatRoomId);
+
+            handleWebSocketClose(session, "연결이 종료되었습니다.");
         } catch (Exception e) {
-            log.error(e.getMessage());
-            handleWebSocketClose(session, BaseMessageTypeEnum.ERROR, e.getMessage());
+            handleWebSocketClose(session, e.getMessage());
         }
     }
-    private void handleWebSocketClose(WebSocketSession session, BaseMessageTypeEnum type, String message) {
-        try {
+    private void handleWebSocketClose(WebSocketSession session, String message) {
+        try {log.error(message);
             if(session.isOpen()){
-                session.sendMessage(new TextMessage(BaseWebSocketMessage.of(type, message)));
                 session.close();
             }
+
         } catch (IOException e) {
             log.error(e.getMessage());
         }
@@ -105,7 +104,7 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
      * @param userId 사용자 아이디
      */
     private void initConnectionInfoAndSubscribe(WebSocketSession session, Long openChatRoomId, Long userId) {
-        int ACTIVE = 1;
+        String ACTIVE = "1";
         openChatRoomRedisService.updateInitUnreadChatCount(userId, openChatRoomId);
         openChatRoomRedisService.updateActiveChatRoom(userId, openChatRoomId, ACTIVE);
         redisService.subscribe(OPEN_CHAT_ROOM_CHANNEL + openChatRoomId, session);
