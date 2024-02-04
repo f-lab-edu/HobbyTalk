@@ -45,7 +45,7 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
                     new TextMessage(BaseWebSocketMessage.of(BaseMessageTypeEnum.PAGINATION ,openChatDtoList)));
         } catch (Exception e) {
             log.error(e.getMessage());
-            handleWebSocketClose(session);
+            handleWebSocketClose(session, BaseMessageTypeEnum.ERROR, e.getMessage());
         }
     }
     @Override
@@ -59,11 +59,12 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            handleWebSocketClose(session);
+            handleWebSocketClose(session, e);
         }
     }
-    private void handleWebSocketClose(WebSocketSession session) {
+    private void handleWebSocketClose(WebSocketSession session, BaseMessageTypeEnum type, String message) {
         try {
+            session.sendMessage(new TextMessage(BaseWebSocketMessage.of(type, message)));
             session.close();
         } catch (IOException e) {
             log.error("session.close");
