@@ -1,5 +1,6 @@
 package com.jongho.openChatRoom.application.service;
 
+import com.jongho.common.util.date.DateUtil;
 import com.jongho.openChat.domain.model.OpenChat;
 import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoom;
 import com.jongho.openChatRoom.domain.model.redis.CachedOpenChatRoomConnectionInfo;
@@ -16,8 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("OpenChatRoomRedisServiceImpl 클래스")
@@ -177,6 +177,73 @@ public class OpenChatRoomRedisServiceImplTest {
             // then
             verify(openChatRoomRedisRepository).getOpenChatRoom(1L);
             assertEquals(redisOpenChatRoom, result);
+        }
+    }
+    @Nested
+    @DisplayName("updateInitUnreadChatCount 메서드는")
+    class Describe_updateInitUnreadChatCount{
+        @Test
+        @DisplayName("openChatRoomRedisRepository.updateInitUnreadChatCount 메서드를 호출해서 안읽은 메세지를 초기화시킨다.")
+        void openChatRoomRedisRepositoryd_updateInitUnreadChatCount_메서드를_호출해서_안읽은_메세지를_초기화시킨다(){
+            // given
+            doNothing().when(openChatRoomRedisRepository).updateInitUnreadChatCount(1L, 1L);
+
+            // when
+            openChatRoomRedisService.updateInitUnreadChatCount(1L, 1L);
+
+            // then
+            verify(openChatRoomRedisRepository).updateInitUnreadChatCount(1L, 1L);
+        }
+    }
+    @Nested
+    @DisplayName("updateActiveChatRoom 메서드는")
+    class Describe_updateActiveChatRoom{
+        @Test
+        @DisplayName("openChatRoomRedisRepository.updateActiveChatRoom 메서드를 호출해서 채팅방의 활성화 상태를 변경한다.")
+        void openChatRoomRedisRepositoryd_updateActiveChatRoom_메서드를_호출해서_채팅방의_활성화_상태를_변경한다(){
+            // given
+            String ACTIVE = "1";
+            doNothing().when(openChatRoomRedisRepository).updateActiveChatRoom(1L, 1L, ACTIVE);
+
+            // when
+            openChatRoomRedisService.updateActiveChatRoom(1L, 1L, ACTIVE);
+
+            // then
+            verify(openChatRoomRedisRepository).updateActiveChatRoom(1L, 1L, ACTIVE);
+        }
+    }
+    @Nested
+    @DisplayName("incrementUnreadMessageCount 메서드는")
+    class Describe_incrementUnreadMessageCount{
+        @Test
+        @DisplayName("openChatRoomRedisRepository.incrementUnreadMessageCount 메서드를 호출해서 안읽은 메세지 수를 증가시킨다.")
+        void openChatRoomRedisRepositoryd_incrementUnreadMessageCount_메서드를_호출해서_안읽은_메세지_수를_증가시킨다(){
+            // given
+            doNothing().when(openChatRoomRedisRepository).incrementUnreadMessageCount(1L, 1L);
+
+            // when
+            openChatRoomRedisService.incrementUnreadMessageCount(1L, 1L);
+
+            // then
+            verify(openChatRoomRedisRepository).incrementUnreadMessageCount(1L, 1L);
+        }
+    }
+    @Nested
+    @DisplayName("updateLastExitTime 메서드는")
+    class Describe_updateLastExitTime{
+        @Test
+        @DisplayName("openChatRoomRedisRepository.updateLastExitTime 메서드를 호출해서 마지막 채팅방 나간 시간을 업데이트한다.")
+        void openChatRoomRedisRepositoryd_updateLastExitTime_메서드를_호출해서_마지막_채팅방_나간_시간을_업데이트한다(){
+            // given
+            String LAST_EXIT_TIME = DateUtil.now();
+
+            doNothing().when(openChatRoomRedisRepository).updateLastExitTime(1L, 1L, LAST_EXIT_TIME);
+
+            // when
+            openChatRoomRedisService.updateLastExitTime(1L, 1L);
+
+            // then
+            verify(openChatRoomRedisRepository).updateLastExitTime(1L, 1L, LAST_EXIT_TIME);
         }
     }
 }

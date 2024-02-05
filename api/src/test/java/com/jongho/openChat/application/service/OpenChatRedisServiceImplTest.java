@@ -77,5 +77,82 @@ public class OpenChatRedisServiceImplTest {
                 assertEquals(1, result.size());
             }
         }
+        @Nested
+        @DisplayName("getOpenChatListByOpenChatRoomIdAndOffsetAndLimit 메소드는")
+        class Describe_getOpenChatListByOpenChatRoomIdAndOffsetAndLimit {
+            @Test
+            @DisplayName("openChatRedisRepository.selectOpenChatListByOpenChatRoomIdAndOffsetAndLimit 메소드를 호출하고 받은 반환값을 반환한다.")
+            void openChatRedisRepository_selectOpenChatListByOpenChatRoomIdAndOffsetAndLimit_메소드를_호출하고_받은_반환값을_반환한다() {
+                // given
+                List<OpenChat> openChatList = List.of(new OpenChat(
+                        1L,
+                        1L,
+                        1L,
+                        "test",
+                        1,
+                        0,
+                        null,
+                        "2024-01-29 00:00:00"
+                ));
+                when(openChatRedisRepository.selectOpenChatListByOpenChatRoomIdAndOffsetAndLimit(1L, 0, 1)).thenReturn(openChatList);
+
+                // when
+                List<OpenChat> result = openChatRedisService.getOpenChatListByOpenChatRoomIdAndOffsetAndLimit(1L, 0, 1);
+
+                // then
+                verify(openChatRedisRepository).selectOpenChatListByOpenChatRoomIdAndOffsetAndLimit(1L, 0, 1);
+                assertEquals(1, result.size());
+            }
+        }
+        @Nested
+        @DisplayName("createOpenChat 메소드는")
+        class Describe_createOpenChat {
+            @Test
+            @DisplayName("openChatRedisRepository.insertOpenChat 메소드를 호출해서 채팅을 생성한다.")
+            void openChatRedisRepository_insertOpenChat_메소드를_호출해서_채팅을_생성한다() {
+                // given
+                OpenChat openChat = new OpenChat(
+                        1L,
+                        1L,
+                        1L,
+                        "test",
+                        1,
+                        0,
+                        null,
+                        "2024-01-29 00:00:00"
+                );
+
+                // when
+                openChatRedisService.createOpenChat(openChat);
+
+                // then
+                verify(openChatRedisRepository).insertOpenChat(openChat);
+            }
+        }
+        @Nested
+        @DisplayName("updateLastOpenChat 메소드는")
+        class Describe_updateLastOpenChat {
+            @Test
+            @DisplayName("openChatRedisRepository.updateLastOpenChat 메소드를 호출해서 마지막 채팅을 업데이트한다.")
+            void openChatRedisRepository_updateLastOpenChat_메소드를_호출해서_마지막_채팅을_업데이트한다() {
+                // given
+                OpenChat openChat = new OpenChat(
+                        1L,
+                        1L,
+                        1L,
+                        "test",
+                        1,
+                        0,
+                        null,
+                        "2024-01-29 00:00:00"
+                );
+
+                // when
+                openChatRedisService.updateLastOpenChat(openChat);
+
+                // then
+                verify(openChatRedisRepository).updateLastOpenChat(openChat);
+            }
+        }
     }
 }
