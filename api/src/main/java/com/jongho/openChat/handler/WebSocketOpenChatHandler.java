@@ -4,6 +4,7 @@ import com.jongho.common.database.redis.RedisService;
 import com.jongho.common.util.websocket.BaseMessageTypeEnum;
 import com.jongho.common.util.websocket.BaseWebSocketMessage;
 import com.jongho.openChat.application.dto.OpenChatDto;
+import com.jongho.openChat.application.dto.request.PaginationDto;
 import com.jongho.openChat.application.facade.ReadWebSocketOpenChatFacade;
 import com.jongho.openChat.application.facade.SendWebSocketOpenChatFacade;
 import com.jongho.openChatRoom.application.service.OpenChatRoomRedisService;
@@ -58,12 +59,7 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
     @Override
     public void handleTextMessage(@NotNull WebSocketSession session, @NotNull TextMessage message) {
         try {
-            BaseWebSocketMessage<OpenChatDto> baseWebSocketMessage = redisService.convertStringMessageToBaseWebSocketMessage(message);
-
-            switch (baseWebSocketMessage.getType()) {
-                case SEND -> createOpenChatAndSendMessage(baseWebSocketMessage.getData());
-                case PAGINATION -> readWebSocketOpenChatFacade.getOpenChatListByOpenChatRoomIdAndLastCreatedTime(baseWebSocketMessage.getData().getOpenChatRoomId(), baseWebSocketMessage.getData().getCreatedTime());
-            }
+            dispatchWebSocketMessage(message, session);
         } catch (Exception e) {
             handleWebSocketClose(session, e.getMessage());
         }
@@ -116,5 +112,28 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
         redisService.publish(
                 OPEN_CHAT_ROOM_CHANNEL + openChatDto.getOpenChatRoomId(),
                 BaseWebSocketMessage.of(BaseMessageTypeEnum.SEND, openChatDto));
+    }
+
+    private void paginationOpenChatList(PaginationDto paginationDto, WebSocketSession session) {
+        List<OpenChatDto> openChatDtoList = readWebSocketOpenChatFacade.getOpenChatListByOpenChatRoomIdAndLastCreatedTime((long)session.getAttributes().get("openChatRoomId"), paginationDto.getLastCreatedTime());
+        try {
+            session.sendMessage(
+                    new TextMessage(BaseWebSocketMessage.of(BaseMessageTypeEnum.PAGINATION ,openChatDtoList)));
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 웹소켓 메시지를 분배한다.
+     * @param message 웹소켓 메시지
+     * @param session 웹소켓 세션
+     */
+    private void dispatchWebSocketMessage(TextMessage message, WebSocketSession session){
+        BaseWebSocketMessage baseWebSocketMessage = redisService.convertStringMessageToBaseWebSocketMessage(message);
+        switch (baseWebSocketMessage.getType()) {
+            case SEND -> createOpenChatAndSendMessage(redisService.dataToObject(baseWebSocketMessage.getData(), OpenChatDto.class));
+            case PAGINATION -> paginationOpenChatList(redisService.dataToObject(baseWebSocketMessage.getData(), PaginationDto.class), session);
+        }
     }
 }

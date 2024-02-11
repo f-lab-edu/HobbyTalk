@@ -5,7 +5,6 @@ import com.jongho.openChat.application.dto.OpenChatDto;
 import com.jongho.openChat.application.service.OpenChatRedisService;
 import com.jongho.openChat.application.service.OpenChatService;
 import com.jongho.openChat.domain.model.OpenChat;
-import com.jongho.openChatRoom.application.service.OpenChatRoomRedisService;
 import com.jongho.user.application.service.UserRedisService;
 import com.jongho.user.application.service.UserService;
 import com.jongho.user.domain.model.User;
@@ -24,7 +23,6 @@ import java.util.stream.Stream;
 public class ReadWebSocketOpenChatFacadeImpl implements ReadWebSocketOpenChatFacade {
     private final OpenChatService openChatService;
     private final OpenChatRedisService openChatRedisService;
-    private final OpenChatRoomRedisService openChatRoomRedisService;
     private final UserRedisService userRedisService;
     private final UserService userService;
     private final int limit = 100;
@@ -86,6 +84,7 @@ public class ReadWebSocketOpenChatFacadeImpl implements ReadWebSocketOpenChatFac
         List<OpenChat> filterList = openChatList
                 .stream()
                 .filter(openChat -> DateUtil.convertStringToDate(openChat.getCreatedTime()).isAfter(DateUtil.convertStringToDate(lastCreatedTime)))
+                .limit(limit)
                 .toList();
 
         return getOpenChatDtoList(filterList);

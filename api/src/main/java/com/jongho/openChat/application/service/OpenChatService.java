@@ -2,7 +2,6 @@ package com.jongho.openChat.application.service;
 
 import com.jongho.openChat.application.dto.OpenChatDto;
 import com.jongho.openChat.domain.model.OpenChat;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;

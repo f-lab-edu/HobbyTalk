@@ -134,10 +134,9 @@ public class BaseRedisTemplate {
         }
     }
 
-    public BaseWebSocketMessage<OpenChatDto> getWebSocketMessage(TextMessage textMessage){
+    public BaseWebSocketMessage getWebSocketMessage(TextMessage textMessage){
         try {
-            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(BaseWebSocketMessage.class, OpenChatDto.class);
-            return objectMapper.readValue(textMessage.getPayload(), javaType);
+            return objectMapper.readValue(textMessage.getPayload(), BaseWebSocketMessage.class);
         }catch (Exception e) {
             throw new MyJsonProcessingException(e.getMessage()!=null? e.getMessage():"json processing error");
         }

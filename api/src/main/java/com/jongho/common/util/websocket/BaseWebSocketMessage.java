@@ -10,21 +10,22 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class BaseWebSocketMessage<T> {
+public class BaseWebSocketMessage {
     private final BaseMessageTypeEnum type;
-    private final T data;
+    private final String data;
     public static ObjectMapper objectMapper = new ObjectMapper();
     @JsonCreator
     public BaseWebSocketMessage(
             @JsonProperty("type") BaseMessageTypeEnum type,
-            @JsonProperty("data") T data) {
+            @JsonProperty("data") String data) {
         this.type = type;
         this.data = data;
     }
 
     public static <T> String of(BaseMessageTypeEnum baseMessageTypeEnum, T data) {
         try {
-            return objectMapper.writeValueAsString(new BaseWebSocketMessage<>(baseMessageTypeEnum, data));
+            String stringData = objectMapper.writeValueAsString(data);
+            return objectMapper.writeValueAsString(new BaseWebSocketMessage(baseMessageTypeEnum, stringData));
         }catch (Exception e) {
             throw new MyJsonProcessingException(e.getMessage()!=null? e.getMessage():"json processing error");
         }

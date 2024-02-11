@@ -48,7 +48,12 @@ public class WebSocketPathVariablesInterceptor implements HandshakeInterceptor {
             }
 
             String[] pathVariables = path.split("/");
-            Long openChatRoomId = Long.parseLong(pathVariables[pathVariables.length - 2]);
+            Long openChatRoomId;
+            try {
+                openChatRoomId = Long.parseLong(pathVariables[pathVariables.length - 2]);
+            } catch (NumberFormatException e) {
+
+            }
             Optional<OpenChatRoom> openChatRoom = openChatRoomService.getOpenChatRoomById(openChatRoomId);
             if (openChatRoom.isEmpty()) {
                 log.error("404 Not Foud chatRoomId: {}", openChatRoomId);
