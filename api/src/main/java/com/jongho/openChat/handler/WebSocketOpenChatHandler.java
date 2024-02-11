@@ -18,6 +18,9 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.io.IOException;
 import java.util.List;
 
+import static com.jongho.openChatRoom.common.enums.ActiveTypeEnum.ACTIVE;
+import static com.jongho.openChatRoom.common.enums.ActiveTypeEnum.INACTIVE;
+
 @Component
 @Log4j2
 @RequiredArgsConstructor
@@ -57,9 +60,9 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
         try {
             BaseWebSocketMessage<OpenChatDto> baseWebSocketMessage = redisService.convertStringMessageToBaseWebSocketMessage(message);
 
-            switch (baseWebSocketMessage.getType().getValue()) {
-                case "SEND" -> createOpenChatAndSendMessage(baseWebSocketMessage.getData());
-                case "PAGINATION" -> readWebSocketOpenChatFacade.getOpenChatListByOpenChatRoomIdAndLastCreatedTime(baseWebSocketMessage.getData().getOpenChatRoomId(), baseWebSocketMessage.getData().getCreatedTime());
+            switch (baseWebSocketMessage.getType()) {
+                case SEND -> createOpenChatAndSendMessage(baseWebSocketMessage.getData());
+                case PAGINATION -> readWebSocketOpenChatFacade.getOpenChatListByOpenChatRoomIdAndLastCreatedTime(baseWebSocketMessage.getData().getOpenChatRoomId(), baseWebSocketMessage.getData().getCreatedTime());
             }
         } catch (Exception e) {
             handleWebSocketClose(session, e.getMessage());
@@ -75,10 +78,9 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(@NotNull WebSocketSession session, @NotNull org.springframework.web.socket.CloseStatus status) {
         try {
-            String INACTIVE = "0";
             Long openChatRoomId = (Long) session.getAttributes().get("openChatRoomId");
             Long userId = (Long) session.getAttributes().get("userId");
-            openChatRoomRedisService.updateActiveChatRoom(userId, openChatRoomId, INACTIVE);
+            openChatRoomRedisService.updateActiveChatRoom(userId, openChatRoomId, String.valueOf(INACTIVE.getType()));
             openChatRoomRedisService.updateLastExitTime(userId, openChatRoomId);
 
             handleWebSocketClose(session, "연결이 종료되었습니다.");
@@ -104,9 +106,8 @@ public class WebSocketOpenChatHandler extends TextWebSocketHandler {
      * @param userId 사용자 아이디
      */
     private void initConnectionInfoAndSubscribe(WebSocketSession session, Long openChatRoomId, Long userId) {
-        String ACTIVE = "1";
         openChatRoomRedisService.updateInitUnreadChatCount(userId, openChatRoomId);
-        openChatRoomRedisService.updateActiveChatRoom(userId, openChatRoomId, ACTIVE);
+        openChatRoomRedisService.updateActiveChatRoom(userId, openChatRoomId, String.valueOf(ACTIVE.getType()));
         redisService.subscribe(OPEN_CHAT_ROOM_CHANNEL + openChatRoomId, session);
     }
 

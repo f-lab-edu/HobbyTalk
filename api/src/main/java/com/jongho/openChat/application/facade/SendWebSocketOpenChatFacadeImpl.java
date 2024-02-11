@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.jongho.openChatRoom.common.enums.ActiveTypeEnum.INACTIVE;
+
 @Service
 @Log4j2
 @RequiredArgsConstructor
@@ -84,9 +86,8 @@ public class SendWebSocketOpenChatFacadeImpl implements SendWebSocketOpenChatFac
      * @param openChatRoomId 채팅방 ID
      */
     public void increaseUnreadMessageCountForInactiveChatRoom(Long userId, Long openChatRoomId) {
-        int INACTIVE = 0;
         CachedOpenChatRoomConnectionInfo cachedOpenChatRoomConnectionInfo = getOpenChatRoomConnectionInfo(userId, openChatRoomId);
-        if (cachedOpenChatRoomConnectionInfo != null && cachedOpenChatRoomConnectionInfo.getActive() == INACTIVE) {
+        if (cachedOpenChatRoomConnectionInfo != null && cachedOpenChatRoomConnectionInfo.getActive() == INACTIVE.getType()) {
             openChatRoomRedisService.incrementUnreadMessageCount(userId, openChatRoomId);
         }
     }

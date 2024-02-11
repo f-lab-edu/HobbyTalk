@@ -20,6 +20,8 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Map;
+
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -65,7 +67,12 @@ public class OpenChatRoomControllerTest {
                     200,
                     "비밀번호"));
             Gson gson = new Gson();
-            String openChatRoomCreateDtoJson = gson.toJson(openChatRoomCreateDto);
+            String openChatRoomCreateDtoJson = gson.toJson(
+                    Map.of("title", "타이틀",
+                    "notice", "공지사항",
+                    "category_id", 1L,
+                    "maximum_capacity", 200,
+                    "password", "비밀번호"));
 
             // when
             mockMvc.perform(post("/api/v1/open-chat-rooms")
