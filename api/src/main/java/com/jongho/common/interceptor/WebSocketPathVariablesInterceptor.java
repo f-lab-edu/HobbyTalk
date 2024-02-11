@@ -52,17 +52,18 @@ public class WebSocketPathVariablesInterceptor implements HandshakeInterceptor {
             try {
                 openChatRoomId = Long.parseLong(pathVariables[pathVariables.length - 2]);
             } catch (NumberFormatException e) {
-
+                log.error("400 Bad Request chatRoomId: {}", pathVariables[pathVariables.length - 2]);
+                return handleInvalidChatRoom(servletResponse, "올바르지 않는 url입니다.", HttpStatus.BAD_REQUEST);
             }
             Optional<OpenChatRoom> openChatRoom = openChatRoomService.getOpenChatRoomById(openChatRoomId);
             if (openChatRoom.isEmpty()) {
                 log.error("404 Not Foud chatRoomId: {}", openChatRoomId);
-                return handleInvalidChatRoom(servletResponse, "존재하지 않는 채팅방입니다.");
+                return handleInvalidChatRoom(servletResponse, "존재하지 않는 채팅방입니다.", HttpStatus.NOT_FOUND);
             }
             Optional<OpenChatRoomUser> userId = openChatRoomUserService.getOpenChatRoomUserByOpenChatRoomIdAndUserId(openChatRoom.get().getId(), (Long) attributes.get("userId"));
             if (userId.isEmpty()) {
                 log.error("404 Not Foud chatRoomId: {}, userId: {}", openChatRoomId, attributes.get("userId"));
-                return handleInvalidChatRoom(servletResponse, "채팅방에 참여하지 않은 사용자입니다.");
+                return handleInvalidChatRoom(servletResponse, "채팅방에 참여하지 않은 사용자입니다.", HttpStatus.NOT_FOUND);
             }
             attributes.put("openChatRoomId", openChatRoom.get().getId());
         }
@@ -73,9 +74,9 @@ public class WebSocketPathVariablesInterceptor implements HandshakeInterceptor {
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception ex) {
     }
 
-    private boolean handleInvalidChatRoom(HttpServletResponse response, String errorMessage) throws IOException {
-        String result = new Gson().toJson(BaseResponseEntity.fail(HttpStatus.NOT_FOUND, errorMessage).getBody());
-        response.setStatus(HttpStatus.NOT_FOUND.value());
+    private boolean handleInvalidChatRoom(HttpServletResponse response, String errorMessage, HttpStatus httpStatus) throws IOException {
+        String result = new Gson().toJson(BaseResponseEntity.fail(httpStatus, errorMessage).getBody());
+        response.setStatus(httpStatus.value());
         response.setContentType("application/json; charset=UTF-8");
         PrintWriter writer = response.getWriter();
         writer.println(result);
