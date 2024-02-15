@@ -19,4 +19,7 @@ public class RedisKeyGeneration {
     public static String getChatRoomUserListKey(Long openChatRoomId) {
         return "chatRooms:" + openChatRoomId + ":users";
     }
+    public static String getUserProfileKey(Long userId) {
+        return "users:" + userId + ":profile";
+    }
 }

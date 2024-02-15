@@ -9,4 +9,7 @@ public class DateUtil {
 
         return LocalDateTime.parse(stringDate, formatter);
     }
+    public static String now() {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
 }

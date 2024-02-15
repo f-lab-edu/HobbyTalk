@@ -25,4 +25,24 @@
         AND is_deleted = 0
         LIMIT #{limit}
     </select>
+    <select id="selectOpenChatByChatRoomIdAndLastCreatedTime" resultType="com.jongho.openChat.application.dto.OpenChatDto">
+        SELECT
+            open_chats.id,
+            open_chats.open_chat_room_id,
+            open_chats.message,
+            open_chats.type,
+            open_chats.is_deleted,
+            open_chats.deleted_time,
+            open_chats.created_time,
+            u.id as sender_id,
+            u.nickname as sender_nickname,
+            u.profile_image as sender_profileImage
+        FROM open_chats
+        INNER JOIN users as u
+            ON u.id = open_chats.sender_id
+        WHERE open_chats.open_chat_room_id = #{openChatRoomId}
+        AND open_chats.created_time &lt; #{lastCreatedTime}
+        ORDER BY open_chats.created_time DESC
+        LIMIT #{limit}
+    </select>
 </mapper>

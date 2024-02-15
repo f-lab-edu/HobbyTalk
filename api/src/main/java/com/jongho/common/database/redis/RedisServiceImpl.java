@@ -1,6 +1,7 @@
 package com.jongho.common.database.redis;
 
 import com.jongho.common.util.redis.BaseRedisTemplate;
+import com.jongho.common.util.websocket.BaseWebSocketMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,15 @@ public class RedisServiceImpl implements RedisService{
 
     private RedisMessageHandler getMessageHandler(WebSocketSession session) {
         return new RedisMessageHandler(session);
+    }
+    public BaseWebSocketMessage convertStringMessageToBaseWebSocketMessage(TextMessage message){
+        return baseRedisTemplate.getWebSocketMessage(message);
+    }
+    public <T> T dataToObject(String data, Class<T> valueType){
+        return baseRedisTemplate.toObject(data, valueType);
+    }
+    public String objectToData(Object object){
+        return baseRedisTemplate.toJson(object);
     }
 }
 

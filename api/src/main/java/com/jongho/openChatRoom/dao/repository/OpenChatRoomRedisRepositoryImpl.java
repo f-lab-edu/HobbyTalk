@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import static com.jongho.openChatRoom.common.enums.ConnectionInfoFieldEnum.*;
+
 @Repository
 @RequiredArgsConstructor
 public class OpenChatRoomRedisRepositoryImpl implements OpenChatRoomRedisRepository {
@@ -62,5 +64,23 @@ public class OpenChatRoomRedisRepositoryImpl implements OpenChatRoomRedisReposit
     public Optional<CachedOpenChatRoom> getOpenChatRoom(Long openChatRoomId){
         return Optional.ofNullable(
                 baseRedisTemplate.getData(RedisKeyGeneration.getChatRoomKey(openChatRoomId), CachedOpenChatRoom.class));
+    }
+    @Override
+    public void updateInitUnreadChatCount(Long userId, Long openChatRoomId){
+        String UNREAD_CHAT_COUNT = "unReadMessageCount";
+        String initCount = "0";
+        baseRedisTemplate.setHashDataColumn(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), UNREAD_CHAT_COUNT, initCount);
+    }
+    @Override
+    public void updateActiveChatRoom(Long userId, Long openChatRoomId, String activeFlag){
+        baseRedisTemplate.setHashDataColumn(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), ACTIVE.getField(), activeFlag);
+    }
+    @Override
+    public void incrementUnreadMessageCount(Long userId, Long openChatRoomId){
+        baseRedisTemplate.incrementHashDataColumn(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), UN_READ_MESSAGE_COUNT.getField(), 1);
+    }
+    @Override
+    public void updateLastExitTime(Long userId, Long openChatRoomId, String lastExitTime){
+        baseRedisTemplate.setHashDataColumn(RedisKeyGeneration.getChatRoomConnectionInfoKey(userId, openChatRoomId), LAST_EXIT_TIME.getField(), lastExitTime);
     }
 }
