@@ -1,5 +1,6 @@
 package com.jongho.user.presentation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
 import com.jongho.common.config.WebMvcConfig;
 import com.jongho.common.interceptor.AuthInterceptor;
@@ -21,6 +22,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Map;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -59,7 +62,13 @@ public class UserControllerTest {
             // given
             doNothing().when(userFacade).signUpUserAndCreateNotificationSetting(userSignUpDto);
             Gson gson = new Gson();
-            String userSignUpDtoJson = gson.toJson(userSignUpDto);
+            String userSignUpDtoJson = gson.toJson(Map.of(
+                    "nickname", userSignUpDto.getNickname(),
+                    "password", userSignUpDto.getPassword(),
+                    "username", userSignUpDto.getUsername(),
+                    "phone_number", userSignUpDto.getPhoneNumber(),
+                    "profile_image", userSignUpDto.getProfileImage()
+            ));
 
             // when
             mockMvc.perform(post("/api/v1/users/sign-up")
