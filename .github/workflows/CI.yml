@@ -31,6 +31,10 @@ jobs:
         ls
       shell: bash
 
+    #test를 제외한 프로젝트 빌드
+    - name: Build With Gradle
+      run: ./gradlew clean build -x test
+
     - name: Run tests
       run: |
         ./gradlew api:test -Pspring.profiles.active=test
