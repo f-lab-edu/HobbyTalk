@@ -28,7 +28,7 @@ jobs:
         cd ./api/src/main/resources
         touch ./application-api-test.properties
         echo "${{ secrets.PROPERTIES_TEST }}" > ./application-api-test.properties
-        echo "secret = ${{ secrets.PROPERTIES_TEST }}"
+        head -n 1 ./application-api-test.properties | echo
       shell: bash
 
     - name: Run tests
