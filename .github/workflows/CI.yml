@@ -25,7 +25,7 @@ jobs:
 
     - name: Make application-test.properties
       run: |
-        cd ./src/test/resources
+        cd ./api/src/main/resources
         touch ./application-api-test.properties
         echo "${{ secrets.PROPERTIES_TEST }}" > ./application-api-test.properties
       shell: bash
