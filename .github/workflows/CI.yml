@@ -33,6 +33,7 @@ jobs:
 
     - name: Run tests
       run: |
+        ls ./api/src/main/resources
         ./gradlew clean -Dspring.profiles.active=test api:test 
         if [ $? -eq 0 ]; then
             echo "success"
