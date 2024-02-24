@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
   username varchar(255) NOT NULL COMMENT '유저 아이디' UNIQUE,
   profile_image varchar(255) COMMENT '프로필 이미지',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
-  deleted_time timestamp COMMENT '삭제 날짜',
+  deleted_time timestamp NULL COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'
 );
 
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS auth_users (
   user_id int UNIQUE NOT NULL COMMENT '자기자신의 id',
   refresh_token varchar(255) NOT NULL COMMENT '리프레시 토큰',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
-  deleted_time timestamp COMMENT '삭제 날짜',
+  deleted_time timestamp NULL COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'
 );
 
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS friends (
   friend_id int NOT NULL COMMENT '친구유저 id',
   status int NOT NULL DEFAULT 0 COMMENT '1: 친구, 2: 차단',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
-  deleted_time timestamp COMMENT '삭제 날짜',
+  deleted_time timestamp NULL COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜',
   updated_time timestamp NOT NULL DEFAULT NOW() COMMENT '수정 날짜',
   PRIMARY KEY (user_id, friend_id)
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS friendship_requests (
   from_user_id int NOT NULL COMMENT '친구신청 보낸 유저 id',
   status int NOT NULL DEFAULT 0 COMMENT '0: 친구x, 1: 친구o',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
-  deleted_time timestamp COMMENT '삭제 날짜',
+  deleted_time timestamp NULL COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'
 );
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS user_notification_settings (
   chat int NOT NULL DEFAULT 1 COMMENT '채팅 알림 설정 여부',
   friendship int NOT NULL DEFAULT 1 COMMENT '친구신청 알림 설정 여부',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
-  deleted_time timestamp COMMENT '삭제 날짜',
+  deleted_time timestamp NULL COMMENT '삭제 날짜',
   chat_room_membership_request int NOT NULL DEFAULT 1 COMMENT '채팅방 입장 신청 알림 설정 여부'
 );
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS hobby_categories (
   name varchar(255) NOT NULL COMMENT '카테고리 명' UNIQUE,
   parent_id int COMMENT '부모 카테고리 id',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
-  deleted_time timestamp COMMENT '삭제 날짜',
+  deleted_time timestamp NULL COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'
 );
 
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS open_chat_rooms (
   current_attendance int NOT NULL DEFAULT 1 COMMENT '오픈채팅방 현재 참여한 인원',
   password varchar(255) NULL COMMENT '오픈채팅방 비밀번호',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
-  deleted_time timestamp COMMENT '삭제 날짜',
+  deleted_time timestamp NULL COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜',
   UNIQUE (manager_id, title)
 );
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS open_chat_room_users (
   open_chat_room_id int NOT NULL COMMENT '오픈채팅방 id',
   last_exit_time timestamp NOT NULL DEFAULT NOW() COMMENT '채팅방 나간 시간',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
-  deleted_time timestamp COMMENT '삭제 날짜',
+  deleted_time timestamp NULL COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜',
   PRIMARY KEY (user_id, open_chat_room_id)
 );
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS open_chats (
   message varchar(255) NOT NULL COMMENT '메세지 본문',
   type int NOT NULL COMMENT '채팅 타입',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
-  deleted_time timestamp COMMENT '삭제 날짜',
+  deleted_time timestamp NULL COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'
 );
 
@@ -101,6 +101,6 @@ CREATE TABLE IF NOT EXISTS open_chat_room_membership_requests (
   message varchar(255) NOT NULL COMMENT '참가 신청 본문',
   status int NOT NULL DEFAULT 1 COMMENT '1: 참가신청, 2: 승인, 3: 거부',
   is_deleted int NOT NULL DEFAULT 0 COMMENT '삭제 여부',
-  deleted_time timestamp COMMENT '삭제 날짜',
+  deleted_time timestamp NULL COMMENT '삭제 날짜',
   created_time timestamp NOT NULL DEFAULT NOW() COMMENT '생성 날짜'
 );
