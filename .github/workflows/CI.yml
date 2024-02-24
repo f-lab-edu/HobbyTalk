@@ -32,7 +32,7 @@ jobs:
 
     - name: Run tests
       run: |
-        ./gradlew api:test
+        ./gradlew api:test -Pspring.profiles.active=test
         if [ $? -eq 0 ]; then
             echo "success"
           else
