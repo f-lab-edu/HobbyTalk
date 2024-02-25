@@ -28,7 +28,7 @@ jobs:
           ls
         shell: bash
 
-      - name: Run tests
+      - name: Run build
         run: |
           ls ./api/src/main/resources
           ./gradlew clean -Dspring.profiles.active=production api:build -x test 
