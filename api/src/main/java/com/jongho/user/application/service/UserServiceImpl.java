@@ -9,6 +9,7 @@ import com.jongho.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     @Override
+    @Transactional
     public void signUp(UserSignUpDto userSignUpDto) {
         userRepository.findOneByUsername(userSignUpDto.getUsername())
                 .ifPresent((user)-> {
