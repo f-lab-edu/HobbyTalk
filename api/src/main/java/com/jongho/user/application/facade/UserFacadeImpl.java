@@ -15,7 +15,7 @@ public class UserFacadeImpl implements UserFacade{
     private final UserService userService;
     private final UserNotificationSettingService userNotificationSettingService;
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void signUpUserAndCreateNotificationSetting(UserSignUpDto userSignUpDto) {
         userService.signUp(userSignUpDto);
         User user = userService.getUser(userSignUpDto.getUsername());
